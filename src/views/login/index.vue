@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <!-- login form -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
@@ -48,34 +49,109 @@
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
       <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : any</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : editor</span>
-          <span>Password : any</span>
-        </div>
-
         <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
           Or connect with
         </el-button>
       </div>
     </el-form>
+    <!-- end Login form -->
 
+    <!-- dialog register form -->
     <el-dialog title="Or connect with" :visible.sync="showDialog">
-      Can not be simulated on local, so please combine you own business simulation! ! !
-      <br>
-      <br>
-      <br>
-      <social-sign />
+      <el-form style="background:rgba(0,0,0,0.8)" ref="registerForm" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on" label-position="left">
+
+        <div class="title-container">
+          <h3 class="title">Register Form</h3>
+        </div>
+
+        <el-form-item>
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="name"
+            v-model="registerForm.name"
+            placeholder="name"
+            name="name"
+            type="text"
+            tabindex="1"
+            autocomplete="on"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <span class="svg-container">
+            <svg-icon icon-class="email" />
+          </span>
+          <el-input
+            ref="email"
+            v-model="registerForm.email"
+            placeholder="email"
+            name="email"
+            type="text"
+            tabindex="1"
+            autocomplete="on"
+          />
+        </el-form-item>
+
+        <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="registerForm.password"
+              :type="passwordType"
+              placeholder="Password"
+              name="password"
+              tabindex="2"
+              autocomplete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
+          </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="repassword"
+              v-model="registerForm.rePassword"
+              :type="passwordType"
+              placeholder="confirm password"
+              name="repassword"
+              tabindex="2"
+              autocomplete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+            />
+          </el-form-item>
+        </el-tooltip>
+
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleRegister">Register</el-button>
+
+      </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { register } from '@/api/user'
 import SocialSign from './components/SocialSignin'
+import axios from '@/api/axios'
+import { Message } from 'element-ui'
+
 
 export default {
   name: 'Login',
@@ -97,13 +173,25 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
+
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
+
+      registerForm: {
+        name: '',
+        email : '',
+        password: '',
+        rePassword : ''
+      },
+
+      registerRules: {
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      },
+
       passwordType: 'password',
       capsTooltip: false,
       loading: false,
@@ -161,9 +249,30 @@ export default {
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
-            .catch(() => {
+            .catch((err) => {
+              Message('Login Failed!!');
               this.loading = false
             })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    handleRegister() {
+      
+      this.$refs.registerForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          const data = axios.post('/register', this.registerForm)
+          data.then((res) => {
+            Message('Berhasil Silahkan Login!!')
+            this.$router.push({ path: '/login', query: this.otherQuery })
+            this.loading = false
+          }).catch((err) => {
+            Message('Failed!!')
+             this.loading = false
+          })
         } else {
           console.log('error submit!!')
           return false
