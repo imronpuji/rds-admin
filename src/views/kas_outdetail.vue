@@ -26,10 +26,10 @@
     </div>
 
     <div v-for="data in cashout">
-      <h5 style="margin:4px; padding:0">From : {{data.from}}</h5>
-      <h5 style="margin:4px; padding:0">To : {{data.to}}</h5>
-      <h5 style="margin:4px; padding:0">Desc : {{data.desc}}</h5>
-      <h2 style="margin:4px; padding:0">Total : {{data.chasout}}</h2>
+      <h5 style="margin:4px; padding:0">From : {{ data.from }}</h5>
+      <h5 style="margin:4px; padding:0">To : {{ data.to }}</h5>
+      <h5 style="margin:4px; padding:0">Desc : {{ data.desc }}</h5>
+      <h2 style="margin:4px; padding:0">Total : {{ data.chasout }}</h2>
     </div>
 
     <el-table
@@ -54,15 +54,15 @@
       </el-table-column>
       <el-table-column label="Description" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.desc}}</span>
+          <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.total}}</span>
+          <span>{{ row.total }}</span>
         </template>
       </el-table-column>
-     
+
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
@@ -123,7 +123,7 @@
       </span>
     </el-dialog>
 
-    <h1></h1>
+    <h1 />
   </div>
 </template>
 
@@ -167,7 +167,7 @@ export default {
   data() {
     return {
       tableKey: 0,
-      cashout : [],
+      cashout: [],
       list: null,
       total: 0,
       listLoading: true,
@@ -191,7 +191,7 @@ export default {
         timestamp: new Date(),
         name: '',
         total_masuk: '',
-        total : ''
+        total: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -210,13 +210,13 @@ export default {
     }
   },
   created() {
-    this.getList();
+    this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
       axios.get(`/cash/out/detail/${this.$route.params.id}`).then(response => {
-        console.log(response);
+        console.log(response)
         this.list = response.data.detail
         this.cashout = response.data.cashout
         this.total = response.data.detail.length

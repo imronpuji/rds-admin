@@ -187,7 +187,7 @@ export const asyncRoutes = [
         path: '/kas/detail/:id',
         component: () => import('@/views/kas_detail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Kas',
           roles: ['admin', 'editor']
@@ -198,7 +198,7 @@ export const asyncRoutes = [
         path: '/kas/outdetail/:id',
         component: () => import('@/views/kas_outdetail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Kas',
           roles: ['admin', 'editor']
@@ -209,7 +209,7 @@ export const asyncRoutes = [
         path: '/transfer/detail/:id',
         component: () => import('@/views/transfer_detail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Transfer',
           roles: ['admin', 'editor']
@@ -261,7 +261,7 @@ export const asyncRoutes = [
         path: '/kas/detail/:id',
         component: () => import('@/views/kas_detail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Kas',
           roles: ['admin', 'editor']
@@ -272,7 +272,7 @@ export const asyncRoutes = [
         path: '/kas/outdetail/:id',
         component: () => import('@/views/kas_outdetail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Kas',
           roles: ['admin', 'editor']
@@ -283,7 +283,7 @@ export const asyncRoutes = [
         path: '/transfer/detail/:id',
         component: () => import('@/views/transfer_detail'),
         name: 'RolePermission',
-        hidden:true,
+        hidden: true,
         meta: {
           title: 'Detail Transfer',
           roles: ['admin', 'editor']
@@ -303,7 +303,7 @@ export const asyncRoutes = [
         name: 'Icons',
         meta: {
           title: 'Transfer Transaksi',
-          icon : 'table',
+          icon: 'table',
           roles: ['admin', 'kasir'] // you can set roles in root nav
         }
       }

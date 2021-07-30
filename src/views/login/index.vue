@@ -58,7 +58,7 @@
 
     <!-- dialog register form -->
     <el-dialog title="Or connect with" :visible.sync="showDialog">
-      <el-form style="background:rgba(0,0,0,0.8)" ref="registerForm" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on" label-position="left">
+      <el-form ref="registerForm" style="background:rgba(0,0,0,0.8)" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on" label-position="left">
 
         <div class="title-container">
           <h3 class="title">Register Form</h3>
@@ -152,7 +152,6 @@ import SocialSign from './components/SocialSignin'
 import axios from '@/api/axios'
 import { Message } from 'element-ui'
 
-
 export default {
   name: 'Login',
   components: { SocialSign },
@@ -183,9 +182,9 @@ export default {
 
       registerForm: {
         name: '',
-        email : '',
+        email: '',
         password: '',
-        rePassword : ''
+        rePassword: ''
       },
 
       registerRules: {
@@ -250,7 +249,7 @@ export default {
               this.loading = false
             })
             .catch((err) => {
-              Message('Login Failed!!');
+              Message('Login Failed!!')
               this.loading = false
             })
         } else {
@@ -260,7 +259,6 @@ export default {
       })
     },
     handleRegister() {
-      
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -271,7 +269,7 @@ export default {
             this.loading = false
           }).catch((err) => {
             Message('Failed!!')
-             this.loading = false
+            this.loading = false
           })
         } else {
           console.log('error submit!!')
