@@ -164,6 +164,16 @@ export const asyncRoutes = [
         }
       },
       {
+        path: '/kategori/detail/:nama/:id',
+        component: () => import('@/views/kategori_detail'),
+        name: 'PagePermission',
+        hidden: true,
+        meta: {
+          title: 'Kategori',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
         path: '/akun',
         component: () => import('@/views/akun'),
         name: 'DirectivePermission',
@@ -173,16 +183,6 @@ export const asyncRoutes = [
           // if do not set roles, means: this page does not require permission
         }
       },
-      {
-        path: '/kas/masuk',
-        component: () => import('@/views/transaksi_in'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Kas Masuk',
-          roles: ['admin', 'editor']
-        }
-      },
-
       {
         path: '/kas/detail/:id',
         component: () => import('@/views/kas_detail'),

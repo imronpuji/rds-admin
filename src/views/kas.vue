@@ -31,7 +31,7 @@
     <h3 v-if="cashes.length > 0" style="margin-left:12px">Cash</h3>
     <el-row :gutter="40" class="panel-group">
       <el-col v-for="cash in cashes" :xs="12" :sm="12" :lg="6" class="card-panel-col">
-        <div class="card-panel" @click="handleSetLineChartData('messages')">
+        <div class="card-panel" @click="handleClick(cash)">
           <div class="card-panel-icon-wrapper icon-message">
             <svg-icon icon-class="message" class-name="card-panel-icon" />
           </div>
@@ -43,23 +43,61 @@
         </div>
       </el-col>
     </el-row>
+     <el-dialog v-el-drag-dialog :visible.sync="dialogTableVisible" title="Detail" @dragDialog="handleDrag">
+      <el-select ref="select" v-model="value" placeholder="请选择">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+      <el-table :data="gridData">
+        <el-table-column property="from" label="From" />
+        <el-table-column property="to" label="To" />
+        <el-table-column property="transfer" label="Transfer" width="100" />
+        <el-table-column property="chasin" label="chasin" />
+        <el-table-column property="chasout" label="chasout" />
+        <el-table-column property="desc" label="Desc" />
+        <el-table-column property="date" label="Date" width="150" />
+        <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+        <template slot-scope="{row,$index}">
+          <el-button size="mini" type="danger">
+            <router-link :to="'/transfer/detail/' + row.id">Detail</router-link>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import CountTo from 'vue-count-to'
 import axios from '@/api/axios'
+import elDragDialog from '@/directive/el-drag-dialog' // base on element-ui
+
 
 export default {
   components: {
-    CountTo
+    CountTo,
   },
+  name: 'DragDialogDemo',
+  directives: { elDragDialog },
 
   data() {
     return {
       cashIn: 0,
       cashOut: 0,
-      cashes: []
+      cashes: [],
+      category : [],
+      dialogTableVisible: false,
+      options: [
+        { value: '选项1', label: '黄金糕' },
+        { value: '选项2', label: '双皮奶' },
+        { value: '选项3', label: '蚵仔煎' },
+        { value: '选项4', label: '龙须面' }
+      ],
+      value: '',
+      gridData: []
+    
     }
   },
   created() {
@@ -71,17 +109,27 @@ export default {
       .then((response) => this.cashIn = response.data.cashin[0].total == null ? 0 : parseInt(response.data.cashin[0].total))
       .catch((err) => this.cashIn = 0)
 
-    axios.get('/akun/cash')
+    axios.get('/akun/kas')
       .then((response) => {
         this.cashes.push(...response.data.menu)
       })
+      .catch((err) => console.log(err))
     console.log(this.cashes)
 
-      .catch((err) => console.log(err))
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+     handleDrag() {
+      console.log('kjkj')
+      this.$refs.select.blur()
+    },
+    handleClick(cash){
+      this.dialogTableVisible = true
+      axios.get(`/cash/akun/detail/${cash.id}`)
+      .then((response) => {
+        console.log(response)
+        this.gridData = response.data.detail
+      } )
+      .catch((err) => console.log(err))
     }
   }
 }

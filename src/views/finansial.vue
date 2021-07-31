@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column label="From" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.from }}</span>
+          <span>{{ row.from}}</span>
         </template>
       </el-table-column>
       <el-table-column label="To" min-width="150px">
@@ -52,17 +52,17 @@
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.chasin }}</span>
+          <span>{{ row.chasin}}</span>
         </template>
       </el-table-column>
       <el-table-column label="Desc" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.desc }}</span>
+          <span>{{ row.desc}}</span>
         </template>
       </el-table-column>
       <el-table-column label="Date" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.date }}</span>
+          <span>{{ row.date}}</span>
         </template>
       </el-table-column>
       </el-table-column>
@@ -72,7 +72,7 @@
             Edit
           </el-button>
           </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger">
+           <el-button v-if="row.status!='deleted'" size="mini" type="danger">
             <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
           </el-button>
         </template>
@@ -84,14 +84,14 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="From">
-          <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
+          <el-select required v-model="from" class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
             <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="To">
-          <el-select v-model="to_item" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+        <el-form-item label="To" >
+          <el-select required v-model="to_item" class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
+          </el-select> 
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -122,11 +122,11 @@ import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
-import qs from 'qs'
+import qs from 'qs';
 
 const calendarTypeOptions = [
   { key: 'cash', display_name: 'cash' },
-  { key: 'modal', display_name: 'modal' }
+  { key: 'modal', display_name: 'modal' },
 ]
 
 // arr to obj, such as { CN : "China", US : "USA" }
@@ -134,6 +134,7 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
   return acc
 }, {})
+
 
 export default {
   name: 'ComplexTable',
@@ -168,8 +169,8 @@ export default {
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
-      cash: [],
-      modal: [],
+      cash : [],
+      modal : [],
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
@@ -205,7 +206,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/cash/in/list').then(response => {
+      axios.get('/akun/in/list').then(response => {
         this.list = response.data.cashin
         this.total = response.data.cashin.length
 
@@ -213,12 +214,12 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
-      })
+      });
       axios.get(`/akun/cash`).then(response => {
-        this.cash = response.data.menu
-      })
+        this.cash = response.data.menu;
+      });
       axios.get(`/akun/modal`).then(response => {
-        this.modal = response.data.menu
+        this.modal = response.data.menu;
       })
     },
     handleFilter() {
@@ -271,43 +272,45 @@ export default {
       //     this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
       //     this.temp.author = 'vue-element-admin'
       //     createArticle(this.temp).then(() => {
-      //
+      //       
 
-      const desc = []
-      const total = []
-      const akun_id = []
-      this.kasIn.all.map((val, index) => {
-        desc.push(val.desc)
-        total.push(parseInt(val.total))
-        akun_id.push(val.modal)
-      })
-      const data = {
-        from: this.from,
-        to: this.to_item,
-        desc,
-        akun_id,
-        total
-      }
 
-      var encodedValues = qs.stringify(
-        data,
-        { allowDots: true }
-      )
-      console.log(encodedValues)
-      axios.post('/cash/in/create', encodedValues)
-        .then((response) => {
-          this.getList()
-          this.dialogFormVisible = false
-          this.$notify({
-            title: 'Success',
-            message: 'Created Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          this.kasIn.all = [{ modal: '', desc: '', total: '' }]
-        })
-        .catch((err) => err)
-      // }
+            let desc = []
+            let total = []
+            let akun_id = []
+            this.kasIn.all.map((val, index) => {
+              desc.push(val.desc);
+              total.push(parseInt(val.total));
+              akun_id.push(val.modal);
+
+            })
+            const data = {
+              from : this.from,
+              to : this.to_item,
+              desc,
+              akun_id,
+              total
+            }
+
+            var encodedValues = qs.stringify(
+              data,
+              { allowDots:true }
+            );
+            console.log(encodedValues)
+            axios.post('/cash/in/create', encodedValues)
+            .then((response) => {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$notify({
+                title: 'Success',
+                message: 'Created Successfully',
+                type: 'success',
+                duration: 2000
+              })
+              this.kasIn.all =  [{ modal: '', desc : '', total: '' }];
+            })
+            .catch((err) => err)
+                  // }
       // })
     },
     handleUpdate(row) {
@@ -379,7 +382,7 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
-    }
+    },
   }
 }
 </script>

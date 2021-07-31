@@ -85,7 +85,7 @@
             Edit
           </el-button>
           <el-button v-if="row.status!='deleted'" size="mini" type="danger">
-            <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
+            <router-link :to="'/kategori/detail/' + row.name + '/' + row.id">Detail</router-link>
           </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
             Delete
