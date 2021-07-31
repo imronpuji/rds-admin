@@ -112,20 +112,20 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="From">
           <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
-            <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="To">
           <el-select v-model="to_item" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-            <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option v-for="item in pengeluaran" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
 
         <!-- multiple input -->
         <div v-for="(all, index) in kasIn.all" style="background:rgba(0,0,0,0.1); padding:8px; margin:8px; border-radius:4px;">
-          <el-form-item label="Modal">
-            <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-              <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
+          <el-form-item label="Biaya">
+            <el-select v-model="all.biaya" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+              <el-option v-for="item in biaya" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="Desc">
@@ -204,8 +204,9 @@ export default {
       from: '',
       to_item: '',
       total_kasIn: '',
+      pengeluaran : '',
       kasIn: {
-        all: [{ modal: '', total: '', desc: '' }]
+        all: [{ biaya: '', total: '', desc: '' }]
       },
       tableKey: 0,
       list: null,
@@ -222,7 +223,7 @@ export default {
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       cash: [],
-      modal: [],
+      biaya: [],
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
@@ -267,11 +268,15 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/cash`).then(response => {
+     axios.get(`/akun/kas`).then(response => {
         this.cash = response.data.menu
       })
-      axios.get(`/akun/modal`).then(response => {
-        this.modal = response.data.menu
+      axios.get(`/akun/pengeluaran`).then(response => {
+        this.pengeluaran = response.data.menu
+      })
+
+      axios.get(`/akun/biaya`).then(response => {
+        this.biaya = response.data.menu
       })
     },
     handleFilter() {
@@ -332,7 +337,7 @@ export default {
       this.kasIn.all.map((val, index) => {
         desc.push(val.desc)
         total.push(parseInt(val.total))
-        akun_id.push(val.modal)
+        akun_id.push(val.biaya)
       })
       const data = {
         from: this.from,
@@ -357,7 +362,7 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.kasIn.all = [{ modal: '', desc: '', total: '' }]
+          this.kasIn.all = [{ biaya: '', desc: '', total: '' }]
         })
         .catch((err) => err)
       // }
@@ -440,7 +445,7 @@ export default {
       console.log(event)
     },
     addFind() {
-      this.kasIn.all.push({ modal: '', desc: '', total: '' })
+      this.kasIn.all.push({ biaya: '', desc: '', total: '' })
 
       console.log(this.kasIn, this.to_item, this.from)
     },

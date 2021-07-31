@@ -29,7 +29,7 @@
       <h5 style="margin:4px; padding:0">From : {{ data.from }}</h5>
       <h5 style="margin:4px; padding:0">To : {{ data.to }}</h5>
       <h5 style="margin:4px; padding:0">Desc : {{ data.desc }}</h5>
-      <h2 style="margin:4px; padding:0">Total : {{ data.chasout }}</h2>
+      <h2 style="margin:4px; padding:0">Total : {{ data.total }}</h2>
     </div>
 
     <el-table

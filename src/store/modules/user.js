@@ -2,6 +2,7 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import axios from '@/api/axios'
+import NProgress from 'nprogress'
 
 const state = {
   token: getToken(),
@@ -78,6 +79,8 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
+
+      NProgress.start()
       axios.get('/logout', {
         headers: { Authorization: `Bearer ${state.token}` }
       }).then(() => {

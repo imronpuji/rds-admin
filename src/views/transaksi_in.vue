@@ -112,7 +112,7 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="From">
           <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
-            <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
+            <el-option v-for="item in pemasukan" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="To">
@@ -204,6 +204,7 @@ export default {
       from: '',
       to_item: '',
       total_kasIn: '',
+      pemasukan : '',
       kasIn: {
         all: [{ modal: '', total: '', desc: '' }]
       },
@@ -267,10 +268,14 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/pemasukan`).then(response => {
+      axios.get(`/akun/kas`).then(response => {
         this.cash = response.data.menu
       })
-      axios.get(`/akun/kas`).then(response => {
+      axios.get(`/akun/pemasukan`).then(response => {
+        this.pemasukan = response.data.menu
+      })
+
+      axios.get(`/akun/modal`).then(response => {
         this.modal = response.data.menu
       })
     },
