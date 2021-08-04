@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column label="Nama Akun" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.akun.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center">
@@ -214,11 +214,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get(`/cash/out/detail/${this.$route.params.id}`).then(response => {
+      axios.get(`/cash/transaction/detail/${this.$route.params.id}`).then(response => {
         console.log(response)
-        this.list = response.data.detail
-        this.cashout = response.data.cashout
-        this.total = response.data.detail.length
+        this.list = response.data.cashtransaction[0].subcashtransaction
+        this.cashout = response.data.cashtransaction.from
+        this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {

@@ -26,6 +26,7 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
+
       border
       fit
       highlight-current-row
@@ -39,27 +40,22 @@
       </el-table-column>
       <el-table-column label="Dari Akun Kas" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.from }}</span>
+          <span>{{ row.from.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Ke Akun Kas" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.to }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.to.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.total) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Desc" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.desc }}</span>
+          <span>{{ handleCurrency(row.transfer) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Date" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.date }}</span>
+          <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
 
@@ -68,10 +64,6 @@
         <template slot-scope="{row,$index}">
           <el-button type="danger" size="mini" @click="handleDelete(row, $index)">
             Delete
-          </el-button>
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="warning">
-            <router-link :to="'/transfer/detail/' + row.id">Detail</router-link>
           </el-button>
         </template>
       </el-table-column>
@@ -217,19 +209,19 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/cash/transfer/list').then(response => {
+      axios.get('/cash/transfer').then(response => {
         console.log(response)
-        this.list = response.data.cashtransfer
-        this.total = response.data.cashtransfer.length
+        this.list = response.data.cashtransaction
+        this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/cash`).then(response => {
+      axios.get(`/akun/iscash`).then(response => {
           console.log('cash', response)
-          this.cash = response.data.menu
+          this.cash = response.data.akun
       }).catch(() => {
         this.listLoading = false
        this.$notify({
@@ -239,8 +231,8 @@ export default {
         duration: 2000
         })})
 
-      axios.get(`/akun/not/cash`).then(response => {
-        this.modal = response.data.menu
+      axios.get(`/akun/notcash`).then(response => {
+        this.modal = response.data.akun
       })
       .catch(() => {
         this.listLoading = false
@@ -319,9 +311,8 @@ export default {
       const data = {
         from: this.from,
         to: this.to_item,
-        desc,
-        akun_id,
-        total
+        desc : this.keterangan,
+        total : this.total_transfer
       }
 
       var encodedValues = qs.stringify(
@@ -375,7 +366,7 @@ export default {
     },
     handleDelete(row, index) {
       this.listLoading = true
-      axios.delete(`/cash/delete/${row.id}`)
+      axios.delete(`/cash/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)

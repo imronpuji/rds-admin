@@ -29,6 +29,7 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
+      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
       border
       fit
       highlight-current-row
@@ -45,19 +46,14 @@
           <span>{{ row.from.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Keterangan" min-width="150px">
+      <el-table-column label="Total" width="150px" align="center" prop="cashout">
         <template slot-scope="{row}">
-          <span >{{ row.from.desc }}</span>
+          <span>{{ handleCurrency(row.cashout) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Total" width="150px" align="center">
+      <el-table-column label="Date" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.from.cashout) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Date" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.date }}</span>
+          <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
       <!--    <el-table-column label="Author" width="110px" align="center">
@@ -90,9 +86,6 @@
    <!--    </el-table-column> -->
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
           </el-button>

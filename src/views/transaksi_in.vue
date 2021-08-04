@@ -29,6 +29,7 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
+      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
       border
       fit
       highlight-current-row
@@ -45,9 +46,14 @@
           <span class="link-type" @click="handleUpdate(row)">{{ row.to.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Total" width="150px" align="center">
+      <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ handleCurrency(row.cashin) }}</span>
+        </template>
+      </el-table-column>
+       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+        <template slot-scope="{row}" >
+          <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
       <!--    <el-table-column label="Author" width="110px" align="center">
