@@ -155,15 +155,6 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: '/kategori',
-        component: () => import('@/views/kategori'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Kategori',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
         path: '/kategori/detail/:nama/:id',
         component: () => import('@/views/kategori_detail'),
         name: 'PagePermission',
@@ -309,6 +300,8 @@ export const asyncRoutes = [
       }
     ]
   },
+ 
+
 
   // {
   //   path: '/icon',
@@ -521,6 +514,7 @@ export const asyncRoutes = [
   //     }
   //   ]
   // },
+
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

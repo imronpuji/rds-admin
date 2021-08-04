@@ -14,9 +14,6 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
-      </el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
@@ -26,10 +23,9 @@
     </div>
 
     <div v-for="data in transfer_detail">
-      <h5 style="margin:4px; padding:0">From : {{ data.from }}</h5>
-      <h5 style="margin:4px; padding:0">To : {{ data.to }}</h5>
-      <h5 style="margin:4px; padding:0">Desc : {{ data.desc }}</h5>
-      <h2 style="margin:4px; padding:0">Total : {{ data.total }}</h2>
+      <h5 style="margin:4px; padding:0">Dari Kas : {{ data.from }}</h5>
+      <h5 style="margin:4px; padding:0">Ke Kas : {{ data.to }}</h5>
+      <h2 style="margin:4px; padding:0">Total : {{ handleCurrency(data.total) }}</h2>
     </div>
 
     <el-table
@@ -59,20 +55,10 @@
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.total }}</span>
+          <span>{{ handleCurrency(row.total) }}</span>
         </template>
       </el-table-column>
 
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-            Delete
-          </el-button>
-        </template>
       </el-table-column>
     </el-table>
 
@@ -226,6 +212,11 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
     },
     handleFilter() {
       this.listQuery.page = 1

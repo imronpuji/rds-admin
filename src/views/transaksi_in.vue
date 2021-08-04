@@ -40,22 +40,17 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="From" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.from }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="To" min-width="150px">
+      <el-table-column label="Masuk Ke Kas" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.to }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.chasin }}</span>
+          <span>{{ handleCurrency(row.chasin) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Desc" width="150px" align="center">
+      <el-table-column label="Keterangan" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.desc }}</span>
         </template>
@@ -98,6 +93,8 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
+           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
+            Delete
           </el-button>
           <el-button v-if="row.status!='deleted'" size="mini" type="danger">
             <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
@@ -109,35 +106,33 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="From">
-          <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
-            <el-option v-for="item in pemasukan" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="To">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
+        <el-form-item label="Masuk Ke Kas">
           <el-select v-model="to_item" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
+        <el-form-item label="Keterangan">
+            <el-input v-model="keterangan" placeholder="Keterangan" />
+        </el-form-item>
 
         <!-- multiple input -->
-        <div v-for="(all, index) in kasIn.all" style="background:rgba(0,0,0,0.1); padding:8px; margin:8px; border-radius:4px;">
-          <el-form-item label="Modal">
+        <div v-for="(all, index) in kasIn.all" style="background:rgba(0,0,0,0.1); padding:0px; margin:0px; border-radius:4px;">
+          <el-form-item label="Sebagai Akun">
             <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-              <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
+              <el-option v-for="item in modal" :key="item.id" :label="item.category + '->' + item.name" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="Desc">
             <el-input v-model="all.desc" required type="text" placeholder="Please input" />
           </el-form-item>
-          <el-form-item label="Total">
-            <el-input v-model="all.total" type="text" placeholder="Please input" @change="onChangeTotal()" />
+          <el-form-item label="Sub Total">
+            <el-input v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
           </el-form-item>
         </div>
-        <button @click="addFind">
-          New Find
-        </button>
+        <el-button type="primary" @click="addFind">
+          Tambah Form
+        </el-button>
         <h3> Total : {{ total_kasIn }}</h3>
       </el-form>
       <!-- multiple input -->
@@ -201,6 +196,8 @@ export default {
   },
   data() {
     return {
+      category : '',
+      keterangan : '',
       from: '',
       to_item: '',
       total_kasIn: '',
@@ -260,6 +257,7 @@ export default {
     getList() {
       this.listLoading = true
       axios.get('/cash/in/list').then(response => {
+        console.log(response)
         this.list = response.data.cashin
         this.total = response.data.cashin.length
 
@@ -268,16 +266,36 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/kas`).then(response => {
+      axios.get(`/akun/cash`).then(response => {
+        console.log(response)
         this.cash = response.data.menu
-      })
-      axios.get(`/akun/pemasukan`).then(response => {
-        this.pemasukan = response.data.menu
-      })
+    }).catch(() => {
+      this.listLoading = false
+     this.$notify({
+      title: 'Error',
+      message: 'Server Error',
+      type: 'warning',
+      duration: 2000
+      })})
 
-      axios.get(`/akun/modal`).then(response => {
+      axios.get(`/akun/not/cash`).then(response => {
         this.modal = response.data.menu
       })
+      .catch(() => {
+        this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+      })
+
+
+    },
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -340,8 +358,8 @@ export default {
         akun_id.push(val.modal)
       })
       const data = {
-        from: this.from,
         to: this.to_item,
+        keterangan : this.keterangan, 
         desc,
         akun_id,
         total
@@ -364,7 +382,15 @@ export default {
           })
           this.kasIn.all = [{ modal: '', desc: '', total: '' }]
         })
-        .catch((err) => err)
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
       // }
       // })
     },
@@ -397,13 +423,28 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
+       this.listLoading = true
+      axios.delete(`/cash/delete/${row.id}`)
+        .then((response) => {
+          this.listLoading = false
+          console.log(response)
+          this.$notify({
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

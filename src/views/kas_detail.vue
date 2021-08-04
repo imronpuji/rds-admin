@@ -14,9 +14,9 @@
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+     <!--  <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
-      </el-button>
+      </el-button> -->
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
@@ -25,10 +25,9 @@
       </el-checkbox>
     </div>
     <div v-for="data in cashin">
-      <h5 style="margin:4px; padding:0">From : {{ data.from }}</h5>
-      <h5 style="margin:4px; padding:0">To : {{ data.to }}</h5>
-      <h5 style="margin:4px; padding:0">Desc : {{ data.desc }}</h5>
-      <h2 style="margin:4px; padding:0">Total : {{ data.chasin }}</h2>
+      <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to }}</h5>
+      <h5 style="margin:4px; padding:0">Keterangan : {{ data.desc }}</h5>
+      <h5 style="margin:4px; padding:0">Total : {{ handleCurrency(data.chasin) }}</h5>
     </div>
 
     <el-table
@@ -46,60 +45,46 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Name" min-width="150px">
+      <el-table-column label="Nama Akun" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Description" width="150px" align="center">
+      <el-table-column label="Keterangan" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.total }}</span>
+          <span>{{ handleCurrency(row.total) }}</span>
         </template>
       </el-table-column>
 
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+<!--       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
             Delete
           </el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Type" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
+        <el-form-item label="To">
+          <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
+            <el-option v-for="item in notCash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Date" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date" />
-        </el-form-item>
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="temp.to" />
-        </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Imp">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;" />
-        </el-form-item>
-        <el-form-item label="Remark">
-          <el-input v-model="temp.remark" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="Please input" />
+        <el-form-item label="keterangan">
+          <el-input v-model="keterangan" placeholder="keterangan" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -166,6 +151,9 @@ export default {
   data() {
     return {
       cashin: [],
+      from : '',
+      keterangan : '',
+      notCash : [],
       tableKey: 0,
       list: null,
       total: 0,
@@ -224,6 +212,14 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+       axios.get(`/akun/not/cash`).then(response => {
+        this.biaya = response.data.menu
+      }).catch(() => console.log('err'))
+
+    },
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -316,13 +312,28 @@ export default {
       })
     },
     handleDelete(row, index) {
-      this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
-        type: 'success',
-        duration: 2000
-      })
-      this.list.splice(index, 1)
+       this.listLoading = true
+      axios.delete(`/akun/transaction/delete/${row.id}`)
+        .then((response) => {
+          this.listLoading = false
+          console.log(response)
+          this.$notify({
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

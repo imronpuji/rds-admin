@@ -230,6 +230,15 @@ export default {
     this.getList()
   },
   methods: {
+    error(){
+      this.listLoading = false
+      this.$notify({
+      title: 'Error',
+      message: 'Server Error',
+      type: 'warning',
+      duration: 2000
+      })
+    },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {

@@ -1,102 +1,33 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        Search
-      </el-button>
+
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        Export
-      </el-button>
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        reviewer
-      </el-checkbox>
     </div>
+    <el-tree :data="list" :props="defaultProps">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        <span>{{ node.label }}</span>
+        <span style="margin-left:20px">
+          <el-button
+            type="text"
+            size="mini"
 
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Kategori" width="150px" align="center" props="name">
-        <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Deskripsi" min-width="150px" props="desc">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.desc }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Total" width="150px" align="center" props="total">
-        <template slot-scope="{row}">
-          <span>{{ row.total }}</span>
-        </template>
-      </el-table-column>
-      <!--    <el-table-column label="Author" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template> -->
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
+            @click="() => handleDelete(data, data)">
+            Delete
+          </el-button>
+           <el-button
+            type="text"
+            size="mini"
+
+            @click="() => handleUpdate(data, data)">
             Edit
           </el-button>
-          </el-button>
-          <el-button size="mini" type="danger"  @click="handleDelete(row, $index)">
-           <span>Delete</span>
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+        </span>
+      </span>
+    </el-tree>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
@@ -106,10 +37,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Nama">
-            <el-input placeholder="deskripsi" v-model="name" />
+            <el-input placeholder="Nama" v-model="name" />
         </el-form-item>
-        <el-form-item label="Deskripsi">
-            <el-input placeholder="deskripsi" v-model="desc" />
+        <el-form-item>
+            <el-checkbox v-model="kas" >Bank / Kas</el-checkbox>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -172,13 +103,19 @@ export default {
   },
   data() {
     return {
+      defaultProps: {
+          children: 'children',
+          label: 'name'
+        },
       id : '',
       category: '',
+      fullscreenLoading: false,
       name : '',
       desc : '',
       tableKey: 0,
       list: null,
       total: 0,
+      kas : '',
       listLoading: true,
       listQuery: {
         page: 1,
@@ -225,22 +162,32 @@ export default {
     this.getList()
   },
   methods: {
+     load(tree, treeNode, resolve) {
+        setTimeout(() => {
+          resolve(this.list)
+        }, 1000)},
     getList() {
       this.listLoading = true
+
       axios.get('/akun').then(response => {
         console.log(response)
-        this.list = response.data.menu
-        this.total = response.data.menu.length
+        this.list = response.data.akun
+        this.total = response.data.akun.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/category/akun`).then(response => {
-        console.log(response)
-        this.categories = response.data.category
+
+       axios.get('/akun/list').then(response => {
+        this.categories = response.data.akun
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
+
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -290,8 +237,10 @@ export default {
       const data = {
         name: this.name,
         desc: this.desc,
-        category : this.category,
+        perent_id : this.category,
+        iscash : this.kas
       }
+      console.log(data);
       this.listLoading = true;
       this.dialogFormVisible = false
 
@@ -313,6 +262,7 @@ export default {
       this.id = row.id
       this.name = row.name // copy obj
       this.desc = row.desc
+      this.kas = row.iscash == 1 ? true : false
       this.category = row.category
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -362,11 +312,17 @@ export default {
         .catch((err) => err)
     },
     handleDelete(row, index) {
+      const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
 
-      this.listLoading = true
       axios.delete(`/akun/delete/${row.id}`)
         .then((response) => {
-          this.listLoading = false
+          this.getList()
+          loading.close();
           console.log(response)
           this.$notify({
             title: 'Success',
@@ -374,7 +330,7 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.list.splice(index, 1)
+          
         })
         .catch((err) => err)
     },

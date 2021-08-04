@@ -28,7 +28,7 @@
         </div>
       </el-col>
     </el-row>
-    <h3 v-if="cashes.length > 0" style="margin-left:12px">Cash</h3>
+    <h3 v-if="cashes.length > 0" style="margin-left:12px">Akun Kas</h3>
     <el-row :gutter="40" class="panel-group">
       <el-col v-for="cash in cashes" :xs="12" :sm="12" :lg="6" class="card-panel-col">
         <div class="card-panel" @click="handleClick(cash)">
@@ -88,6 +88,7 @@ export default {
       cashOut: 0,
       cashes: [],
       category : [],
+      keterangan : '',
       dialogTableVisible: false,
       options: [
         { value: '选项1', label: '黄金糕' },
@@ -109,7 +110,7 @@ export default {
       .then((response) => this.cashIn = response.data.cashin[0].total == null ? 0 : parseInt(response.data.cashin[0].total))
       .catch((err) => this.cashIn = 0)
 
-    axios.get('/akun/kas')
+    axios.get('/akun/cash')
       .then((response) => {
         this.cashes.push(...response.data.menu)
       })
@@ -122,6 +123,7 @@ export default {
       console.log('kjkj')
       this.$refs.select.blur()
     },
+
     handleClick(cash){
       this.dialogTableVisible = true
       axios.get(`/cash/akun/detail/${cash.id}`)

@@ -15,7 +15,7 @@
         Search
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
+        Tambah Akun
       </el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
@@ -72,12 +72,15 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
      <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Nama">
-            <el-input placeholder="deskripsi" v-model="name" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 520px; margin-left:50px;">
+        <el-form-item label="Nama Akun">
+            <el-input placeholder="Nama Akun" v-model="name" />
         </el-form-item>
         <el-form-item label="Deskripsi">
             <el-input placeholder="deskripsi" v-model="desc" />
+        </el-form-item>
+        <el-form-item>
+            <el-checkbox v-model="kas" >Bank / Kas</el-checkbox>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -144,6 +147,7 @@ export default {
   data() {
     return {
       id : '',
+      kas : '',
       category: '',
       name : '',
       desc : '',
@@ -195,7 +199,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get(`/akun/${this.$route.params.nama}`).then(response => {
+      axios.get(`/category/akun/detail/${this.$route.params.id}`).then(response => {
 
         console.log(response);
         this.list = response.data.menu
@@ -256,7 +260,8 @@ export default {
        const data = {
         name: this.name,
         desc: this.desc,
-        category : id
+        category : id,
+        iscash : this.kas,
       }
       this.listLoading = true;
       this.dialogFormVisible = false
@@ -272,10 +277,19 @@ export default {
             duration: 2000
           })
         })
-        .catch((err) => err)
+        .catch((err) => {
+           this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleUpdate(row) {
       this.id = row.id
+      this.kas = row.iscash == 1 ? true : false
       this.name = row.name // copy obj
       this.desc = row.desc
       this.category = this.$route.params.id
@@ -291,7 +305,8 @@ export default {
       const data = {
         name: this.name,
         desc: this.desc,
-        category : this.category
+        category : this.category,
+        iscash : this.kas 
       }
 
       axios.put(`/akun/edit/${this.id}`, data)
@@ -304,9 +319,16 @@ export default {
             type: 'success',
             duration: 2000
           })
-          throw new Error('Something went badly wrong!')
         })
-        .catch((err) => err)
+        .catch((err) => {
+           this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleDelete(row, index) {
     
@@ -323,7 +345,15 @@ export default {
           })
           this.list.splice(index, 1)
         })
-        .catch((err) => err)
+        .catch((err) => {
+           this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

@@ -40,7 +40,7 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Name" width="150px" align="center">
+      <el-table-column label="Kategori Akun" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
         </template>
@@ -84,7 +84,7 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger">
+          <el-button v-if="row.status!='deleted'" size="mini" type="warning">
             <router-link :to="'/kategori/detail/' + row.name + '/' + row.id">Detail</router-link>
           </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
