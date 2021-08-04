@@ -263,7 +263,7 @@ export default {
       this.name = row.name // copy obj
       this.desc = row.desc
       this.kas = row.iscash == 1 ? true : false
-      this.category = row.category
+      this.category = row.perent_id
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -293,8 +293,9 @@ export default {
       this.listLoading = true
       const data = {
         name: this.name,
-        desc: this.desc,
-        category : this.category
+        perent_id : this.category,
+        iscash : this.kas
+
       }
 
       axios.put(`/akun/edit/${this.id}`, data)
