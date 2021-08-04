@@ -404,7 +404,7 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/cash/delete/${row.id}`)
+      axios.delete(`/cash/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
