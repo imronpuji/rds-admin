@@ -25,9 +25,8 @@
       </el-checkbox>
     </div>
     <div v-for="data in cashin">
-      <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to }}</h5>
-      <h5 style="margin:4px; padding:0">Keterangan : {{ data.desc }}</h5>
-      <h5 style="margin:4px; padding:0">Total : {{ handleCurrency(data.chasin) }}</h5>
+      <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to.name }}</h5>
+      <h5 style="margin:4px; padding:0">Total : {{ handleCurrency(data.cashin) }}</h5>
     </div>
 
     <el-table
@@ -47,7 +46,7 @@
       </el-table-column>
       <el-table-column label="Nama Akun" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.akun.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center">
@@ -202,10 +201,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get(`/cash/in/detail/${this.$route.params.id}`).then(response => {
-        this.list = response.data.detail
-        this.cashin = response.data.cashin
-        this.total = response.data.detail.length
+      axios.get(`/cash/transaction/detail/${this.$route.params.id}`).then(response => {
+        console.log(response)
+        this.list = response.data.cashtransaction[0].subcashtransaction
+        this.cashin = response.data.cashtransaction
+        this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -313,7 +313,7 @@ export default {
     },
     handleDelete(row, index) {
        this.listLoading = true
-      axios.delete(`/akun/transaction/delete/${row.id}`)
+      axios.delete(`/cash/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)

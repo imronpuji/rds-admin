@@ -42,22 +42,12 @@
       </el-table-column>
       <el-table-column label="Masuk Ke Kas" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.to.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
           <span>{{ handleCurrency(row.cashin) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Keterangan" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.desc }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Date" width="150px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.date }}</span>
         </template>
       </el-table-column>
       <!--    <el-table-column label="Author" width="110px" align="center">
@@ -90,9 +80,6 @@
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
            <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
           </el-button>
@@ -425,7 +412,7 @@ export default {
     },
     handleDelete(row, index) {
        this.listLoading = true
-      axios.delete(`/cash/delete/${row.id}`)
+      axios.delete(`/cash/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
