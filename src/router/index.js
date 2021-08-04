@@ -154,6 +154,7 @@ export const asyncRoutes = [
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
     children: [
+     
       {
         path: '/kategori/detail/:nama/:id',
         component: () => import('@/views/kategori_detail'),
@@ -514,7 +515,27 @@ export const asyncRoutes = [
   //     }
   //   ]
   // },
-
+{
+    path: '/laporan',
+    component: Layout,
+    name: 'laporan',
+    meta: {
+      title: 'Laporan',
+      icon: 'people',
+      roles: ['admin', 'kasir'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: '/neraca',
+        component: () => import('@/views/neraca'),
+        name: 'PagePermission',
+        meta: {
+          title: 'Neraca',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

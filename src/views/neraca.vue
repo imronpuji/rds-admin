@@ -1,0 +1,335 @@
+<template>
+  <div class="app-container" style="display:flex">
+
+   <el-tree
+  :data="list"
+  default-expand-all
+  node-key="id"
+  ref="tree"
+  highlight-current
+  :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+        	<span>{{data.name}}</span>
+        	 <span style="margin-left:10px">{{ data.total  }}</span>
+        </span>
+</el-tree>
+
+  </div>
+</template>
+
+<script>
+import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
+import waves from '@/directive/waves' // waves directive
+import { parseTime } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import axios from '@/api/axios'
+import qs from 'qs'
+
+const calendarTypeOptions = [
+  { key: 'cash', display_name: 'cash' },
+  { key: 'modal', display_name: 'modal' }
+]
+
+// arr to obj, such as { CN : "China", US : "USA" }
+const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+  acc[cur.key] = cur.display_name
+  return acc
+}, {})
+
+export default {
+  name: 'ComplexTable',
+  components: { Pagination },
+  directives: { waves },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'info',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    },
+    typeFilter(type) {
+      return calendarTypeKeyValue[type]
+    }
+  },
+  data() {
+    return {
+      defaultProps: {
+          children: 'children',
+          label: 'name',
+          total : 'total'
+      },
+      from: '',
+      to_item: '',
+      total_kasIn: '',
+      keterangan : '',
+      total_transfer:'',
+      kasIn: {
+        all: [{ modal: '', total: '', desc: '' }]
+      },
+      tableKey: 0,
+      list: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20,
+        importance: undefined,
+        title: undefined,
+        type: undefined,
+        sort: '+id'
+      },
+      importanceOptions: [1, 2, 3],
+      calendarTypeOptions,
+      cash: [],
+      modal: [],
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      statusOptions: ['published', 'draft', 'deleted'],
+      showReviewer: false,
+      temp: {
+        id: undefined,
+        desc: '',
+        date: '',
+        timestamp: new Date(),
+        from: '',
+        to: '',
+        chasin: ''
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: 'Edit',
+        create: 'Create'
+      },
+      dialogPvVisible: false,
+      pvData: [],
+      rules: {
+        type: [{ required: true, message: 'type is required', trigger: 'change' }],
+        // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
+        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+      },
+      downloadLoading: false
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      axios.get('/report').then(response => {
+        this.list = response.data.akun
+        this.listLoading = false
+
+      })
+    },
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
+    },
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作Success',
+        type: 'success'
+      })
+      row.status = status
+    },
+    sortChange(data) {
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
+    resetTemp() {
+      this.temp = {
+        id: undefined,
+        importance: 1,
+        remark: '',
+        timestamp: new Date(),
+        title: '',
+        status: 'published',
+        type: ''
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    createData() {
+      // this.$refs['dataForm'].validate((valid) => {
+      //   if (valid) {
+      //     this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+      //     this.temp.author = 'vue-element-admin'
+      //     createArticle(this.temp).then(() => {
+      //
+
+      const desc = []
+      const total = []
+      const akun_id = []
+      this.kasIn.all.map((val, index) => {
+        desc.push(val.desc)
+        total.push(parseInt(val.total))
+        akun_id.push(val.modal)
+      })
+      const data = {
+        from: this.from,
+        to: this.to_item,
+        desc : this.keterangan,
+        total : this.total_transfer
+      }
+
+      var encodedValues = qs.stringify(
+        data,
+        { allowDots: true }
+      )
+      console.log(encodedValues)
+      axios.post('/cash/transfer/create', encodedValues)
+        .then((response) => {
+          this.getList()
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Created Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.kasIn.all = [{ modal: '', desc: '', total: '' }]
+        })
+        .catch((err) => err)
+      // }
+      // })
+    },
+    handleUpdate(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
+    },
+    updateData() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateArticle(tempData).then(() => {
+            const index = this.list.findIndex(v => v.id === this.temp.id)
+            this.list.splice(index, 1, this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    handleDelete(row, index) {
+      this.listLoading = true
+      axios.delete(`/cash/transaction/delete/${row.id}`)
+        .then((response) => {
+          this.listLoading = false
+          console.log(response)
+          this.$notify({
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
+    },
+    handleFetchPv(pv) {
+      fetchPv(pv).then(response => {
+        this.pvData = response.data.pvData
+        this.dialogPvVisible = true
+      })
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+        const data = this.formatJson(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list'
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal) {
+      return this.list.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    onChangeCash(event) {
+      console.log(event)
+    },
+    onChangeModal(event) {
+      console.log(event)
+    },
+    addFind() {
+      this.kasIn.all.push({ modal: '', desc: '', total: '' })
+
+      console.log(this.kasIn, this.to_item, this.from)
+    },
+    onChangeTotal() {
+      const total = this.kasIn.all.reduce(function(accumulator, item) {
+        console.log(item.total)
+        return accumulator + parseInt(item.total)
+      }, 0)
+      this.total_kasIn = total
+    }
+
+  }
+}
+</script>
+<style>
+	 .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
+</style>
