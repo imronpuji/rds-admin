@@ -42,17 +42,17 @@
       </el-table-column>
       <el-table-column label="Keluar Dari Kas" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.from }}</span>
+          <span>{{ row.from.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.desc }}</span>
+          <span >{{ row.from.desc }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.total) }}</span>
+          <span>{{ handleCurrency(row.from.cashout) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Date" width="150px" align="center">
@@ -121,7 +121,7 @@
         <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
           <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
             <el-select v-model="all.biaya" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-              <el-option v-for="item in biaya" :key="item.id" :label="item.category + '->' + item.name" :value="item.id" />
+              <el-option v-for="item in biaya" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item style=" padding-left:4px" label="Desc">
@@ -256,25 +256,25 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/cash/out/list').then(response => {
+      axios.get('/cash/out').then(response => {
         console.log(response)
-        this.list = response.data.cashout
-        this.total = response.data.cashout.length
+        this.list = response.data.cashtransaction
+        this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-     axios.get(`/akun/cash`).then(response => {
+     axios.get(`/akun/iscash`).then(response => {
       console.log(response)
-        this.cash = response.data.menu
+        this.cash = response.data.akun
       })
 
-     axios.get(`/akun/not/cash`).then(response => {
+     axios.get(`/akun/notcash`).then(response => {
             console.log(response)
 
-        this.biaya = response.data.menu
+        this.biaya = response.data.akun
       })
 
     },
