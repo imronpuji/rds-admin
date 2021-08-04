@@ -42,12 +42,12 @@
       </el-table-column>
       <el-table-column label="Masuk Ke Kas" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.to }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.chasin) }}</span>
+          <span>{{ handleCurrency(row.cashin) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center">
@@ -120,7 +120,7 @@
         <div v-for="(all, index) in kasIn.all" style="background:rgba(0,0,0,0.1); padding:0px; margin:0px; border-radius:4px;">
           <el-form-item label="Sebagai Akun">
             <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-              <el-option v-for="item in modal" :key="item.id" :label="item.category + '->' + item.name" :value="item.id" />
+              <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
           <el-form-item label="Desc">
@@ -256,19 +256,19 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/cash/in/list').then(response => {
+      axios.get('/cash/in').then(response => {
         console.log(response)
-        this.list = response.data.cashin
-        this.total = response.data.cashin.length
+        this.list = response.data.cashtransaction
+        this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/cash`).then(response => {
+      axios.get(`/akun/iscash`).then(response => {
         console.log(response)
-        this.cash = response.data.menu
+        this.cash = response.data.akun
     }).catch(() => {
       this.listLoading = false
      this.$notify({
@@ -278,8 +278,9 @@ export default {
       duration: 2000
       })})
 
-      axios.get(`/akun/not/cash`).then(response => {
-        this.modal = response.data.menu
+      axios.get(`/akun/notcash`).then(response => {
+        console.log(response)
+        this.modal = response.data.akun
       })
       .catch(() => {
         this.listLoading = false

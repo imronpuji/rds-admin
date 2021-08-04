@@ -33,6 +33,7 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="Kategori" props="category">
           <el-select v-model="category" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+            <el-option label="Kosong" value="" />
             <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -41,6 +42,9 @@
         </el-form-item>
         <el-form-item>
             <el-checkbox v-model="kas" >Bank / Kas</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+            <el-checkbox v-model="header" >Header</el-checkbox>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -109,6 +113,7 @@ export default {
         },
       id : '',
       category: '',
+      header : '',
       fullscreenLoading: false,
       name : '',
       desc : '',
@@ -180,7 +185,7 @@ export default {
         }, 1.5 * 1000)
       })
 
-       axios.get('/akun/list').then(response => {
+       axios.get('/akun/isheader').then(response => {
         this.categories = response.data.akun
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -236,9 +241,9 @@ export default {
     createData() {
       const data = {
         name: this.name,
-        desc: this.desc,
         perent_id : this.category,
-        iscash : this.kas
+        iscash : this.kas == '' ? false : this.kas,
+        isheader : this.header == '' ? false : this.header
       }
       console.log(data);
       this.listLoading = true;
@@ -261,9 +266,10 @@ export default {
     handleUpdate(row) {
       this.id = row.id
       this.name = row.name // copy obj
-      this.desc = row.desc
+      this.header = row.header
       this.kas = row.iscash == 1 ? true : false
       this.category = row.perent_id
+      this.header = row.isheader == 1 ? true : false
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -294,7 +300,8 @@ export default {
       const data = {
         name: this.name,
         perent_id : this.category,
-        iscash : this.kas
+        iscash : this.kas,
+        isheader : this.header
 
       }
 
