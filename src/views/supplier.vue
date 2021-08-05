@@ -60,12 +60,17 @@
           <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Tipe Kontak" width="150px" align="center" sortable>
+        <template slot-scope="{row}" >
+          <span>{{ row.type }}</span>
+        </template>
+      </el-table-column>
        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
           <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
-    
+
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
@@ -83,17 +88,24 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Nama Suplier">
-            <el-input v-model="name" placeholder="Nama Barang" />
+        <el-form-item label="Nama">
+            <el-input v-model="name" placeholder="Nama" />
         </el-form-item>
         <el-form-item label="Alamat">
-            <el-input v-model="address" placeholder="Harga Beli" />
+            <el-input v-model="address" placeholder="Alamat" />
         </el-form-item>
-        <el-form-item label="Konatk">
-            <el-input v-model="contact" placeholder="contact" />
+        <el-form-item label="Kontak">
+            <el-input v-model="contact" placeholder="Kontak" />
         </el-form-item>
         <el-form-item label="Deskripsi">
             <el-input v-model="desc" placeholder="desc" />
+        </el-form-item>
+        <el-form-item label="Tipe Kontak">
+          <el-select v-model="tipe">
+            <el-option label="supplier" value="supplier" />
+            <el-option label="karyawan" value="karyawan" />
+            <el-option label="customer" value="customer" />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -157,6 +169,7 @@ export default {
   data() {
     return {
       category : '',
+      tipe : '',
       keterangan : '',
       name : '',
       selling_price : '',
@@ -221,42 +234,16 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/supplier').then(response => {
+      axios.get('/contact').then(response => {
         console.log(response)
-        this.list = response.data.supplier
-        this.total = response.data.supplier.length
+        this.list = response.data.contact
+        this.total = response.data.contact.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/iscash`).then(response => {
-        console.log(response)
-        this.cash = response.data.akun
-    }).catch(() => {
-      this.listLoading = false
-     this.$notify({
-      title: 'Error',
-      message: 'Server Error',
-      type: 'warning',
-      duration: 2000
-      })})
-
-      axios.get(`/akun/notcash`).then(response => {
-        console.log(response)
-        this.modal = response.data.akun
-      })
-      .catch(() => {
-        this.listLoading = false
-           this.$notify({
-            title: 'Error',
-            message: 'Server Error',
-            type: 'warning',
-            duration: 2000
-          })
-      })
-
 
     },
     handleCurrency(number){
@@ -328,10 +315,11 @@ export default {
         address : this.address,
         desc : this.desc,
         contact : this.contact,
+        type : this.tipe,
       }
                 this.dialogFormVisible = false
 
-      axios.post('/supplier/create', data)
+      axios.post('/contact/create', data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -356,6 +344,7 @@ export default {
     },
     handleUpdate(row) {
       this.name = row.name
+      this.tipe = row.type
       this.id = row.id
       this.address = row.address
       this.desc = row.desc
@@ -373,9 +362,10 @@ export default {
         address : this.address,
         desc : this.desc,
         contact : this.contact,
+        type : this.tipe,
       }
 
-      axios.put(`/supplier/edit/${this.id}`, data)
+      axios.put(`/contact/edit/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -391,7 +381,7 @@ export default {
     },
     handleDelete(row, index) {
        this.listLoading = true
-      axios.delete(`/supplier/delete/${row.id}`)
+      axios.delete(`/contact/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
