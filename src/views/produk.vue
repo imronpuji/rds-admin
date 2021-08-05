@@ -98,7 +98,10 @@
             <el-input v-model="selling_price" placeholder="Harga Jual" />
         </el-form-item>
         <el-form-item label="UNIT">
-            <el-input v-model="unit" placeholder="UNIT" />
+          <el-select v-model="unit">
+            <el-option  label="m3" value="m3" />
+            <el-option  label="pcs" value="pcs" />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
