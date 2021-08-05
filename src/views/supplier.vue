@@ -357,6 +357,7 @@ export default {
     },
     handleUpdate(row) {
       this.name = row.name
+      this.id = row.id
       this.address = row.address
       this.desc = row.desc
       this.contact = row.contact

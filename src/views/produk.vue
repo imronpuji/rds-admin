@@ -106,7 +106,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="createData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -361,6 +361,7 @@ export default {
     },
     handleUpdate(row) {
       this.name = row.name
+      this.id = row.id
       this.selling_price = row.selling_price
       this.purchase_price = row.purchase_price
       this.unit = row.unit
