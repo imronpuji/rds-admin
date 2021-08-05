@@ -65,6 +65,11 @@
           <span>{{ row.unit }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Jenis Barang" width="150px" align="center" sortable prop="date">
+        <template slot-scope="{row}" >
+          <span  v-if="row.producttype != null">{{ row.producttype.name }}</span>
+        </template>
+      </el-table-column>
        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
           <span>{{ row.created_at }}</span>
@@ -102,6 +107,11 @@
             <el-option  label="m3" value="m3" />
             <el-option  label="pcs" value="pcs" />
           </el-select>
+        </el-form-item>
+        <el-form-item label="Jenis Barang">
+          <el-select v-model="producttype" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+              <el-option v-for="item in jenis_barang" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -165,6 +175,8 @@ export default {
   data() {
     return {
       category : '',
+      producttype : '',
+      jenis_barang : '',
       keterangan : '',
       name : '',
       selling_price : '',
@@ -239,33 +251,9 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/iscash`).then(response => {
-        console.log(response)
-        this.cash = response.data.akun
-    }).catch(() => {
-      this.listLoading = false
-     this.$notify({
-      title: 'Error',
-      message: 'Server Error',
-      type: 'warning',
-      duration: 2000
-      })})
-
-      axios.get(`/akun/notcash`).then(response => {
-        console.log(response)
-        this.modal = response.data.akun
+      axios.get('/producttype').then(response => {
+       this.jenis_barang = response.data.producttype
       })
-      .catch(() => {
-        this.listLoading = false
-           this.$notify({
-            title: 'Error',
-            message: 'Server Error',
-            type: 'warning',
-            duration: 2000
-          })
-      })
-
-
     },
     handleCurrency(number){
      const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
@@ -336,6 +324,7 @@ export default {
         selling_price : this.selling_price,
         purchase_price : this.purchase_price,
         unit : this.unit,
+        producttype : parseInt(this.producttype),
       }
 
       axios.post('/product/create', data)
@@ -367,6 +356,7 @@ export default {
       this.selling_price = row.selling_price
       this.purchase_price = row.purchase_price
       this.unit = row.unit
+      this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
       this.qty = row.qty
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -381,6 +371,7 @@ export default {
         selling_price : this.selling_price,
         purchase_price : this.purchase_price,
         unit : this.unit,
+        producttype : this.producttype
       }
 
       axios.put(`/product/edit/${this.id}`, data)

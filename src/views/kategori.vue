@@ -40,55 +40,25 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Kategori Akun" width="150px" align="center">
+      <el-table-column label="Nama Barang" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Deskripsi" min-width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.desc }}</span>
+       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+        <template slot-scope="{row}" >
+          <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
-
-      <!--    <el-table-column label="Author" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template> -->
+    
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="warning">
-            <router-link :to="'/kategori/detail/' + row.name + '/' + row.id">Detail</router-link>
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
+           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
+          </el-button>
+          <el-button size="mini" type="danger" @click="handleUpdate(row)">
+            Edit
           </el-button>
         </template>
       </el-table-column>
@@ -97,12 +67,9 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="Name" props="name">
-          <el-input v-model="name" placeholder="BNI, BRI, etc..." />
-        </el-form-item>
-        <el-form-item label="Desc" props="desc">
-          <el-input v-model="desc" placeholder="Deskripsi" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
+        <el-form-item label="Nama Barang">
+            <el-input v-model="name" placeholder="Nama Barang" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -165,9 +132,20 @@ export default {
   },
   data() {
     return {
-      id: '',
-      name: '',
-      desc: '',
+      category : '',
+      keterangan : '',
+      name : '',
+      selling_price : '',
+      purchase_price : '',
+      qty : '',
+      unit : '',
+      from: '',
+      to_item: '',
+      total_kasIn: '',
+      pemasukan : '',
+      kasIn: {
+        all: [{ modal: '', total: '', desc: '' }]
+      },
       tableKey: 0,
       list: null,
       total: 0,
@@ -189,10 +167,10 @@ export default {
       showReviewer: false,
       temp: {
         id: undefined,
-        name: '',
-        created_at: '',
+        code: '',
+        date: '',
         timestamp: new Date(),
-        name: '',
+        title: '',
         to: '',
         chasin: '',
         total: ''
@@ -219,16 +197,19 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/category/akun').then(response => {
+      axios.get('/producttype').then(response => {
         console.log(response)
-        this.list = response.data.category
-        this.total = response.data.category.length
+        this.list = response.data.producttype
+        this.total = response.data.producttype.length
 
         // Just to simulate the time of the request
-        setTimeout(() => {
+
           this.listLoading = false
-        }, 1.5 * 1000)
       })
+    },
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
     },
     handleFilter() {
       this.listQuery.page = 1
@@ -282,14 +263,19 @@ export default {
       //     createArticle(this.temp).then(() => {
       //
 
-      this.dialogFormVisible = false
-      this.listLoading = true
+      // const desc = []
+      // const total = []
+      // const akun_id = []
+      // this.kasIn.all.map((val, index) => {
+      //   desc.push(val.desc)
+      //   total.push(parseInt(val.total))
+      //   akun_id.push(val.modal)
+      // })
       const data = {
-        name: this.name,
-        desc: this.desc
+        name : this.name,
       }
 
-      axios.post('/category/akun/create', data)
+      axios.post('/producttype/create', data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -300,14 +286,21 @@ export default {
             duration: 2000
           })
         })
-        .catch((err) => err)
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
       // }
       // })
     },
     handleUpdate(row) {
+      this.name = row.name
       this.id = row.id
-      this.name = row.name // copy obj
-      this.desc = row.desc
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -315,21 +308,12 @@ export default {
       })
     },
     updateData() {
-      console.log(this.dialogStatus)
-      // this.$refs['dataForm'].validate((valid) => {
-      //   if (valid) {
-      //     const tempData = Object.assign({}, this.temp)
-      //     tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-      //     updateArticle(tempData).then(() => {
-
-      this.dialogFormVisible = false
-      this.listLoading = true
+       this.listLoading = true
       const data = {
-        name: this.name,
-        desc: this.desc
+        name : this.name,
       }
 
-      axios.put(`/category/akun/edit/${this.id}`, data)
+      axios.put(`/producttype/edit/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -344,8 +328,8 @@ export default {
         .catch((err) => err)
     },
     handleDelete(row, index) {
-      this.listLoading = true
-      axios.delete(`/category/akun/delete/${row.id}`)
+       this.listLoading = true
+      axios.delete(`/producttype/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
@@ -357,7 +341,15 @@ export default {
           })
           this.list.splice(index, 1)
         })
-        .catch((err) => err)
+        .catch((err) => {
+          this.listLoading = false
+           this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

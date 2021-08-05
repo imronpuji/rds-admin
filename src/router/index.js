@@ -334,15 +334,24 @@ export const asyncRoutes = [
   },
 
 {
-    path: '/penjualan',
+    path: '/stok',
     component: Layout,
-    name: 'penjualan',
+    name: 'stok',
     meta: {
-      title: 'Penjualan',
+      title: 'Stok',
       icon: 'shopping',
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
     children: [
+      {
+        path: '/kategori',
+        component: () => import('@/views/kategori'),
+        name: 'PagePermission',
+        meta: {
+          title: 'Kategori',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
       {
         path: '/produk',
         component: () => import('@/views/produk'),
@@ -351,12 +360,13 @@ export const asyncRoutes = [
           title: 'Produk',
           roles: ['admin'] // or you can only set roles in sub nav
         }
-      }
+      },
+
     ]
   },
 
   {
-    path: '/kontak',
+    path: '/kon',
     component: Layout,
     name: 'kontak',
     meta: {
