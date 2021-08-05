@@ -122,6 +122,21 @@ export default {
         this.list = response.data.akun
         this.listLoading = false
 
+        const search = (tree, target) => {
+		  if (tree.children[0] != undefined) {
+		    return tree.name;
+		  }
+		  
+		  for (const child of tree.childrend) {
+		    const res = search(child, target);
+		    
+		    if (res) {
+		      return res;
+		    }
+		  }
+		};
+
+		console.log(search(this.list, 20))
       })
     },
     handleCurrency(number){
