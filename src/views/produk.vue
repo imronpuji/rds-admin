@@ -41,7 +41,7 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Masuk Ke Kas" min-width="150px">
+      <el-table-column label="Nama Barang" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
@@ -97,9 +97,6 @@
         </el-form-item>
         <el-form-item label="Harga Jual">
             <el-input v-model="selling_price" placeholder="Harga Jual" />
-        </el-form-item>
-        <el-form-item label="QTY">
-            <el-input v-model="qty" placeholder="QTY" />
         </el-form-item>
         <el-form-item label="UNIT">
             <el-input v-model="unit" placeholder="UNIT" />
@@ -337,7 +334,6 @@ export default {
         selling_price : this.selling_price,
         purchase_price : this.purchase_price,
         unit : this.unit,
-        qty : parseInt(this.qty),
       }
 
       axios.post('/product/create', data)
@@ -382,7 +378,6 @@ export default {
         selling_price : this.selling_price,
         purchase_price : this.purchase_price,
         unit : this.unit,
-        qty : parseInt(this.qty),
       }
 
       axios.put(`/product/edit/${this.id}`, data)
