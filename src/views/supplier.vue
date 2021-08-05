@@ -29,7 +29,6 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
       border
       fit
       highlight-current-row
