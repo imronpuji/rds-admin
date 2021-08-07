@@ -119,6 +119,7 @@ export default {
     getList() {
       this.listLoading = true
       axios.get('/report').then(response => {
+      	console.log(response)
         this.list = response.data.akun
         this.listLoading = false
 

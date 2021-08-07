@@ -346,7 +346,7 @@ export default {
         data,
         { allowDots: true }
       )
-      axios.post('/stock/in/create', encodedValues)
+      axios.post('/stock/out/create', encodedValues)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false

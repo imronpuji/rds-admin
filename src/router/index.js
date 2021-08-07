@@ -365,7 +365,7 @@ export const asyncRoutes = [
       },
       {
         path: '/stok/keluar',
-        component: () => import('@/views/stok_masuk'),
+        component: () => import('@/views/stok_keluar'),
         name: 'PagePermission',
         meta: {
           title: 'Penjualan',
