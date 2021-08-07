@@ -103,186 +103,261 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  {
+
+// {
+//     path: '/stok/keluar',
+//     component: Layout,
+//     name: 'stok',
+//     meta: 
+//     {
+//       title: 'Penjualan',
+//       icon: 'shopping',
+//       roles: ['admin', 'kasir'] // you can set roles in root nav
+//     },
+//     children : 
+//     [
+//         {
+//             path: '/stok/keluar',
+//             component: () => import('@/views/stok_keluar'),
+//             name: 'PagePermission',
+//             meta: {
+//               icon: 'money',
+//               title: 'Penjualan',
+//               roles: ['admin'] // or you can only set roles in sub nav
+//             }
+//         }
+//     ]
+// },
+
+
+// {
+//     path: '/stok/masuk',
+//     component: Layout,
+//     name: 'stok',
+//     meta: 
+//     {
+//       title: 'Pembelian',
+//       icon: 'shopping',
+//       roles: ['admin', 'kasir'] // you can set roles in root nav
+//     },
+//     children : 
+//     [
+//         {
+//             path: '/stok/masuk',
+//             component: () => import('@/views/stok_masuk'),
+//             name: 'PagePermission',
+//             meta: 
+//             {
+//               icon: 'money',
+//               title: 'Pembelian',
+//               roles: ['admin'] // or you can only set roles in sub nav
+//             }
+//         }
+//     ]
+// },
+
+
+
+
+{
     path: '/permission',
     component: Layout,
     alwaysShow: true, // will always show the root menu
     name: 'Permission',
-    meta: {
+    meta: 
+    {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
+      roles: ['admin', 'user'] // you can set roles in root nav
     },
-    children: [
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin', 'editor']
+    children: 
+    [
+       {
+            path: 'role',
+            component: () => import('@/views/permission/role'),
+            name: 'RolePermission',
+            meta: {
+              title: 'Role Permission',
+              roles: ['admin', 'user']
+            }
+       },
+       {
+            path: 'user',
+            component: () => import('@/views/user'),
+            name: 'RolePermission',
+            meta: 
+            {
+              title: 'User',
+              roles: ['admin', 'user']
+            }
         }
-      },
-      {
-        path: 'user',
-        component: () => import('@/views/user'),
-        name: 'RolePermission',
-        meta: {
-          title: 'User',
-          roles: ['admin', 'editor']
-        }
-      }
     ]
-  },
+},
 
-  {
-    path: '/finansial',
+{
+     path: '/finansial',
     component: Layout,
     name: 'finansial',
-    meta: {
+    meta: 
+    {
       title: 'Finansial',
       icon: 'people',
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
-    children: [
+    children: 
+    [
      
-      {
-        path: '/kategori/detail/:nama/:id',
-        component: () => import('@/views/kategori_detail'),
-        name: 'PagePermission',
-        hidden: true,
-        meta: {
-          title: 'Kategori',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/akun',
-        component: () => import('@/views/akun'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Akun',
-          roles: ['admin', 'editor']
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: '/kas/detail/:id',
-        component: () => import('@/views/kas_detail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Kas',
-          roles: ['admin', 'editor']
-        }
-      },
+        {
+            path: '/kategori/detail/:nama/:id',
+            component: () => import('@/views/kategori_detail'),
+            name: 'PagePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Kategori',
+              roles: ['admin'] // or you can only set roles in sub nav
+            }
+        },
+        {
+            path: '/akun',
+            component: () => import('@/views/akun'),
+            name: 'DirectivePermission',
+            meta: 
+            {
+              title: 'Akun',
+              roles: ['admin', 'editor']
+            }
+        },
+        {
+            path: '/kas/detail/:id',
+            component: () => import('@/views/kas_detail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Kas',
+              roles: ['admin', 'editor']
+            }
+        },
 
-      {
-        path: '/kas/outdetail/:id',
-        component: () => import('@/views/kas_outdetail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Kas',
-          roles: ['admin', 'editor']
-        }
-      },
+        {
+            path: '/kas/outdetail/:id',
+            component: () => import('@/views/kas_outdetail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Kas',
+              roles: ['admin', 'editor']
+            }
+        },
 
-      {
-        path: '/transfer/detail/:id',
-        component: () => import('@/views/transfer_detail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Transfer',
-          roles: ['admin', 'editor']
+        {
+            path: '/transfer/detail/:id',
+            component: () => import('@/views/transfer_detail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Transfer',
+              roles: ['admin', 'editor']
+            }
         }
-      }
     ]
-  },
+},
 
-  {
+{
     path: '/setarakas',
     component: Layout,
     name: 'Kas / Setoran Kas',
-    meta: {
+    meta: 
+    {
       title: 'Kas / Setoran Kas',
       icon: 'bug',
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
-    children: [
-      {
-        path: '/kas',
-        component: () => import('@/views/kas'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Kas',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/kas/keluar',
-        component: () => import('@/views/kas_out'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Kas Keluar',
-          roles: ['admin', 'editor']
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: '/kas/masuk',
-        component: () => import('@/views/transaksi_in'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Kas Masuk',
-          roles: ['admin', 'editor']
-        }
-      },
+    children: 
+    [
+        {
+            path: '/kas',
+            component: () => import('@/views/kas'),
+            name: 'PagePermission',
+            meta: 
+            {
+              title: 'Kas',
+              roles: ['admin'] // or you can only set roles in sub nav
+            }
+        },
 
-      {
-        path: '/kas/detail/:id',
-        component: () => import('@/views/kas_detail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Kas',
-          roles: ['admin', 'editor']
-        }
-      },
+        {
+            path: '/kas/keluar',
+            component: () => import('@/views/kas_out'),
+            name: 'DirectivePermission',
+            meta: 
+            {
+              title: 'Kas Keluar',
+              roles: ['admin', 'editor']
+              // if do not set roles, means: this page does not require permission
+            }
+        },
+        {
+            path: '/kas/masuk',
+            component: () => import('@/views/transaksi_in'),
+            name: 'RolePermission',
+            meta: 
+            {
+              title: 'Kas Masuk',
+              roles: ['admin', 'editor']
+            }
+        },
 
-      {
-        path: '/kas/outdetail/:id',
-        component: () => import('@/views/kas_outdetail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Kas',
-          roles: ['admin', 'editor']
-        }
-      },
+        {
+            path: '/kas/detail/:id',
+            component: () => import('@/views/kas_detail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Kas',
+              roles: ['admin', 'editor']
+            }
+        },
 
-      {
-        path: '/transfer/detail/:id',
-        component: () => import('@/views/transfer_detail'),
-        name: 'RolePermission',
-        hidden: true,
-        meta: {
-          title: 'Detail Transfer',
-          roles: ['admin', 'editor']
+        {
+            path: '/kas/outdetail/:id',
+            component: () => import('@/views/kas_outdetail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Kas',
+              roles: ['admin', 'editor']
+            }
+        },
+
+        {
+            path: '/transfer/detail/:id',
+            component: () => import('@/views/transfer_detail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Transfer',
+              roles: ['admin', 'editor']
+            }
+        },
+        {
+            path: '/transfer-transaksi',
+            component: () => import('@/views/transfer_in'),
+            name: 'RolePermission',
+            meta: 
+            {
+              title: 'Transfer Transaksi',
+              roles: ['admin', 'editor']
+            }
         }
-      },
-      {
-        path: '/transfer-transaksi',
-        component: () => import('@/views/transfer_in'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Transfer Transaksi',
-          roles: ['admin', 'editor']
-        }
-      }
     ]
-  },
+},
 
 
  

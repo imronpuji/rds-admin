@@ -41,9 +41,9 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Keluar Dari Kas" width="150px" align="center">
+      <el-table-column label="Keluar Dari Kas" width="150px" align="center"  prop="name">
         <template slot-scope="{row}">
-          <span>{{ row.from.name }}</span>
+          <span>{{ row.from }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Total" width="150px" align="center" prop="cashout">
@@ -56,39 +56,10 @@
           <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
-      <!--    <el-table-column label="Author" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template> -->
-   <!--    </el-table-column> -->
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
-          </el-button>
           </el-button>
           <el-button v-if="row.status!='deleted'" size="mini" type="danger">
             <router-link :to="'/kas/outdetail/' + row.id">Detail</router-link>
@@ -101,7 +72,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Masuk Ke Kas">
+        <el-form-item label="Keluar Dari Kas">
           <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
@@ -438,8 +409,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+        const tHeader = ['id', 'name', 'cashout']
+        const filterVal = ['id', 'from.name', 'cashout']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,

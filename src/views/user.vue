@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column label="Role" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}">
-          <span>{{ row.roles.name }}</span>
+          <span v-for="item in row.roles">{{ item.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -294,7 +294,7 @@ export default {
       const data = {
         role : this.roles,
       }
-
+      console.log(data)
       axios.post(`/user/role/create/${this.id}`, data)
         .then((response) => {
           this.getList()

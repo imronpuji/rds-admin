@@ -1,19 +1,59 @@
 <template>
-  <div class="app-container" style="display:flex">
+    <div class="app-container" style="width:500px; box-shadow:2">
+   
+        <el-tree
+        :data="listHarta"
+        default-expand-all
+        node-key="id"
+        ref="tree"
+        highlight-current
+        :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+        	   <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
+                <span v-else>{{ data.total  }}</span>
+            </span>
+        </el-tree>
+  
+        <div style="display:flex; justify-content:space-between; background:yellow">
+            <h4 style="padding:0; margin:0">Total Harta</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
+        </div>
 
-   <el-tree
-  :data="list"
-  default-expand-all
-  node-key="id"
-  ref="tree"
-  highlight-current
-  :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-        	<span>{{data.name}}</span>
-        	 <span style="margin-left:10px">{{ data.total  }}</span>
-        </span>
-</el-tree>
+        <el-tree
+        :data="listModal"
+        default-expand-all
+        node-key="id"
+        ref="tree"
+        highlight-current
+        :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+               <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
+                <span v-else>{{ data.total  }}</span>
+            </span>
+        </el-tree>
+  
+        <div style="display:flex; justify-content:space-between; background:yellow">
+            <h4 style="padding:0; margin:0">Total Modal</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
+        </div>
 
+        <el-tree
+        :data="listBiaya"
+        default-expand-all
+        node-key="id"
+        ref="tree"
+        highlight-current
+        :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+               <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
+                <span v-else>{{ data.total  }}</span>
+            </span>
+        </el-tree>
+  
+        <div style="display:flex; justify-content:space-between; background:yellow">
+            <h4 style="padding:0; margin:0">Total Biaya</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
+        </div>
   </div>
 </template>
 
@@ -60,7 +100,13 @@ export default {
           label: 'name',
           total : 'total'
       },
+      modal : '',
+      biaya : '',
+      listModal : '',
+      listBiaya : '',
+      listHarta : '',
       from: '',
+      harta : '',
       to_item: '',
       total_kasIn: '',
       keterangan : '',
@@ -117,29 +163,56 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
-      axios.get('/report').then(response => {
-      	console.log(response)
-        this.list = response.data.akun
-        this.listLoading = false
+        this.listLoading = true
 
-        const search = (tree, target) => {
-		  if (tree.children[0] != undefined) {
-		    return tree.name;
-		  }
-		  
-		  for (const child of tree.childrend) {
-		    const res = search(child, target);
-		    
-		    if (res) {
-		      return res;
-		    }
-		  }
-		};
+        axios.get('/report/Aktiva').then((response) =>
+        {
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                calculateValues(a);             
+                return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listHarta = [names]
+            this.harta = names
+        });
 
-		console.log(search(this.list, 20))
-      })
+        axios.get('/report/Modal').then((response) =>
+        {
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                calculateValues(a);             
+                return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listModal = [names]
+            this.modal = names
+        });
+
+        axios.get('/report/Biaya').then((response) =>
+        {
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                calculateValues(a);             
+                return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listModal = [names]
+            this.biaya = names
+        });
+    
     },
+
+  
     handleCurrency(number){
      const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
      return idr
