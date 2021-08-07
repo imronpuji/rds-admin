@@ -50,7 +50,7 @@
           <span>{{ handleCurrency(row.total) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+      <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ row.created_at }}</span>
         </template>

@@ -55,7 +55,7 @@
           <span>{{ row.purchase_price }}</span>
         </template>
       </el-table-column>
-       <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+       <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ row.created_at }}</span>
         </template>
@@ -246,7 +246,7 @@ export default {
     getList() {
       this.listLoading = true
       axios.get('/stock/out').then(response => {
-        console.log(response)
+        
         this.list = response.data.stocktransaction
         this.total = response.data.stocktransaction.length
 
@@ -256,17 +256,17 @@ export default {
         }, 1.5 * 1000)
       })
       axios.get('/akun/iscash').then(response => {
-      	console.log(response)
+      	
        this.kas = response.data.akun
       })
 
       axios.get('/contact').then(response => {
-      	  console.log(response)
+      	  
        this.kontak = response.data.contact
       })
 
       axios.get('/product').then(response => {
-      	console.log(response)
+      	
        this.product = response.data.product
       })
     },
@@ -412,7 +412,7 @@ export default {
       axios.delete(`/stock/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
-          console.log(response)
+          
           this.$notify({
             title: 'Success',
             message: 'Delete Successfully',
@@ -465,13 +465,13 @@ export default {
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     onChangeCash(event) {
-      console.log(event)
+      
     },
     onChangeModal(event) {
-      console.log(event)
+      
     },
     addFind() {
-      console.log(this.kasIn.all)
+      
       this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
     },
     deleteFind() {
@@ -479,7 +479,7 @@ export default {
     },
     onChangeTotal() {
       const total = this.kasIn.all.reduce(function(accumulator, item) {
-        console.log(item.total)
+        
         return accumulator + parseInt(item.total)
       }, 0)
       this.total_kasIn = total
@@ -492,7 +492,7 @@ export default {
     	})	
     	this.kasIn.all[index]['qty'] = produk[0]['qty'] == null ? '0' : produk[0]['qty']
     	this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
-    	this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) * 0 && parseInt(produk[0]['qty']) : 0
+    	this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty'])
     }, 
     onChangeQty(index){
     	const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
