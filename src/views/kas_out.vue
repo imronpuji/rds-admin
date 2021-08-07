@@ -43,7 +43,7 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Keluar Dari Kas" width="150px" align="center"  prop="name">
   <template slot-scope="{row}">
-    <span>{{ row.from }}</span>
+    <span>{{ row.from.name }}</span>
 </template>
 </el-table-column>
 <el-table-column label="Total" width="150px" align="center" prop="cashout">
@@ -376,7 +376,7 @@ createData() {
   })
   },
   handleDelete(row, index) {
-      
+
       this.listLoading = true
       axios.delete(`/cash/transaction/delete/${row.id}`)
       .then((response) => {
