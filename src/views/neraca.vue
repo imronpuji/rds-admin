@@ -15,7 +15,7 @@
             </span>
         </el-tree>
   
-        <div style="display:flex; justify-content:space-between; background:yellow">
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
             <h4 style="padding:0; margin:0">Total Harta</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
         </div>
 
@@ -35,7 +35,7 @@
         </el-tree>
 
         <el-tree
-        :data="listBiaya"
+        :data="listKewajiban"
         default-expand-all
         node-key="id"
         ref="tree"
@@ -49,7 +49,7 @@
         </el-tree>
   
         <div style="display:flex; justify-content:space-between; background:yellow">
-            <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{biaya.valueTotal + harta.valueTotal}}</p>
+            <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{kewajiban.valueTotal + harta.valueTotal}}</p>
         </div>
   </div>
 </template>
@@ -99,8 +99,9 @@ export default {
       },
       modal : '',
       biaya : '',
+      Kewajiban : '',
       listModal : [],
-      listBiaya : [],
+      listKewajiban : [],
       listHarta : [],
       from: '',
       harta : '',
@@ -192,7 +193,7 @@ export default {
             this.modal = names
         });
 
-        axios.get('/report/Biaya').then((response) =>
+        axios.get('/report/Kewajiban').then((response) =>
         {
             function calculateValues(o) 
             {
@@ -203,8 +204,8 @@ export default {
             }
             let names = response.data.akun[0]
             calculateValues(names)
-            this.listModal = [names]
-            this.biaya = names
+            this.listKewajiban = [names]
+            this.kewajiban = names
         });
     
     },
