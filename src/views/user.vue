@@ -2,7 +2,6 @@
 
  <template>
   <div class="app-container">
-
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -19,24 +18,24 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="nama" width="150px" align="center">
+      <el-table-column label="Nama" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Email" width="150px" align="center" sortable prop="date">
+      <el-table-column label="Email" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ row.email}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Role" width="150px" align="center" sortable prop="date">
-        <template slot-scope="{row}">
+       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+        <template slot-scope="{row}" >
           <span v-for="item in row.roles">{{ item.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row, $index)">
+           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
         </template>

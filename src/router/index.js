@@ -224,7 +224,7 @@ export const asyncRoutes = [
             name: 'DirectivePermission',
             meta: 
             {
-              title: 'Akun',
+              title: 'Akuntansi',
               roles: ['admin', 'editor']
             }
         },
@@ -278,17 +278,7 @@ export const asyncRoutes = [
     },
     children: 
     [
-        {
-            path: '/kas',
-            component: () => import('@/views/kas'),
-            name: 'PagePermission',
-            meta: 
-            {
-              title: 'Kas',
-              roles: ['admin'] // or you can only set roles in sub nav
-            }
-        },
-
+        
         {
             path: '/kas/keluar',
             component: () => import('@/views/kas_out'),

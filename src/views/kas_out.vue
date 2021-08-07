@@ -26,47 +26,47 @@
 </div>
 
 <el-table
-:key="tableKey"
-v-loading="listLoading"
-:data="list"
-:default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
-border
-fit
-highlight-current-row
-style="width: 100%;"
-@sort-change="sortChange"
->
-<el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-  <template slot-scope="{row}">
-    <span>{{ row.id }}</span>
-</template>
-</el-table-column>
-<el-table-column label="Keluar Dari Kas" width="150px" align="center"  prop="name">
-  <template slot-scope="{row}">
-    <span>{{ row.from.name }}</span>
-</template>
-</el-table-column>
-<el-table-column label="Total" width="150px" align="center" prop="cashout">
-  <template slot-scope="{row}">
-    <span>{{ handleCurrency(row.cashout) }}</span>
-</template>
-</el-table-column>
-<el-table-column label="Date" width="150px" align="center" sortable prop="date">
-  <template slot-scope="{row}">
-    <span>{{ row.created_at }}</span>
-</template>
-</el-table-column>
-<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-  <template slot-scope="{row,$index}">
-    <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
-      Delete
-  </el-button>
-  <el-button v-if="row.status!='deleted'" size="mini" type="danger">
-      <router-link :to="'/kas/outdetail/' + row.id">Detail</router-link>
-  </el-button>
-</template>
-</el-table-column>
-</el-table>
+      :key="tableKey"
+      v-loading="listLoading"
+      :data="list"
+      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+      @sort-change="sortChange"
+    >
+      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Keluar Dari Kas" min-width="150px">
+        <template slot-scope="{row}">
+          <span class="link-type" @click="handleUpdate(row)">{{ row.from.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+        <template slot-scope="{row}">
+          <span>{{ handleCurrency(row.cashout) }}</span>
+        </template>
+      </el-table-column>
+       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+        <template slot-scope="{row}" >
+          <span>{{ row.created_at }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+        <template slot-scope="{row,$index}">
+           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
+            Delete
+          </el-button>
+          <el-button v-if="row.status!='deleted'" size="mini" type="danger">
+            <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
@@ -92,7 +92,7 @@ style="width: 100%;"
     <el-input v-model="all.desc" required type="text" placeholder="Please input" />
 </el-form-item>
 <el-form-item style=" padding-left:4px" label="Sub Total">
-    <el-input v-model="all.total" required type="number" placeholder="Please input" @change="onChangeTotal()" />
+    <el-input v-model="all.total" required type="number" placeholder="Please input" @change="onChangeTotal(value)" />
 </el-form-item>
 </div>
 <el-button type="primary" @click="addFind">
@@ -101,7 +101,7 @@ style="width: 100%;"
 <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
   Hapus Form
 </el-button>
-<h3 v-if="total_kasIn != ''"> Total : {{ total_kasIn }}</h3>
+<h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
 </el-form>
 <!-- multiple input -->
 <div slot="footer" class="dialog-footer">

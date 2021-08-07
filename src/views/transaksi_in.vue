@@ -56,34 +56,6 @@
           <span>{{ row.created_at }}</span>
         </template>
       </el-table-column>
-      <!--    <el-table-column label="Author" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template> -->
-      </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
            <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
@@ -110,8 +82,8 @@
         </el-form-item>
 
         <!-- multiple input -->
-        <div v-for="(all, index) in kasIn.all" style="background:rgba(0,0,0,0.1); padding:0px; margin:0px; border-radius:4px;">
-          <el-form-item label="Sebagai Akun">
+        <div v-for="(all, index) in kasIn.all" style="padding:0px; margin:0px; border-radius:4px;">
+          <el-form-item label="Sebagai Akun" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
             <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
               <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
@@ -129,7 +101,7 @@
         <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
           Hapus Form
         </el-button>
-        <h3 v-if="total_kasIn != ''"> Total : {{ total_kasIn }}</h3>
+        <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
       </el-form>
       <!-- multiple input -->
       <div slot="footer" class="dialog-footer">
