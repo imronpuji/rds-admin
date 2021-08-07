@@ -60,13 +60,13 @@
 </template>
 
 <script>
-    import 
-    {
-        fetchList,
-        fetchPv,
-        createArticle,
-        updateArticle
-    }   from '@/api/article'
+import 
+{
+    fetchList,
+    fetchPv,
+    createArticle,
+    updateArticle
+}   from '@/api/article'
 
     import waves from '@/directive/waves' // waves directive
     import 
@@ -107,7 +107,7 @@
                     deleted: 'danger'
                 }
                 return statusMap[status]
-                },
+            },
             typeFilter(type) 
             {
                 return calendarTypeKeyValue[type]
@@ -150,14 +150,14 @@
 
                 sortOptions: 
                 [
-                    {
-                        label: 'ID Ascending',
-                        key: '+id'
-                    }, 
-                    {
-                        label: 'ID Descending',
-                        key: '-id'
-                    }
+                {
+                    label: 'ID Ascending',
+                    key: '+id'
+                }, 
+                {
+                    label: 'ID Descending',
+                    key: '-id'
+                }
                 ],
                 
                 statusOptions: ['published', 'draft', 'deleted'],
@@ -189,20 +189,20 @@
                 {
                     type: 
                     [
-                        {
-                            required: true,
-                            message: 'type is required',
-                            trigger: 'change'
-                        }
+                    {
+                        required: true,
+                        message: 'type is required',
+                        trigger: 'change'
+                    }
                     ],
                 // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
                 title: 
                 [
-                    {
-                        required: true,
-                        message: 'title is required',
-                        trigger: 'blur'
-                    }
+                {
+                    required: true,
+                    message: 'title is required',
+                    trigger: 'blur'
+                }
                 ]
             },
             downloadLoading: false
@@ -299,18 +299,18 @@
             this.dialogFormVisible = false
 
             axios.post('/akun/create', data)
-                .then((response) => 
-                {
-                    this.getList()
-                    this.dialogFormVisible = false
-                    this.$notify({
-                        title: 'Success',
-                        message: 'Created Successfully',
-                        type: 'success',
-                        duration: 2000
-                    })
+            .then((response) => 
+            {
+                this.getList()
+                this.dialogFormVisible = false
+                this.$notify({
+                    title: 'Success',
+                    message: 'Created Successfully',
+                    type: 'success',
+                    duration: 2000
                 })
-                .catch((err) => err)
+            })
+            .catch((err) => err)
 
         },
         handleUpdate(row) {
@@ -339,18 +339,18 @@
             }
 
             axios.put(`/akun/edit/${this.id}`, data)
-                .then((response) => {
-                    this.getList()
-                    this.dialogFormVisible = false
-                    this.$notify({
-                        title: 'Success',
-                        message: 'Update Successfully',
-                        type: 'success',
-                        duration: 2000
-                    })
-                    throw new Error('Something went badly wrong!')
+            .then((response) => {
+                this.getList()
+                this.dialogFormVisible = false
+                this.$notify({
+                    title: 'Success',
+                    message: 'Update Successfully',
+                    type: 'success',
+                    duration: 2000
                 })
-                .catch((err) => err)
+                throw new Error('Something went badly wrong!')
+            })
+            .catch((err) => err)
         },
         handleDelete(row, index) {
             const loading = this.$loading({
@@ -361,19 +361,19 @@
             });
 
             axios.delete(`/akun/delete/${row.id}`)
-                .then((response) => {
-                    this.getList()
-                    loading.close();
-                    console.log(response)
-                    this.$notify({
-                        title: 'Success',
-                        message: 'Delete Successfully',
-                        type: 'success',
-                        duration: 2000
-                    })
-
+            .then((response) => {
+                this.getList()
+                loading.close();
+                console.log(response)
+                this.$notify({
+                    title: 'Success',
+                    message: 'Delete Successfully',
+                    type: 'success',
+                    duration: 2000
                 })
-                .catch((err) => err)
+
+            })
+            .catch((err) => err)
         },
         handleFetchPv(pv) {
             fetchPv(pv).then(response => {
