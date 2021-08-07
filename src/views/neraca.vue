@@ -10,13 +10,13 @@
         :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node, data }">
         	   <span>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
-                <span v-else>{{ data.total  }}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
             </span>
         </el-tree>
   
         <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Total Harta</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
+            <h4 style="padding:0; margin:0">Total Harta</h4>  <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
         </div>
 
         <el-tree
@@ -29,8 +29,8 @@
             <span class="custom-tree-node" slot-scope="{ node, data }">
                <span v-if="data.name == 'Biaya'">Kewajiban</span>
                <span else>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
-                <span v-else>{{ data.total  }}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
             </span>
         </el-tree>
 
@@ -43,13 +43,13 @@
         :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node, data }">
                <span>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
-                <span v-else>{{ data.total  }}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
             </span>
         </el-tree>
   
         <div style="display:flex; justify-content:space-between; background:yellow">
-            <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{kewajiban.valueTotal + harta.valueTotal}}</p>
+            <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal + harta.valueTotal)}}</p>
         </div>
   </div>
 </template>
