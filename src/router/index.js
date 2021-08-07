@@ -355,7 +355,7 @@ export const asyncRoutes = [
         }
       },
       {
-        path: '/stok/keluar/:id',
+        path: '/stok/keluar/detail/:id',
         component: () => import('@/views/detail_penjualan'),
         name: 'PagePermission',
         hidden : true,
