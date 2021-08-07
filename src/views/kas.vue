@@ -102,8 +102,8 @@ export default {
     }
   },
   created() {
-    axios.get('/cash/out/total')
-      .then((response) => this.cashOut = response.data.cashout[0].total == null ? 0 : parseInt(response.data.cashout[0].total))
+    axios.get('/cash/iscash')
+      .then((response) => this.cashOut = response.data.cash[0].total == null ? 0 : parseInt(response.data.cashout[0].total))
       .catch((err) => this.cashOut = 0)
 
     axios.get('/cash/in/total')
@@ -116,6 +116,11 @@ export default {
       })
       .catch((err) => console.log(err))
     console.log(this.cashes)
+
+
+    axios.get('/akun/iscash')
+      .then((response) => console.log(response))
+      .catch((err) => this.cashOut = 0)
 
   },
   methods: {

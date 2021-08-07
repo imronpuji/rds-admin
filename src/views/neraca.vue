@@ -27,15 +27,12 @@
         highlight-current
         :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node, data }">
-               <span>{{data.name}}</span>
+               <span v-if="data.name == 'Biaya'">Kewajiban</span>
+               <span else>{{data.name}}</span>
                 <span v-if='data.valueTotal != 0'>{{ data.valueTotal  }}</span>
                 <span v-else>{{ data.total  }}</span>
             </span>
         </el-tree>
-  
-        <div style="display:flex; justify-content:space-between; background:yellow">
-            <h4 style="padding:0; margin:0">Total Modal</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
-        </div>
 
         <el-tree
         :data="listBiaya"
@@ -52,7 +49,7 @@
         </el-tree>
   
         <div style="display:flex; justify-content:space-between; background:yellow">
-            <h4 style="padding:0; margin:0">Total Biaya</h4>  <p style="padding:0; margin:0">{{harta.valueTotal}}</p>
+            <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{biaya.valueTotal + harta.valueTotal}}</p>
         </div>
   </div>
 </template>
@@ -102,9 +99,9 @@ export default {
       },
       modal : '',
       biaya : '',
-      listModal : '',
-      listBiaya : '',
-      listHarta : '',
+      listModal : [],
+      listBiaya : [],
+      listHarta : [],
       from: '',
       harta : '',
       to_item: '',
