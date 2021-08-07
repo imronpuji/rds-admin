@@ -308,7 +308,7 @@ export const asyncRoutes = [
     name: 'laporan',
     meta: {
       title: 'Laporan',
-      icon: 'people',
+      icon: 'excel',
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
     children: [
@@ -358,6 +358,44 @@ export const asyncRoutes = [
         name: 'PagePermission',
         meta: {
           title: 'Produk',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: '/stok/masuk',
+        component: () => import('@/views/stok_masuk'),
+        name: 'PagePermission',
+        meta: {
+          title: 'Pembelian',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: '/stok/keluar',
+        component: () => import('@/views/stok_masuk'),
+        name: 'PagePermission',
+        meta: {
+          title: 'Penjualan',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: '/stok/keluar/:id',
+        component: () => import('@/views/detail_penjualan'),
+        name: 'PagePermission',
+        hidden : true,
+        meta: {
+          title: 'Pembelian',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: '/stok/masuk/detail/:id',
+        component: () => import('@/views/detail_pembelian'),
+        name: 'PagePermission',
+        hidden : true,
+        meta: {
+          title: 'detail pembelian',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },

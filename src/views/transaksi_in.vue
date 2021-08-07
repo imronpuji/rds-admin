@@ -125,8 +125,11 @@
         </div>
         <el-button type="primary" @click="addFind">
           Tambah Form
+        </el-button>   
+        <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+          Hapus Form
         </el-button>
-        <h3> Total : {{ total_kasIn }}</h3>
+        <h3 v-if="total_kasIn != ''"> Total : {{ total_kasIn }}</h3>
       </el-form>
       <!-- multiple input -->
       <div slot="footer" class="dialog-footer">
@@ -483,6 +486,9 @@ export default {
       this.kasIn.all.push({ modal: '', desc: '', total: '' })
 
       console.log(this.kasIn, this.to_item, this.from)
+    },
+    deleteFind() {
+      this.kasIn.all.pop();
     },
     onChangeTotal() {
       const total = this.kasIn.all.reduce(function(accumulator, item) {

@@ -29,7 +29,6 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
-      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
       border
       fit
       highlight-current-row
@@ -41,57 +40,23 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Keluar Dari Kas" width="150px" align="center">
+      <el-table-column label="Supplier" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.from.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Total" width="150px" align="center" prop="cashout">
+      <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.cashout) }}</span>
+          <span>{{ handleCurrency(row.total) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Date" width="150px" align="center" sortable prop="date">
-        <template slot-scope="{row}">
-          <span>{{ row.created_at }}</span>
-        </template>
-      </el-table-column>
-      <!--    <el-table-column label="Author" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span style="color:red;">{{ row.reviewer }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Imp" width="80px">
-        <template slot-scope="{row}">
-          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" align="center" width="95">
-        <template slot-scope="{row}">
-          <span v-if="row.pageviews" class="link-type" @click="handleFetchPv(row.pageviews)">{{ row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Status" class-name="status-col" width="100">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template> -->
-   <!--    </el-table-column> -->
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
+           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
           </el-button>
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger">
-            <router-link :to="'/kas/outdetail/' + row.id">Detail</router-link>
+          <el-button size="mini" type="warning">
+            <router-link :to="'/stok/masuk/detail/' + row.id">Detail</router-link>
           </el-button>
         </template>
       </el-table-column>
@@ -100,44 +65,48 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Masuk Ke Kas">
-          <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
-            <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Keterangan">
-          <el-input v-model="keterangan" placeholder="keterangan" />
-        </el-form-item>
-
-        <!-- multiple input -->
-        <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
-          <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
-            <el-select v-model="all.biaya" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-              <el-option v-for="item in biaya" :key="item.id" :label="item.name" :value="item.id" />
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
+         <el-form-item label="Supplier">
+            <el-select v-model="contact_id" required class="filter-item" placeholder="Please select">
+              <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
-          <el-form-item style=" padding-left:4px" label="Desc">
-            <el-input v-model="all.desc" required type="text" placeholder="Please input" />
+         <div v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
+          <el-form-item label="Barang">
+            <el-select v-model="all.product_id" required class="filter-item" placeholder="Please select" @change="onChangeProduct(index)">
+              <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
           </el-form-item>
-          <el-form-item style=" padding-left:4px" label="Sub Total">
-            <el-input v-model="all.total" required type="number" placeholder="Please input" @change="onChangeTotal()" />
+          <el-form-item label="Jumlah Barang">
+            <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
+          </el-form-item>
+          <el-form-item label="Harga Satuan">
+            <el-input disabled v-model="all.harga" required type="text" placeholder="Harga Satuan" />
+          </el-form-item>
+          <el-form-item label="Sub Total">
+            <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
           </el-form-item>
         </div>
+          <el-form-item label="Bayar Dengan">
+            <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+              <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
+            </el-select>
+          </el-form-item>
         <el-button type="primary" @click="addFind">
           Tambah Form
-        </el-button>
-         <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+        </el-button>   
+        <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
           Hapus Form
         </el-button>
         <h3 v-if="total_kasIn != ''"> Total : {{ total_kasIn }}</h3>
       </el-form>
       <!-- multiple input -->
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="createData()">
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -193,13 +162,27 @@ export default {
   },
   data() {
     return {
+      category : '',
+      kontak : [],
+      kas :[],
+      product :[],
+      contact_id :"",
+      cashout_id:"",
+      satuan : '',
+      producttype : '',
+      jenis_barang : '',
+      keterangan : '',
+      name : '',
+      selling_price : '',
+      purchase_price : '',
+      qty : '',
+      unit : '',
       from: '',
       to_item: '',
       total_kasIn: '',
-      pengeluaran : '',
-      keterangan : '',
+      pemasukan : '',
       kasIn: {
-        all: [{ biaya: '', total: '', desc: '' }]
+        all: [{product_id: '', total: '', qty: '', harga: '' }]
       },
       tableKey: 0,
       list: null,
@@ -216,7 +199,7 @@ export default {
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
       cash: [],
-      biaya: [],
+      modal: [],
       sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
@@ -252,29 +235,31 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/cash/out').then(response => {
+      axios.get('/stock/transaction').then(response => {
         console.log(response)
-        this.list = response.data.cashtransaction
-        this.total = response.data.cashtransaction.length
+        this.list = response.data.stocktransaction
+        this.total = response.data.stocktransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-     axios.get(`/akun/iscash`).then(response => {
-      console.log(response)
-        this.cash = response.data.akun
+      axios.get('/akun/iscash').then(response => {
+      	console.log(response)
+       this.kas = response.data.akun
       })
 
-     axios.get(`/akun/notcash`).then(response => {
-            console.log(response)
-
-        this.biaya = response.data.akun
+      axios.get('/contact').then(response => {
+      	  console.log(response)
+       this.kontak = response.data.contact
       })
 
+      axios.get('/product').then(response => {
+      	console.log(response)
+       this.product = response.data.product
+      })
     },
-
     handleCurrency(number){
      const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
      return idr
@@ -331,28 +316,27 @@ export default {
       //     createArticle(this.temp).then(() => {
       //
 
-      const desc = []
+
       const total = []
-      const akun_id = []
+      const qty = []
+      const product_id = []
       this.kasIn.all.map((val, index) => {
-        desc.push(val.desc)
+        qty.push(val.qty)
         total.push(parseInt(val.total))
-        akun_id.push(val.biaya)
+        product_id.push(val.product_id)
       })
       const data = {
-        from: this.from,
-        keterangan : this.keterangan,
-        desc,
-        akun_id,
-        total
+      	contact_id : this.contact_id,
+        cashout_id : this.cashout_id,
+        product_id,
+       	qty,
+       	total
       }
-
       var encodedValues = qs.stringify(
         data,
         { allowDots: true }
       )
-      console.log(encodedValues)
-      axios.post('/cash/out/create', encodedValues)
+      axios.post('/stock/in/create', encodedValues)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -362,7 +346,6 @@ export default {
             type: 'success',
             duration: 2000
           })
-          this.kasIn.all = [{ biaya: '', desc: '', total: '' }]
         })
         .catch((err) => {
           this.listLoading = false
@@ -377,8 +360,13 @@ export default {
       // })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
+      this.name = row.cashout.name
+      this.id = row.id
+      this.selling_price = row.selling_price
+      this.purchase_price = row.purchase_price
+      this.unit = row.unit
+      this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
+      this.qty = row.qty
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -386,28 +374,32 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
-              type: 'success',
-              duration: 2000
-            })
+       this.listLoading = true
+      const data = {
+        name : this.name,
+        selling_price : this.selling_price,
+        purchase_price : this.purchase_price,
+        unit : this.unit,
+        producttype : this.producttype
+      }
+
+      axios.put(`/product/edit/${this.id}`, data)
+        .then((response) => {
+          this.getList()
+          this.dialogFormVisible = false
+          this.$notify({
+            title: 'Success',
+            message: 'Update Successfully',
+            type: 'success',
+            duration: 2000
           })
-        }
-      })
+          throw new Error('Something went badly wrong!')
+        })
+        .catch((err) => err)
     },
     handleDelete(row, index) {
-      
-      this.listLoading = true
-      axios.delete(`/cash/transaction/delete/${row.id}`)
+       this.listLoading = true
+      axios.delete(`/stock/transaction/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
@@ -469,7 +461,8 @@ export default {
       console.log(event)
     },
     addFind() {
-      this.kasIn.all.push({ biaya: '', desc: '', total: '' })
+      console.log(this.kasIn.all)
+      this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
     },
     deleteFind() {
       this.kasIn.all.pop();
@@ -480,6 +473,20 @@ export default {
         return accumulator + parseInt(item.total)
       }, 0)
       this.total_kasIn = total
+    },
+    onChangeProduct(index){
+    	const produk = this.product.filter((val) => {
+    		if(val.id == this.kasIn.all[index]['product_id']) {
+    			return val
+    		}
+    	})	
+    	this.kasIn.all[index]['qty'] = produk[0]['qty'] == null ? '0' : produk[0]['qty']
+    	this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
+    	this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) * 0 && parseInt(produk[0]['qty']) : 0
+    }, 
+    onChangeQty(index){
+    	const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
+    	this.kasIn.all[index]['total'] = result
     }
 
   }
