@@ -165,7 +165,7 @@ export default {
     getList() {
         this.listLoading = true
 
-        axios.get('/report/Aktiva').then((response) =>
+        axios.get('/report/Harta').then((response) =>
         {
             function calculateValues(o) 
             {
