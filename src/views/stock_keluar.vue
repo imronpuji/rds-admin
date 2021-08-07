@@ -40,7 +40,7 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Supplier" min-width="150px">
+      <el-table-column label="Customer" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
         </template>
