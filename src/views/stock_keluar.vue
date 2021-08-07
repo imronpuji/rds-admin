@@ -55,6 +55,11 @@
           <span>{{ row.purchase_price }}</span>
         </template>
       </el-table-column>
+       <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+        <template slot-scope="{row}">
+          <span>{{ row.created_at }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
            <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
@@ -240,7 +245,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/stock/transaction').then(response => {
+      axios.get('/stock/out').then(response => {
         console.log(response)
         this.list = response.data.stocktransaction
         this.total = response.data.stocktransaction.length

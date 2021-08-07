@@ -213,9 +213,9 @@ export const asyncRoutes = [
   {
     path: '/setarakas',
     component: Layout,
-    name: 'Kas / Setara Kas',
+    name: 'Kas / Setoran Kas',
     meta: {
-      title: 'Kas / Setara Kas',
+      title: 'Kas / Setoran Kas',
       icon: 'bug',
       roles: ['admin', 'kasir'] // you can set roles in root nav
     },
@@ -280,27 +280,20 @@ export const asyncRoutes = [
           title: 'Detail Transfer',
           roles: ['admin', 'editor']
         }
-      }
-    ]
-  },
-
-  {
-    path: '/transfer-transaksi',
-    component: Layout,
-    name: 'Transfer Transaksi',
-    children: [
+      },
       {
-        path: 'index',
+        path: '/transfer-transaksi',
         component: () => import('@/views/transfer_in'),
-        name: 'Icons',
+        name: 'RolePermission',
         meta: {
           title: 'Transfer Transaksi',
-          icon: 'table',
-          roles: ['admin', 'kasir'] // you can set roles in root nav
+          roles: ['admin', 'editor']
         }
       }
     ]
   },
+
+
  
 {
     path: '/laporan',
