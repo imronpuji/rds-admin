@@ -33,6 +33,10 @@
  </span>
 </el-tree>
 
+<div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Laba Ditahan</h4>  <p style="padding:0; margin:0">{{handleCurrency(pendapatan.valueTotal - HPP.valueTotal - biaya.valueTotal )}}</p>
+    </div>
+
 <el-tree
 :data="listKewajiban"
 default-expand-all
@@ -50,6 +54,7 @@ highlight-current
 <div style="display:flex; justify-content:space-between; background:yellow">
     <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal + kewajiban.valueTotal)}}</p>
 </div>
+
 </div>
 </template>
 
@@ -96,6 +101,12 @@ data() {
           label: 'name',
           total : 'total'
       },
+      biaya :'',
+      listBiaya :'',
+      HPP : '',
+      listHPP : '',
+      pendapatan : '',
+      listPendapatan : '',
       modal : '',
       biaya : '',
       kewajiban : '',
@@ -157,6 +168,7 @@ data() {
 },
 created() {
     this.getList()
+    this.getLaba()
 },
 methods: {
     getList() {
@@ -210,6 +222,61 @@ methods: {
             calculateValues(names)
             this.listKewajiban = [names]
             this.kewajiban = names
+        });
+
+    },
+
+    getLaba() {
+        this.listLoading = true
+
+        axios.get('/report/Pendapatan').then((response) =>
+        {
+            console.log(response)
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listPendapatan = [names]
+            this.pendapatan = names
+        });
+
+        axios.get('/report/HPP').then((response) =>
+        {
+            console.log(response)
+
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listHPP = [names]
+            this.HPP = names
+        });
+
+        axios.get('/report/Biaya').then((response) =>
+        {
+            console.log(response)
+
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listBiaya = [names]
+            this.biaya = names
         });
 
     },
