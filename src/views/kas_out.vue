@@ -51,9 +51,14 @@ style="width: 100%;"
       <span>{{ handleCurrency(row.cashout) }}</span>
   </template>
 </el-table-column>
-<el-table-column label="Date" width="150px" align="center" sortable prop="date">
+<el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+    <template slot-scope="{row}">
+      <span>{{ handleCurrency(row.cashout) }}</span>
+  </template>
+</el-table-column>
+<el-table-column label="Keterangan" width="150px" align="center" sortable prop="date">
     <template slot-scope="{row}" >
-      <span>{{ row.created_at }}</span>
+      <span>{{ row.keterangan }}</span>
   </template>
 </el-table-column>
 <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -92,7 +97,7 @@ style="width: 100%;"
     <el-input v-model="all.desc" required type="text" placeholder="Please input" />
 </el-form-item>
 <el-form-item style=" padding-left:4px" label="Sub Total">
-     <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
+    <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
 </el-form-item>
 </div>
 <el-button type="primary" @click="addFind">
