@@ -92,7 +92,7 @@
             <el-input v-model="all.desc" required type="text" placeholder="Please input" />
           </el-form-item>
           <el-form-item label="Sub Total">
-            <el-input v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
+            <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
           </el-form-item>
         </div>
         <el-button type="primary" @click="addFind">
@@ -164,6 +164,17 @@ export default {
   },
   data() {
     return {
+      config: {
+          spinner: false,
+          step: 10,
+          prefix: "Rp ",
+          precision: 0,
+          decimal: ',',
+          thousands: '.',
+          bootstrap: true,
+          amend: false,
+          masked: false,
+        },
       category : '',
       keterangan : '',
       from: '',

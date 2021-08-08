@@ -92,7 +92,7 @@ style="width: 100%;"
     <el-input v-model="all.desc" required type="text" placeholder="Please input" />
 </el-form-item>
 <el-form-item style=" padding-left:4px" label="Sub Total">
-    <el-input v-model="all.total" required type="number" placeholder="Please input" @change="onChangeTotal(value)" />
+     <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
 </el-form-item>
 </div>
 <el-button type="primary" @click="addFind">
@@ -164,6 +164,17 @@ typeFilter(type) {
 },
 data() {
     return {
+        config: {
+          spinner: false,
+          step: 10,
+          prefix: "Rp ",
+          precision: 0,
+          decimal: ',',
+          thousands: '.',
+          bootstrap: true,
+          amend: false,
+          masked: false,
+        },
       from: '',
       to_item: '',
       total_kasIn: '',
