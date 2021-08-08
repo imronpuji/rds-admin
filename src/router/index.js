@@ -274,7 +274,7 @@ import nestedRouter from './modules/nested'
       },
       {
         path: '/laba/rugi',
-        component: () => import('@/views/neraca'),
+        component: () => import('@/views/labarugi'),
         name: 'PagePermission',
         meta: {
           title: 'Laba Rugi',
