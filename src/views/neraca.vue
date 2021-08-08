@@ -34,7 +34,7 @@
 </el-tree>
 
 <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Laba Ditahan</h4>  <p style="padding:0; margin:0">{{handleCurrency(pendapatan.valueTotal - HPP.valueTotal - biaya.valueTotal )}}</p>
+        <h4 style="padding:0; margin:0">Laba Tahun Berjalan</h4>  <p style="padding:0; margin:0">{{handleCurrency(pendapatan.valueTotal - HPP.valueTotal - biaya.valueTotal )}}</p>
     </div>
 
 <el-tree
