@@ -51,9 +51,9 @@ style="width: 100%;"
       <span>{{ handleCurrency(row.cashout) }}</span>
   </template>
 </el-table-column>
-<el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+<el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
     <template slot-scope="{row}">
-      <span>{{ handleCurrency(row.cashout) }}</span>
+      <span>{{ row.created_at }}</span>
   </template>
 </el-table-column>
 <el-table-column label="Keterangan" width="150px" align="center" sortable prop="date">
