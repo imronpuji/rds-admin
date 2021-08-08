@@ -224,7 +224,7 @@ export const asyncRoutes = [
             name: 'DirectivePermission',
             meta: 
             {
-              title: 'Akuntansi',
+              title: 'Akun',
               roles: ['admin', 'editor']
             }
         },

@@ -26,47 +26,47 @@
 </div>
 
 <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
-      border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
-    >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Keluar Dari Kas" min-width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.from.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
-        <template slot-scope="{row}">
-          <span>{{ handleCurrency(row.cashout) }}</span>
-        </template>
-      </el-table-column>
-       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
-        <template slot-scope="{row}" >
-          <span>{{ row.created_at }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
-            Delete
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger">
-            <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+:key="tableKey"
+v-loading="listLoading"
+:data="list"
+:default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
+border
+fit
+highlight-current-row
+style="width: 100%;"
+@sort-change="sortChange"
+>
+<el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+    <template slot-scope="{row}">
+      <span>{{ row.id }}</span>
+  </template>
+</el-table-column>
+<el-table-column label="Keluar Dari Kas" min-width="150px">
+    <template slot-scope="{row}">
+      <span class="link-type" @click="handleUpdate(row)">{{ row.from.name }}</span>
+  </template>
+</el-table-column>
+<el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+    <template slot-scope="{row}">
+      <span>{{ handleCurrency(row.cashout) }}</span>
+  </template>
+</el-table-column>
+<el-table-column label="Date" width="150px" align="center" sortable prop="date">
+    <template slot-scope="{row}" >
+      <span>{{ row.created_at }}</span>
+  </template>
+</el-table-column>
+<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+    <template slot-scope="{row,$index}">
+       <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
+        Delete
+    </el-button>
+    <el-button v-if="row.status!='deleted'" size="mini" type="danger">
+        <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
+    </el-button>
+</template>
+</el-table-column>
+</el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
@@ -83,12 +83,12 @@
 
   <!-- multiple input -->
   <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
-      <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
+    <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
         <el-select v-model="all.biaya" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-          <el-option v-for="item in biaya" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
-  </el-form-item>
-  <el-form-item style=" padding-left:4px" label="Desc">
+            <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>   
+    </el-form-item>
+<el-form-item style=" padding-left:4px" label="Desc">
     <el-input v-model="all.desc" required type="text" placeholder="Please input" />
 </el-form-item>
 <el-form-item style=" padding-left:4px" label="Sub Total">
@@ -173,6 +173,7 @@ data() {
         all: [{ biaya: '', total: '', desc: '' }]
     },
     tableKey: 0,
+    iscashout : '',
     list: null,
     total: 0,
     listLoading: true,
@@ -238,11 +239,9 @@ methods: {
         this.cash = response.data.akun
     })
 
-      axios.get(`/akun/notcash`).then(response => {
-        console.log(response)
-
-        this.biaya = response.data.akun
-    })
+      axios.get(`/akun/iscashout`).then(response => {
+        this.iscashout = response.data.akun
+    });
 
   },
 

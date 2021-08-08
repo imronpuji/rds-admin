@@ -30,11 +30,14 @@
                 <el-form-item label="Nama">
                     <el-input placeholder="Nama" v-model="name" />
                 </el-form-item>
-                <el-form-item v-if="header != true">
+                <el-form-item v-if="header != true && isCashOut != true">
                     <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
                 </el-form-item>
-                <el-form-item v-if="kas != true">
+                <el-form-item v-if="kas != true && isCashOut != true">
                     <el-checkbox v-model="header">Header</el-checkbox>
+                </el-form-item>
+                <el-form-item v-if="kas != true && header != true">
+                    <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -124,6 +127,7 @@ import
                 
                 id: '',
                 category: '',
+                isCashOut : '',
                 header: '',
                 fullscreenLoading: false,
                 name: '',
@@ -214,7 +218,7 @@ import
     },
 
     methods: {
-        
+
         load(tree, treeNode, resolve) {
             setTimeout(() => {
                 resolve(this.list)
@@ -226,6 +230,7 @@ import
             this.listLoading = true
             axios.get('/akun').then(response => 
             {
+                console.log(response)
                 this.list = response.data.akun
                 this.total = response.data.akun.length
                 this.listLoading = false
@@ -292,9 +297,10 @@ import
                 name: this.name,
                 perent_id: this.category,
                 iscash: this.kas == '' ? false : this.kas,
+                iscashout: this.isCashOut == '' ? false : this.isCashOut,
                 isheader: this.header == '' ? false : this.header
             }
-
+            console.log(data)
             this.listLoading = true;
             this.dialogFormVisible = false
 
@@ -318,6 +324,7 @@ import
             this.name = row.name // copy obj
             this.header = row.header
             this.kas = row.iscash == 1 ? true : false
+            this.isCashOut = row.iscashout == 1 ? true : false
             this.category = row.perent_id
             this.header = row.isheader == 1 ? true : false
             this.dialogStatus = 'update'

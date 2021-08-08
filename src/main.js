@@ -20,6 +20,8 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 
+import MoneySpinner from 'v-money-spinner' //MONEY SPINNER
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -28,26 +30,28 @@ import * as filters from './filters' // global filters
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
+ if (process.env.NODE_ENV === 'production') {
+ 	const { mockXHR } = require('../mock')
+ 	mockXHR()
+ }
 
-Vue.use(Element, {
+ Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   locale: enLang // 如果使用中文，无需设置，请删除
 })
+ 
+ Vue.use(MoneySpinner)
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+	Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+	el: '#app',
+	router,
+	store,
+	render: h => h(App)
 })
