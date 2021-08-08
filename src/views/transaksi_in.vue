@@ -234,7 +234,7 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/iscash`).then(response => {
+      axios.get(`/akun/iscashin`).then(response => {
         console.log(response)
         this.cash = response.data.akun
     }).catch(() => {

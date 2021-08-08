@@ -30,14 +30,17 @@
                 <el-form-item label="Nama">
                     <el-input placeholder="Nama" v-model="name" />
                 </el-form-item>
-                <el-form-item v-if="header != true && isCashOut != true">
-                    <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
-                </el-form-item>
-                <el-form-item v-if="kas != true && isCashOut != true">
+                <el-form-item v-if="kas != true && isCashOut != true && isCashIn != true">
                     <el-checkbox v-model="header">Header</el-checkbox>
                 </el-form-item>
-                <el-form-item v-if="kas != true && header != true">
+                <el-form-item v-if="header != true && isCashOut != true && isCashIn != true">
+                    <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
+                </el-form-item>
+                <el-form-item v-if="kas != true && header != true && isCashIn != true">
                     <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
+                </el-form-item>
+                <el-form-item v-if="kas != true && header != true && isCashOut != true">
+                    <el-checkbox v-model="isCashIn">Kas Masuk</el-checkbox>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -128,6 +131,7 @@ import
                 id: '',
                 category: '',
                 isCashOut : '',
+                isCashIn : '',
                 header: '',
                 fullscreenLoading: false,
                 name: '',
@@ -298,6 +302,7 @@ import
                 perent_id: this.category,
                 iscash: this.kas == '' ? false : this.kas,
                 iscashout: this.isCashOut == '' ? false : this.isCashOut,
+                iscashin: this.isCashIn == '' ? false : this.isCashIn,
                 isheader: this.header == '' ? false : this.header
             }
             console.log(data)
@@ -325,6 +330,7 @@ import
             this.header = row.header
             this.kas = row.iscash == 1 ? true : false
             this.isCashOut = row.iscashout == 1 ? true : false
+            this.isCashIn = row.iscashin == 1 ? true : false
             this.category = row.perent_id
             this.header = row.isheader == 1 ? true : false
             this.dialogStatus = 'update'
@@ -341,6 +347,8 @@ import
                 name: this.name,
                 perent_id: this.category,
                 iscash: this.kas,
+                iscashout: this.isCashOut,
+                iscashin: this.isCashIn,
                 isheader: this.header
 
             }
