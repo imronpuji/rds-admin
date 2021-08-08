@@ -87,6 +87,7 @@ import nestedRouter from './modules/nested'
   path: '/profile',
   component: Layout,
   redirect: '/profile/index',
+  hidden : true,
   children: [
   {
     path: 'index',
