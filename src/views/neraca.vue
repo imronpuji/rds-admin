@@ -1,6 +1,6 @@
 <template>
     <div class="app-container" style="width:50%; box-shadow:2">
-     
+
         <el-tree
         :data="listHarta"
         default-expand-all
@@ -14,7 +14,7 @@
             <span v-else>{{ handleCurrency(data.total)  }}</span>
         </span>
     </el-tree>
-    
+
     <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
         <h4 style="padding:0; margin:0">Total Harta</h4>  <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
     </div>
@@ -48,7 +48,7 @@ highlight-current
 </el-tree>
 
 <div style="display:flex; justify-content:space-between; background:yellow">
-    <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal + harta.valueTotal)}}</p>
+    <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>  <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal + kewajiban.valueTotal)}}</p>
 </div>
 </div>
 </template>
@@ -211,10 +211,10 @@ methods: {
             this.listKewajiban = [names]
             this.kewajiban = names
         });
-        
+
     },
 
-    
+
     handleCurrency(number){
        const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
        return idr

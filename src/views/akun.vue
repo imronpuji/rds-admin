@@ -352,7 +352,7 @@ import
                 isheader: this.header
 
             }
-
+            console.log(data)
             axios.put(`/akun/edit/${this.id}`, data)
             .then((response) => {
                 this.getList()
