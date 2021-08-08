@@ -234,7 +234,7 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
-      axios.get(`/akun/iscashin`).then(response => {
+      axios.get(`/akun/iscash`).then(response => {
         console.log(response)
         this.cash = response.data.akun
     }).catch(() => {
@@ -246,7 +246,7 @@ export default {
       duration: 2000
       })})
 
-      axios.get(`/akun/notcash`).then(response => {
+      axios.get(`/akun/iscashin`).then(response => {
         console.log(response)
         this.modal = response.data.akun
       })
