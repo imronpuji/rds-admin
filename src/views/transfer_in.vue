@@ -87,7 +87,7 @@
           <el-input v-model="keterangan" required type="text" placeholder="Please input" />
         </el-form-item>
         <el-form-item label="Sub Total">
-          <el-input v-model="total_transfer" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
+          <v-money-spinner v-model="total_transfer" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
       </el-form>
       <!-- multiple input -->
@@ -151,6 +151,17 @@ export default {
   },
   data() {
     return {
+      config: {
+          spinner: false,
+          step: 10,
+          prefix: "Rp ",
+          precision: 0,
+          decimal: ',',
+          thousands: '.',
+          bootstrap: true,
+          amend: false,
+          masked: false,
+        },
       from: '',
       to_item: '',
       total_kasIn: '',

@@ -52,12 +52,12 @@
       </el-table-column>
        <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
-          <span>{{ row.purchase_price }}</span>
+          <span>{{ handleCurrency(row.purchase_price) }}</span>
         </template>
       </el-table-column>
        <el-table-column label="Harga Jual" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
-          <span>{{ row.selling_price }}</span>
+          <span>{{ handleCurrency(row.selling_price) }}</span>
         </template>
       </el-table-column>
        <el-table-column label="Unit" width="150px" align="center" sortable prop="date">
@@ -97,10 +97,10 @@
             <el-input v-model="name" placeholder="Nama Barang" />
         </el-form-item>
         <el-form-item label="Harga Beli">
-            <el-input v-model="purchase_price" placeholder="Harga Beli" />
+            <v-money-spinner v-model="purchase_price" v-bind="config"></v-money-spinner>
         </el-form-item>
         <el-form-item label="Harga Jual">
-            <el-input v-model="selling_price" placeholder="Harga Jual" />
+          <v-money-spinner v-model="selling_price" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
         <el-form-item label="UNIT">
           <el-select v-model="unit">
@@ -174,6 +174,17 @@ export default {
   },
   data() {
     return {
+      config: {
+          spinner: false,
+          step: 10,
+          prefix: "Rp ",
+          precision: 0,
+          decimal: ',',
+          thousands: '.',
+          bootstrap: true,
+          amend: false,
+          masked: false,
+        },
       category : '',
       producttype : '',
       jenis_barang : '',
