@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
-          <span>{{ row.keterangan }}</span>
+          <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
        <el-table-column label="Date" width="150px" align="center" sortable prop="date">

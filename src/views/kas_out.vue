@@ -58,7 +58,7 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Keterangan" width="150px" align="center" sortable prop="date">
     <template slot-scope="{row}" >
-      <span>{{ row.keterangan }}</span>
+      <span>{{ row.desc }}</span>
   </template>
 </el-table-column>
 <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
