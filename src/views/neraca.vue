@@ -9,9 +9,8 @@
         highlight-current
         :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{data.name}}</span>
+            <span v-if="data.valueTotal != 0">{{data.name}}</span>
             <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
         </span>
     </el-tree>
 
@@ -27,9 +26,8 @@
     highlight-current
     :props="defaultProps">
     <span class="custom-tree-node" slot-scope="{ node, data }">
-     <span>{{data.name}}</span>
+     <span v-if="data.valueTotal != 0">{{data.name}}</span>
      <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-     <span v-else>{{ handleCurrency(data.total)  }}</span>
  </span>
 </el-tree>
 
@@ -41,9 +39,8 @@ ref="tree"
 highlight-current
 :props="defaultProps">
 <span class="custom-tree-node" slot-scope="{ node, data }">
- <span>{{data.name}}</span>
+ <span v-if="data.valueTotal != 0">{{data.name}}</span>
  <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
- <span v-else>{{ handleCurrency(data.total)  }}</span>
 </span>
 </el-tree>
 
