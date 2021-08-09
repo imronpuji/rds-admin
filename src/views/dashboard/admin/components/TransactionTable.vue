@@ -60,7 +60,6 @@ export default {
         
         this.total = cashout + cashin
 
-        this.list.push({to:{name:"total", total}})
       })
     }
   }
