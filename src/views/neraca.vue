@@ -163,11 +163,70 @@ data() {
     downloadLoading: false
 }
 },
-created() {
-    this.getList()
-    this.getLaba()
+async created() {
+    await this.getLaba()
+    await this.getList()
 },
 methods: {
+    async getLaba() {
+        this.listLoading = true
+
+        await axios.get('/report/Pendapatan').then((response) =>
+        {
+            console.log(response)
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listPendapatan = [names]
+            this.pendapatan = names
+        });
+
+        await axios.get('/report/HPP').then((response) =>
+        {
+            console.log(response)
+
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listHPP = [names]
+            this.HPP = names
+        });
+
+        await axios.get('/report/Biaya').then((response) =>
+        {
+            console.log(response)
+
+            function calculateValues(o) 
+            {
+                o.valueTotal = (o.children || []).reduce(function (r, a) {
+                    calculateValues(a);             
+                    return r + (a.total || 0) + (a.valueTotal || 0);
+                }, 0);
+            }
+            let names = response.data.akun[0]
+            calculateValues(names)
+            this.listBiaya = [names]
+            this.biaya = names
+        });
+        const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
+        console.log(setLaba)
+        await axios.post('/akun/setlaba', {total:setLaba})
+        .then((response) => response )
+        .catch((err) => err)
+
+    },
     getList() {
         this.listLoading = true
 
@@ -222,62 +281,6 @@ methods: {
         });
 
     },
-
-    getLaba() {
-        this.listLoading = true
-
-        axios.get('/report/Pendapatan').then((response) =>
-        {
-            console.log(response)
-            function calculateValues(o) 
-            {
-                o.valueTotal = (o.children || []).reduce(function (r, a) {
-                    calculateValues(a);             
-                    return r + (a.total || 0) + (a.valueTotal || 0);
-                }, 0);
-            }
-            let names = response.data.akun[0]
-            calculateValues(names)
-            this.listPendapatan = [names]
-            this.pendapatan = names
-        });
-
-        axios.get('/report/HPP').then((response) =>
-        {
-            console.log(response)
-
-            function calculateValues(o) 
-            {
-                o.valueTotal = (o.children || []).reduce(function (r, a) {
-                    calculateValues(a);             
-                    return r + (a.total || 0) + (a.valueTotal || 0);
-                }, 0);
-            }
-            let names = response.data.akun[0]
-            calculateValues(names)
-            this.listHPP = [names]
-            this.HPP = names
-        });
-
-        axios.get('/report/Biaya').then((response) =>
-        {
-            console.log(response)
-
-            function calculateValues(o) 
-            {
-                o.valueTotal = (o.children || []).reduce(function (r, a) {
-                    calculateValues(a);             
-                    return r + (a.total || 0) + (a.valueTotal || 0);
-                }, 0);
-            }
-            let names = response.data.akun[0]
-            calculateValues(names)
-            this.listBiaya = [names]
-            this.biaya = names
-        });
-
-    },
-
 
     handleCurrency(number){
        const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)

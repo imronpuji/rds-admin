@@ -1,28 +1,26 @@
 <template>
+  <div>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="Order_No" min-width="200">
+    <el-table-column label="Kas" width="195" align="center">
       <template slot-scope="scope">
-        {{ scope.row.order_no | orderNoFilter }}
+        <span v-if="scope.row.cashin != null">{{ scope.row.to.name }}</span>
+        <span v-else>{{ scope.row.from.name }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Price" width="195" align="center">
+    <el-table-column label="Jumlah" min-width="300">
       <template slot-scope="scope">
-        ¥{{ scope.row.price | toThousandFilter }}
-      </template>
-    </el-table-column>
-    <el-table-column label="Status" width="100" align="center">
-      <template slot-scope="{row}">
-        <el-tag :type="row.status | statusFilter">
-          {{ row.status }}
-        </el-tag>
+        <span v-if="scope.row.cashin != null">Rp{{ scope.row.cashin | toThousandFilter }}</span>
+        <span v-else>Rp{{ scope.row.cashout | toThousandFilter }}</span>
       </template>
     </el-table-column>
   </el-table>
+  <h4>Total : Rp{{total | toThousandFilter}}</h4>
+  </div>
 </template>
 
 <script>
 import { transactionList } from '@/api/remote-search'
-
+import axios from '@/api/axios'
 export default {
   filters: {
     statusFilter(status) {
@@ -38,7 +36,8 @@ export default {
   },
   data() {
     return {
-      list: null
+      list: null,
+      total: ""
     }
   },
   created() {
@@ -46,8 +45,22 @@ export default {
   },
   methods: {
     fetchData() {
-      transactionList().then(response => {
-        this.list = response.data.items.slice(0, 8)
+      axios.get('/cash').then(response => {
+        console.log(response)
+        this.list = response.data.cashtransaction
+
+        // Just to simulate the time of the request
+        const cashin = response.data.cashtransaction.reduce(function(accumulator, currentValue) {
+          return accumulator + currentValue.cashin;
+        }, 0);
+
+        const cashout = response.data.cashtransaction.reduce(function(accumulator, currentValue) {
+          return accumulator + currentValue.cashout;
+        }, 0);
+        
+        this.total = cashout + cashin
+
+        this.list.push({to:{name:"total", total}})
       })
     }
   }
