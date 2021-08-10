@@ -3,14 +3,12 @@
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
     <el-table-column label="Kas" width="195" align="center">
       <template slot-scope="scope">
-        <span v-if="scope.row.cashin != null">{{ scope.row.to.name }}</span>
-        <span v-else>{{ scope.row.from.name }}</span>
+        <span>{{ scope.row.name }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Jumlah" min-width="300">
       <template slot-scope="scope">
-        <span v-if="scope.row.cashin != null">Rp{{ scope.row.cashin | toThousandFilter }}</span>
-        <span v-else>Rp{{ scope.row.cashout | toThousandFilter }}</span>
+        <span>Rp{{ scope.row.total | toThousandFilter }}</span>
       </template>
     </el-table-column>
   </el-table>
@@ -45,20 +43,18 @@ export default {
   },
   methods: {
     fetchData() {
-      axios.get('/cash').then(response => {
+      axios.get('/akun/iscash').then(response => {
         console.log(response)
-        this.list = response.data.cashtransaction
+        this.list = response.data.akun
 
         // Just to simulate the time of the request
-        const cashin = response.data.cashtransaction.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.cashin;
+        const total = response.data.akun.reduce(function(accumulator, currentValue) {
+          return accumulator + currentValue.total;
         }, 0);
 
-        const cashout = response.data.cashtransaction.reduce(function(accumulator, currentValue) {
-          return accumulator + currentValue.cashout;
-        }, 0);
+
         
-        this.total = cashout + cashin
+        this.total = total
 
       })
     }

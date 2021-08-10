@@ -350,7 +350,6 @@ import
                 iscashout: this.isCashOut,
                 iscashin: this.isCashIn,
                 isheader: this.header
-
             }
             console.log(data)
             axios.put(`/akun/edit/${this.id}`, data)

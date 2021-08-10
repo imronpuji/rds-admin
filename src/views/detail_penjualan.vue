@@ -218,10 +218,10 @@ methods: {
 
   },
   handleCurrency(number){
-   const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
-   return idr
-},
-handleFilter() {
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
+ },
+ handleFilter() {
     this.listQuery.page = 1
     this.getList()
 },
@@ -312,9 +312,9 @@ handleUpdate(row) {
   })
   },
   handleDelete(row, index) {
-     this.listLoading = true
-     axios.delete(`/cash/transaction/delete/${row.id}`)
-     .then((response) => {
+   this.listLoading = true
+   axios.delete(`/cash/transaction/delete/${row.id}`)
+   .then((response) => {
       this.listLoading = false
       console.log(response)
       this.$notify({
@@ -325,7 +325,7 @@ handleUpdate(row) {
       })
       this.list.splice(index, 1)
   })
-     .catch((err) => {
+   .catch((err) => {
       this.listLoading = false
       this.$notify({
           title: 'Error',
@@ -334,8 +334,8 @@ handleUpdate(row) {
           duration: 2000
       })
   })
- },
- handleFetchPv(pv) {
+},
+handleFetchPv(pv) {
     fetchPv(pv).then(response => {
         this.pvData = response.data.pvData
         this.dialogPvVisible = true
