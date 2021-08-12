@@ -39,7 +39,7 @@ NO Kendaraan  :
      </tr>
      <tr>
      	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="2" >TOTAL</td>
-     	<td style="text-align: center; font-weight: bold" colspan="2" >{{handleCurrency(total)}}</td>
+     	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="2" >{{jumlah_barang}}</td>
      </tr>
   </tbody>
 </table>
