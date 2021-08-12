@@ -47,12 +47,7 @@
     </el-table-column>
     <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
-        <span>{{ row.total }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date">
-      <template slot-scope="{row}" >
-        <span>{{ row.purchase_price }}</span>
+        <span>{{ handleCurrency(row.total) }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
@@ -70,6 +65,13 @@
       </el-button>
     </template>
   </el-table-column>
+   <el-table-column label="Surat Jalan" width="150px" align="center">
+      <template slot-scope="{row}">
+        <el-button type="primary" size="mini">
+         <router-link :to="'/stok/keluar/nota/' + row.id">Buat Surat Jalan</router-link>
+        </el-button>
+      </template>
+    </el-table-column>
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />

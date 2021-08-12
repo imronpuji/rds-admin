@@ -240,6 +240,7 @@ import nestedRouter from './modules/nested'
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
+
       {
         path: '/stok/masuk/detail/:id',
         component: () => import('@/views/detail_pembelian'),
@@ -484,7 +485,16 @@ import nestedRouter from './modules/nested'
 
 
 
-
+  {
+        path: '/stok/keluar/nota/:id',
+        component: () => import('@/views/pdfnota'),
+        name: 'PagePermission',
+        hidden : true,
+        meta: {
+          title: 'Nota',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
 
 
   // 404 page must be placed at the end !!!
