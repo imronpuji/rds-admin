@@ -48,9 +48,10 @@ NO Kendaraan  :
 				
 			TTD
 
+
 	(	  			  )
 		           
-		      PENERIMA
+		  PERW.CV.EKO BESI
 	</pre>
 	</div>
 <div style="display: inline-block; margin-left:10px; float:right; border: 0px solid; width:40%">		
@@ -58,9 +59,10 @@ NO Kendaraan  :
 								
 	TTD
 
+
 	(	  			  )
 		            
-		  PERW.CV.EKO BESI
+		    PENERIMA
 	</pre>
 	</div>
 	
