@@ -62,7 +62,7 @@ NO Kendaraan  :
 
 	(	  			  )
 		            
-		    PENERIMA
+		     PENERIMA
 	</pre>
 	</div>
 	
