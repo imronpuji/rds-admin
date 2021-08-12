@@ -486,7 +486,7 @@ import nestedRouter from './modules/nested'
 
 
   {
-        path: '/stok/keluar/nota/:id',
+        path: '/stok/keluar/surat/jalan/:id',
         component: () => import('@/views/pdfnota'),
         name: 'PagePermission',
         hidden : true,
