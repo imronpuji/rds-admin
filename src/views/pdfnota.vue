@@ -34,7 +34,7 @@ Batang
      <tr v-for="test in list">
        <td style="padding:10px;text-align: right;">{{test['id']}}</td>
        <td style="text-align: left;">{{test['product']['name']}}</td>
-       <td style="text-align: left;">{{test['product']['qty']}}</td>
+       <td style="text-align: left;">{{test['qty']}}</td>
        <td style="text-align: right;">{{test['product']['unit']}}</td>
      </tr>
      <tr>
@@ -47,9 +47,9 @@ Batang
 	<pre>
 				
 			TTD
+
 	(	  			  )
-		      
-		      
+		           
 		      PENERIMA
 	</pre>
 	</div>
