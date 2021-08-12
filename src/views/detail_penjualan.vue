@@ -59,7 +59,6 @@ style="width: 100%;"
 <el-table-column label="Total" width="150px" align="center">
   <template slot-scope="{row}">
       <span v-for="item in row.substocktransaction">{{handleCurrency(item['total'])}}</span>
-      <span>{{  }}</span>
   </template>
 </el-table-column>
 

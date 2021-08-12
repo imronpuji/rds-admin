@@ -7,17 +7,17 @@
 	<div style="display: inline-block; float:left;">		
 	<h4 style="margin:0">SURAT JALAN</h4>
 	<pre>
-NO transaksi  : 123123
-TGL Transaksi : 12/23/9
+NO transaksi  : T{{trans}}
+TGL Transaksi : {{list[0]['created_at']}}
 NO Kendaraan  : 
 	</pre>
 	</div>
 <div style="display: inline; float:right;">		
 	<h4 style="margin:0">KEPADA</h4>
 	<pre>
-Imron
-089234829
-Batang
+{{contact.name}}
+{{contact.contact}}
+{{contact.address}}
 	</pre>
 	</div>
 
@@ -31,15 +31,15 @@ Batang
     </tr>
    </thead>
    <tbody>
-     <tr v-for="test in list">
-       <td style="padding:10px;text-align: right;">{{test['id']}}</td>
+     <tr v-for="(test, index) in list">
+       <td style="padding:10px;text-align: right;">{{index + 1}}</td>
        <td style="text-align: left;">{{test['product']['name']}}</td>
        <td style="text-align: left;">{{test['qty']}}</td>
        <td style="text-align: right;">{{test['product']['unit']}}</td>
      </tr>
      <tr>
      	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="2" >TOTAL</td>
-     	<td style="text-align: center; font-weight: bold" colspan="2" >{{handleCurrency(list[0]['total'])}}</td>
+     	<td style="text-align: center; font-weight: bold" colspan="2" >{{handleCurrency(total)}}</td>
      </tr>
   </tbody>
 </table>
@@ -79,7 +79,10 @@ data() {
       return {
         	
         	list : [], 
-        	total : ''
+        	total : '',
+        	jumlah_barang : '',
+        	 contact : [], 
+        	 trans : ''
 		}
 },
 async created() {
@@ -93,7 +96,18 @@ methods: {
   	    await axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(async response => {
           console.log(response)
           this.list = await response.data.stocktransaction[0].substocktransaction
-       })
+          this.contact = await response.data.stocktransaction[0].contact})
+  	    const jumlah_barang = await this.list.reduce((acc, val) => {
+  	    	return acc + val.qty
+  	    },0)
+
+  	    this.jumlah_barang = await jumlah_barang
+
+  	    this.trans = await this.$route.params.id
+
+  	    this.total = this.list[0]['total'] * jumlah_barang
+
+
 
   },
 
