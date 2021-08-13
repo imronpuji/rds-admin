@@ -491,7 +491,7 @@ import nestedRouter from './modules/nested'
         name: 'PagePermission',
         hidden : true,
         meta: {
-          title: 'Nota',
+          title: 'surat jalan',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
