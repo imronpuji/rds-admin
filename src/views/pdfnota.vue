@@ -2,7 +2,7 @@
 	<div>
 
 	<b><hr></b>
-<h3 style="text-align: center;">CV EKO BESI</h3>
+<h3 style="text-align: center;">Margosari Patebon Kendal</h3>
 <b><hr></b>
 	<div style="display: inline-block; float:left;">		
 	<h4 style="margin:0">SURAT JALAN</h4>
@@ -51,7 +51,7 @@ NO Kendaraan  :
 
 	(	  			  )
 		           
-		  PERW.CV.EKO BESI
+		  CV.EKO BESI
 	</pre>
 	</div>
 <div style="display: inline-block; margin-left:10px; float:right; border: 0px solid; width:40%">		
