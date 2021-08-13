@@ -56,6 +56,16 @@ style="width: 100%;"
     <span v-for="item in row.substocktransaction">{{item['product']['qty']}}</span>
 </template>
 </el-table-column>
+<el-table-column label="Satuan" width="150px" align="center">
+  <template slot-scope="{row}">
+    <span v-for="item in row.substocktransaction">{{item['product']['unit']}}</span>
+</template>
+</el-table-column>
+<el-table-column label="Harga Satuan" width="150px" align="center">
+  <template slot-scope="{row}">
+    <span v-for="item in row.substocktransaction">{{item['product']['selling_price']}}</span>
+</template>
+</el-table-column>
 <el-table-column label="Total" width="150px" align="center">
   <template slot-scope="{row}">
       <span>{{handleCurrency(list[0]['total'])}}</span>
