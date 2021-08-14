@@ -496,6 +496,17 @@ import nestedRouter from './modules/nested'
         }
       },
 
+        {
+        path: '/stok/keluar/nota/:id',
+        component: () => import('@/views/pdfnotavalid'),
+        name: 'PagePermission',
+        hidden : true,
+        meta: {
+          title: 'Nota',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

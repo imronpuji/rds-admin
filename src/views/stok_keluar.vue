@@ -71,6 +71,13 @@
          <router-link :to="'/stok/keluar/surat/jalan/' + row.id">Buat Surat Jalan</router-link>
         </el-button>
       </template>
+    </el-table-column> 
+    <el-table-column label="Nota" width="150px" align="center">
+      <template slot-scope="{row}">
+        <el-button type="primary" size="mini">
+         <router-link :to="'/stok/keluar/nota/' + row.id">Cetak Nota</router-link>
+        </el-button>
+      </template>
     </el-table-column>
 </el-table>
 
