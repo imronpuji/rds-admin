@@ -400,28 +400,41 @@ export default {
         .catch((err) => err)
     },
     handleDelete(row, index) {
-       this.listLoading = true
-      axios.delete(`/product/delete/${row.id}`)
-        .then((response) => {
-          this.listLoading = false
-          console.log(response)
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          this.list.splice(index, 1)
-        })
-        .catch((err) => {
-          this.listLoading = false
-           this.$notify({
-            title: 'Error',
-            message: 'Server Error',
-            type: 'warning',
-            duration: 2000
-          })
-        })
+            this.listLoading = true
+
+   this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+    }).then(() => {
+    axios.delete(`/product/delete/${row.id}`)
+   .then((response) => {
+    this.listLoading = false
+
+    this.$notify({
+      title: 'Success',
+      message: 'Delete Successfully',
+      type: 'success',
+      duration: 2000
+    })
+    this.list.splice(index, 1)
+  })
+   .catch((err) => {
+    this.listLoading = false
+    this.$notify({
+      title: 'Error',
+      message: 'Server Error',
+      type: 'warning',
+      duration: 2000
+    })
+  })
+ }).catch(() => {
+    this.listLoading = false
+  this.$message({
+    type: 'info',
+    message: 'Delete canceled'
+  });          
+});
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

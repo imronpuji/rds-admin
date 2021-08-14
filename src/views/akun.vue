@@ -9,60 +9,65 @@
             <span class="custom-tree-node" slot-scope="{ node, data }">
                 <span>{{ node.label }}</span>
                 <span style="margin-left:20px">
-                    <el-button type="text" size="mini" @click="() => handleDelete(data, data)">
-                        Delete
-                    </el-button>
-                    <el-button type="text" size="mini" @click="() => handleUpdate(data, data)">
-                        Edit
-                    </el-button>
-                </span>
-            </span>
-        </el-tree>
+                    <el-popconfirm
+                    title="Are you sure to delete this?"
+                    >
+                        <el-button slot="reference" type="text" size="mini" @click="() => handleDelete(data, data)">
+                            Delete
+                        </el-button>
+                    </el-popconfirm>
 
-        <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-            <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-                <el-form-item label="Kategori" props="category">
-                    <el-select v-model="category" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-                        <el-option label="Kosong" value="" />
-                        <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="Nama">
-                    <el-input placeholder="Nama" v-model="name" />
-                </el-form-item>
-                <el-form-item v-if="kas != true && isCashOut != true && isCashIn != true">
-                    <el-checkbox v-model="header">Header</el-checkbox>
-                </el-form-item>
-                <el-form-item v-if="header != true && isCashOut != true && isCashIn != true">
-                    <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
-                </el-form-item>
-                <el-form-item v-if="kas != true && header != true && isCashIn != true">
-                    <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
-                </el-form-item>
-                <el-form-item v-if="kas != true && header != true && isCashOut != true">
-                    <el-checkbox v-model="isCashIn">Kas Masuk</el-checkbox>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">
-                    Cancel
+                <el-button type="text" size="mini" @click="() => handleUpdate(data, data)">
+                    Edit
                 </el-button>
-                <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-                    Confirm
-                </el-button>
-            </div>
-        </el-dialog>
-
-        <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-            <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-                <el-table-column prop="key" label="Channel" />
-                <el-table-column prop="pv" label="Pv" />
-            </el-table>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
             </span>
-        </el-dialog>
-    </div>
+        </span>
+    </el-tree>
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="Kategori" props="category">
+                <el-select v-model="category" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+                    <el-option label="Kosong" value="" />
+                    <el-option v-for="item in categories" :key="item.id" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="Nama">
+                <el-input placeholder="Nama" v-model="name" />
+            </el-form-item>
+            <el-form-item v-if="kas != true && isCashOut != true && isCashIn != true">
+                <el-checkbox v-model="header">Header</el-checkbox>
+            </el-form-item>
+            <el-form-item v-if="header != true && isCashOut != true && isCashIn != true">
+                <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
+            </el-form-item>
+            <el-form-item v-if="kas != true && header != true && isCashIn != true">
+                <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
+            </el-form-item>
+            <el-form-item v-if="kas != true && header != true && isCashOut != true">
+                <el-checkbox v-model="isCashIn">Kas Masuk</el-checkbox>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+                Cancel
+            </el-button>
+            <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+                Confirm
+            </el-button>
+        </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+        <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+            <el-table-column prop="key" label="Channel" />
+            <el-table-column prop="pv" label="Pv" />
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        </span>
+    </el-dialog>
+</div>
 </template>
 
 <script>

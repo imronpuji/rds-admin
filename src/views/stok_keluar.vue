@@ -57,28 +57,30 @@
     </el-table-column>
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
-       <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
-        Delete
-      </el-button>
+
+        <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row, $index)">
+          Delete
+        </el-button>
+
       <el-button size="mini" type="warning">
         <router-link :to="'/stok/keluar/detail/' + row.id">Detail</router-link>
       </el-button>
     </template>
   </el-table-column>
-   <el-table-column label="Surat Jalan" width="150px" align="center">
-      <template slot-scope="{row}">
-        <el-button type="primary" size="mini">
-         <router-link :to="'/stok/keluar/surat/jalan/' + row.id">Buat Surat Jalan</router-link>
-        </el-button>
-      </template>
-    </el-table-column> 
-    <el-table-column label="Nota" width="150px" align="center">
-      <template slot-scope="{row}">
-        <el-button type="primary" size="mini">
-         <router-link :to="'/stok/keluar/nota/' + row.id">Cetak Nota</router-link>
-        </el-button>
-      </template>
-    </el-table-column>
+  <el-table-column label="Surat Jalan" width="150px" align="center">
+    <template slot-scope="{row}">
+      <el-button type="primary" size="mini">
+       <router-link :to="'/stok/keluar/surat/jalan/' + row.id">Buat Surat Jalan</router-link>
+     </el-button>
+   </template>
+ </el-table-column> 
+ <el-table-column label="Nota" width="150px" align="center">
+  <template slot-scope="{row}">
+    <el-button type="primary" size="mini">
+     <router-link :to="'/stok/keluar/nota/' + row.id">Cetak Nota</router-link>
+   </el-button>
+ </template>
+</el-table-column>
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -300,6 +302,9 @@ export default {
       this.sortByID(order)
     }
   },
+  confirm(){
+    alert('kkj')
+  },
   sortByID(order) {
     if (order === 'ascending') {
       this.listQuery.sort = '+id'
@@ -418,7 +423,13 @@ export default {
   },
   handleDelete(row, index) {
    this.listLoading = true
-   axios.delete(`/stock/transaction/delete/${row.id}`)
+
+   this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+    }).then(() => {
+    axios.delete(`/stock/transaction/delete/${row.id}`)
    .then((response) => {
     this.listLoading = false
 
@@ -439,8 +450,15 @@ export default {
       duration: 2000
     })
   })
- },
- handleFetchPv(pv) {
+ }).catch(() => {
+    this.listLoading = false
+  this.$message({
+    type: 'info',
+    message: 'Delete canceled'
+  });          
+});
+},
+handleFetchPv(pv) {
   fetchPv(pv).then(response => {
     this.pvData = response.data.pvData
     this.dialogPvVisible = true
