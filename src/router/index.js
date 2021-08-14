@@ -314,7 +314,7 @@ import nestedRouter from './modules/nested'
             path: '/akun',
             component: () => import('@/views/akun'),
             name: 'DirectivePermission',
-            hide : true,
+            hidden : true,
             meta: 
             {
               title: 'Akun',
