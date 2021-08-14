@@ -236,7 +236,7 @@ import nestedRouter from './modules/nested'
         name: 'PagePermission',
         hidden : true,
         meta: {
-          title: 'Penjualan',
+          title: 'Detail Penjualan',
           roles: ['admin'] // or you can only set roles in sub nav
         }
       },
