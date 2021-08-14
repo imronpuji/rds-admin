@@ -273,7 +273,7 @@ export default {
 
       axios.get('/contact').then(response => {
 
-       this.kontak = response.data.contact
+       this.kontak = response.data.contact.filter((val) => val.type == 'customer')
      })
 
       axios.get('/product').then(response => {
