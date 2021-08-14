@@ -3,9 +3,12 @@
 
 	<b><hr></b>
 <h3 style="text-align: center;">
+  CV.EKO BESI
+</h3>
+<p style="text-align:center">
   Margosari Patebon Kendal <br>
   081326260999 / 08112799958
-</h3>
+</p>
 <b><hr></b>
 	<div style="display: inline-block; float:left;">		
 	<h4 style="margin:0">SURAT JALAN</h4>

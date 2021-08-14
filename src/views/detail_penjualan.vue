@@ -47,42 +47,32 @@ style="width: 100%;"
 <el-table-column label="Nama" min-width="150px">
   <template slot-scope="{row}">
       <span class="link-type" @click="handleUpdate(row)">
-          <span v-for="item in row.substocktransaction">{{item['product']['name']}}</span>
+          <span>{{row.product.name}}</span>
       </span>
   </template>
 </el-table-column>
 <el-table-column label="Jumlah barang" width="150px" align="center">
   <template slot-scope="{row}">
-    <span v-for="item in row.substocktransaction">{{item['product']['qty']}}</span>
+    <span>{{row.qty}}</span>
 </template>
 </el-table-column>
 <el-table-column label="Satuan" width="150px" align="center">
   <template slot-scope="{row}">
-    <span v-for="item in row.substocktransaction">{{item['product']['unit']}}</span>
+    <span>{{row.product.unit}}</span>
 </template>
 </el-table-column>
 <el-table-column label="Harga Satuan" width="150px" align="center">
   <template slot-scope="{row}">
-    <span v-for="item in row.substocktransaction">{{item['product']['selling_price']}}</span>
+    <span>{{handleCurrency(row.product.selling_price)}}</span>
 </template>
 </el-table-column>
 <el-table-column label="Total" width="150px" align="center">
   <template slot-scope="{row}">
-      <span>{{handleCurrency(list[0]['total'])}}</span>
+      <span>{{handleCurrency(row.total)}}</span>
   </template>
 </el-table-column>
 
 </el-table-column>
-<!--       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
-            Delete
-          </el-button>
-        </template>
-    </el-table-column> -->
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -215,8 +205,8 @@ methods: {
       this.listLoading = true
       axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(response => {
           console.log(response)
-          this.list = response.data.stocktransaction
-          this.total = response.data.stocktransaction.length
+          this.list = response.data.stocktransaction[0].substocktransaction
+          this.total = response.data.stocktransaction[0].substocktransaction.length
 
         // Just to simulate the time of the request
         setTimeout(() => {
