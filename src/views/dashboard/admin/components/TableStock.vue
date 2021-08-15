@@ -43,8 +43,10 @@ export default {
   methods: {
     fetchData() {
         axios.get('/product').then(response => {
-
-        this.list = response.data.product.sort((a,b) => (a.unit > b.unit) ? 1 : ((b.unit < a.unit) ? -1 : 0))
+          console.log(response)
+        this.list = response.data.product.sort(function(a, b) {
+    return parseFloat(a.qty) - parseFloat(b.qty);
+});
         this.total = response.data.product.length
 
         // Just to simulate the time of the request
