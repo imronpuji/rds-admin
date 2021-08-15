@@ -136,7 +136,6 @@ methods: {
 <style>
   @media print { 
     body {
-       width: 90%; 
        height: 90%; 
        max-height: 500px; 
     } 
