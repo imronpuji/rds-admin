@@ -76,6 +76,11 @@
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
+       <el-form-item label="Bayar Dengan">
+      <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+        <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
+      </el-select>
+    </el-form-item>
     <div v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
       <el-form-item label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
@@ -97,11 +102,7 @@
         <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
       </el-form-item>
     </div>
-    <el-form-item label="Bayar Dengan">
-      <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-        <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
-    </el-form-item>
+ 
     <el-button type="primary" @click="addFind">
       Tambah Produk
     </el-button>   
