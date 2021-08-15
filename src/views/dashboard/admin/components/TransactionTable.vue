@@ -8,11 +8,11 @@
     </el-table-column>
     <el-table-column label="Jumlah" min-width="300">
       <template slot-scope="scope">
-        <span>Rp{{ scope.row.total | toThousandFilter }}</span>
+        <span>{{handleCurrency(scope.row.total)}}</span>
       </template>
     </el-table-column>
   </el-table>
-  <h4>Total : Rp{{total | toThousandFilter}}</h4>
+  <h4>Total : {{handleCurrency(total)}}</h4>
   </div>
 </template>
 
@@ -42,6 +42,10 @@ export default {
     this.fetchData()
   },
   methods: {
+        handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
+   },
     fetchData() {
       axios.get('/akun/iscash').then(response => {
         console.log(response)
