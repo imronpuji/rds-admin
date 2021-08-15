@@ -42,7 +42,7 @@
     </el-table-column>
     <el-table-column label="Customer" min-width="150px">
       <template slot-scope="{row}">
-        <span class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
+        <span v-if="row.contact != null" class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
@@ -262,6 +262,7 @@ export default {
     getList() {
       this.listLoading = true
       axios.get('/stock/out').then(response => {
+        console.log(response)
         this.list = response.data.stocktransaction
         this.total = response.data.stocktransaction.length
 

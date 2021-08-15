@@ -110,8 +110,7 @@
     </el-button>
     <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
   </el-form>
-  <!-- multiple input -->
-</el-form>
+
 <div slot="footer" class="dialog-footer">
   <el-button @click="dialogFormVisible = false">
     Cancel
