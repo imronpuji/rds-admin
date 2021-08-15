@@ -133,3 +133,13 @@ methods: {
 }
 
 </script>
+<style>
+  @media print { 
+    body {
+       width: 90%; 
+       height: 90%; 
+       max-height: 500px; 
+       border: 2px solid;
+    } 
+}
+</style>
