@@ -257,7 +257,7 @@ export default {
 
       axios.get('/contact').then(response => {
        console.log(response)
-       this.kontak = response.data.contact
+       this.kontak = response.data.contact.filter((val) => val.type == 'supplier'
      })
 
       axios.get('/product').then(response => {
@@ -431,7 +431,7 @@ export default {
     message: 'Delete canceled'
   });          
 });
-   
+
  },
  handleFetchPv(pv) {
   fetchPv(pv).then(response => {
