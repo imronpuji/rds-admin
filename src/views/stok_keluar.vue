@@ -94,8 +94,13 @@
     </el-form-item>
     <div v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
       <el-form-item label="Barang">
-        <el-select v-model="all.product_id" required class="filter-item" placeholder="Please select" @change="onChangeProduct(index)">
-          <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id" />
+        <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
+          <el-option
+            v-for="item in product"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="Jumlah Barang">
