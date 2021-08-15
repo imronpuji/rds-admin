@@ -54,9 +54,6 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
     <template slot-scope="{row,$index}">
-     <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
-        Delete
-    </el-button>
     <el-button size="mini" type="danger" @click="handleUpdate(row)">
         Edit
     </el-button>
