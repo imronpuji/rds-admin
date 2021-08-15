@@ -103,10 +103,10 @@
       </el-select>
     </el-form-item>
     <el-button type="primary" @click="addFind">
-      Tambah Form
+      Tambah Produk
     </el-button>   
     <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
-      Hapus Form
+      Hapus Produk
     </el-button>
     <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
   </el-form>
@@ -117,7 +117,7 @@
     Cancel
   </el-button>
   <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-    Confirm
+    Simpan
   </el-button>
 </div>
 </el-dialog>
