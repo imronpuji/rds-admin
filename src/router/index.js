@@ -374,6 +374,7 @@ import nestedRouter from './modules/nested'
      path: '/finansial',
      component: Layout,
      name: 'finansial',
+     hidden : true,
      meta: 
      {
       title: 'Finansial',
@@ -453,7 +454,7 @@ import nestedRouter from './modules/nested'
         {
           path: '/permission',
           component: Layout,
-    alwaysShow: true, // will always show the root menu
+    hidden: true, // will always show the root menu
     name: 'Permission',
     meta: 
     {
