@@ -158,6 +158,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import axios from '@/api/axios'
 import qs from 'qs'
 import checkPermission from '@/utils/permission' // 权限判断函数
+import { mapGetters } from 'vuex'
 
 
 const calendarTypeOptions = [
@@ -187,6 +188,13 @@ export default {
     typeFilter(type) {
       return calendarTypeKeyValue[type]
     }
+  },
+   computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
   },
   data() {
     return {
@@ -364,7 +372,8 @@ export default {
         cashin_id : this.cashout_id,
         product_id,
         qty,
-        total
+        total,
+        staff : this.name
       }
       var encodedValues = qs.stringify(
         data,
