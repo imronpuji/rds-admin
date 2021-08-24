@@ -23,7 +23,7 @@ import nestedRouter from './modules/nested'
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
+    roles: ['admin]    control the page roles (you can set multiple roles)
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
     noCache: true                if set true, the page will no be cached(default is false)
@@ -110,11 +110,11 @@ import nestedRouter from './modules/nested'
   component: Layout,
   name: 'stok',
   meta: 
-  {
-    title: 'Penjualan',
-    icon: 'shopping',
-    roles: ['admin', 'kasir'] // you can set roles in root nav
-  },
+    {
+      title: 'Penjualan',
+      icon: 'shopping',
+      roles: ['admin', 'kasir'] // you can set roles in root nav
+    },
   children : 
   [
   {
@@ -139,7 +139,7 @@ import nestedRouter from './modules/nested'
           {
             title: 'Pembelian',
             icon: 'shopping',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
     },
     children : 
     [
@@ -176,7 +176,7 @@ import nestedRouter from './modules/nested'
       meta: 
       {
         title: 'Kas Keluar',
-        roles: ['admin', 'editor']
+        roles: ['admin', 'kasir']
               // if do not set roles, means: this page does not require permission
             }
           },
@@ -187,7 +187,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Kas Masuk',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
 
@@ -199,7 +199,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
 
@@ -211,7 +211,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
 
@@ -223,7 +223,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Transfer',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
           {
@@ -233,7 +233,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Transfer Kas',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           }
           ]
@@ -249,7 +249,7 @@ import nestedRouter from './modules/nested'
           meta: {
             title: 'Kontak',
             icon: 'example',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
     },
     children: [
     {
@@ -289,7 +289,7 @@ import nestedRouter from './modules/nested'
         name: 'PagePermission',
         meta: {
           title: 'Produk',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       },
       {
@@ -346,7 +346,7 @@ import nestedRouter from './modules/nested'
       meta: {
         title: 'Laporan',
         icon: 'excel',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
     },
     children: [
     {
@@ -403,7 +403,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Akun',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
           {
@@ -414,7 +414,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
 
@@ -426,7 +426,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           },
 
@@ -438,7 +438,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Transfer',
-              roles: ['admin', 'editor']
+              roles: ['admin']
             }
           }
           ]
@@ -460,7 +460,7 @@ import nestedRouter from './modules/nested'
     {
       title: 'Permission',
       icon: 'lock',
-      roles: ['superadmin'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
     },
     children: 
     [
@@ -470,7 +470,7 @@ import nestedRouter from './modules/nested'
       name: 'RolePermission',
       meta: {
         title: 'Role Permission',
-        roles: ['superadmin']
+        roles: ['admin']
       }
     },
     {
@@ -480,7 +480,7 @@ import nestedRouter from './modules/nested'
       meta: 
       {
         title: 'User',
-        roles: ['superadmin']
+        roles: ['admin']
       }
     }
     ]

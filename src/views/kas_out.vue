@@ -14,7 +14,7 @@
     <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
     </el-button>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate" v-if="checkPermission(['admin'])">
         Add
     </el-button>
     <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
@@ -61,7 +61,7 @@ style="width: 100%;"
       <span>{{ row.desc }}</span>
   </template>
 </el-table-column>
-<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width" v-if="checkPermission(['admin'])">
     <template slot-scope="{row,$index}">
        <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
         Delete
@@ -138,6 +138,8 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
+import checkPermission from '@/utils/permission' // 权限判断函数
+
 
 const calendarTypeOptions = [
 { key: 'cash', display_name: 'cash' },
@@ -238,6 +240,7 @@ created() {
     this.getList()
 },
 methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       axios.get('/cash/out').then(response => {
