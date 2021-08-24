@@ -124,7 +124,7 @@ import nestedRouter from './modules/nested'
     meta: {
       icon: 'component',
       title: 'Penjualan',
-              roles: ['admin'] // or you can only set roles in sub nav
+              roles: ['admin', 'kasir'] // or you can only set roles in sub nav
             }
           }
           ]
