@@ -288,8 +288,12 @@ export default {
         }, 1.5 * 1000)
       })
       axios.get('/akun/iscash').then(response => {
-      	
-       this.kas = response.data.akun
+      	if(this.roles == 'kasir'){
+          this.kas = response.data.akun.filter((val) => val.name == "Kas Besar")
+        } else {
+          this.kas = response.data.akun
+
+        }
      })
 
       axios.get('/contact').then(response => {
