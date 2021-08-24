@@ -40,7 +40,7 @@
         <span>{{ row.id }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Customer" min-width="150px">
+    <el-table-column label="Customer" min-width="150px" sortable>
       <template slot-scope="{row}">
         <span v-if="row.contact != null" class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
       </template>
