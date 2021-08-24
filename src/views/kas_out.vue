@@ -94,7 +94,7 @@ style="width: 100%;"
   <!-- multiple input -->
   <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
     <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
-        <el-select v-model="all.biaya" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+        <el-select v-model="all.biaya" required filterable class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>   
     </el-form-item>
@@ -268,7 +268,11 @@ methods: {
     })
       axios.get(`/akun/iscash`).then(response => {
         console.log(response)
-        this.cash = response.data.akun
+        if(this.roles == 'kasir'){          
+          this.cash = response.data.akun.filter((val) => val.name == 'Kas Kecil')
+        } else {
+          this.cash = response.data.akun 
+        }
     })
 
       axios.get(`/akun/iscashout`).then(response => {
