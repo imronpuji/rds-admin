@@ -208,7 +208,6 @@ export default {
       producttype : '',
       jenis_barang : '',
       keterangan : '',
-      name : '',
       selling_price : '',
       purchase_price : '',
       qty : '',

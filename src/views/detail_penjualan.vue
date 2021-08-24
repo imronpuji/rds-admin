@@ -56,6 +56,11 @@ style="width: 100%;"
     <span>{{row.qty}}</span>
 </template>
 </el-table-column>
+<el-table-column label="Staff" width="150px" align="center">
+  <template slot-scope="{row}">
+    <span>{{staff}}</span>
+</template>
+</el-table-column>
 <el-table-column label="Satuan" width="150px" align="center">
   <template slot-scope="{row}">
     <span>{{row.product.unit}}</span>
@@ -155,6 +160,7 @@ export default {
           from : '',
           keterangan : '',
           notCash : [],
+          staff : '',
           tableKey: 0,
           list: null,
           total: 0,
@@ -206,6 +212,7 @@ methods: {
       axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(response => {
           console.log(response)
           this.list = response.data.stocktransaction[0].substocktransaction
+          this.staff = response.data.stocktransaction[0].staff
           this.total = response.data.stocktransaction[0].substocktransaction.length
 
         // Just to simulate the time of the request

@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column label="Nama Akun" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.akun.name }}</span>
+          <span class="link-type" @click="handleUpdate(row)">{{ row.akun }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center">

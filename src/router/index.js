@@ -199,7 +199,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin']
+              roles: ['admin', 'kasir']
             }
           },
 
@@ -211,7 +211,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin']
+              roles: ['admin', 'kasir']
             }
           },
 
@@ -311,7 +311,7 @@ import nestedRouter from './modules/nested'
 
         meta: {
           title: 'Penjualan',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       },
       {
@@ -321,7 +321,7 @@ import nestedRouter from './modules/nested'
         hidden : true,
         meta: {
           title: 'Detail Penjualan',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       },
 
@@ -426,7 +426,7 @@ import nestedRouter from './modules/nested'
             meta: 
             {
               title: 'Detail Kas',
-              roles: ['admin']
+              roles: ['admin', 'kasir']
             }
           },
 
@@ -495,7 +495,7 @@ import nestedRouter from './modules/nested'
         hidden : true,
         meta: {
           title: 'surat jalan',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       },
 
@@ -506,7 +506,7 @@ import nestedRouter from './modules/nested'
         hidden : true,
         meta: {
           title: 'Nota',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       },
 

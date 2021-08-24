@@ -24,10 +24,10 @@
         reviewer
       </el-checkbox>
     </div>
-    <div v-for="data in cashin">
-      <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to.name }}</h5>
+   <!--  <div v-for="data in cashin">
+      <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to }}</h5>
       <h5 style="margin:4px; padding:0">Total : {{ handleCurrency(data.cashin) }}</h5>
-    </div>
+    </div> -->
 
     <el-table
       :key="tableKey"
@@ -46,7 +46,7 @@
       </el-table-column>
       <el-table-column label="Nama Akun" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.akun.name }}</span>
+          <span  class="link-type" @click="handleUpdate(row)">{{ row.akun.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Keterangan" width="150px" align="center">
@@ -155,6 +155,7 @@ export default {
       notCash : [],
       tableKey: 0,
       list: null,
+      name : '',
       total: 0,
       listLoading: true,
       listQuery: {
@@ -208,13 +209,11 @@ export default {
         this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
-        setTimeout(() => {
+      
           this.listLoading = false
-        }, 1.5 * 1000)
+
       })
-       axios.get(`/akun/not/cash`).then(response => {
-        this.biaya = response.data.menu
-      }).catch(() => console.log('err'))
+     
 
     },
     handleCurrency(number){
