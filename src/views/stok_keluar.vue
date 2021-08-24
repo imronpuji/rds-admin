@@ -336,6 +336,8 @@ export default {
     this.$nextTick(() => {
       this.$refs['dataForm'].clearValidate()
     })
+     this.kasIn.all = [{product_id: '', total: '', qty: '', harga: '' }]
+     this.total_kasIn = ''
   },
   createData() {
       // this.$refs['dataForm'].validate((valid) => {

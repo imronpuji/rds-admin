@@ -76,7 +76,7 @@
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
-       <el-form-item label="Bayar Dengan">
+    <el-form-item label="Bayar Dengan">
       <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
@@ -85,32 +85,32 @@
       <el-form-item label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
           <el-option
-            v-for="item in product"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Jumlah Barang">
-        <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
-      </el-form-item>
-      <el-form-item label="Harga Satuan">
-        <el-input disabled v-model="all.harga" required type="text" placeholder="Harga Satuan" />
-      </el-form-item>
-      <el-form-item label="Sub Total">
-        <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
-      </el-form-item>
-    </div>
- 
-    <el-button type="primary" @click="addFind">
-      Tambah Produk
-    </el-button>   
-    <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
-      Hapus Produk
-    </el-button>
-    <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
-  </el-form>
+          v-for="item in product"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="Jumlah Barang">
+      <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
+    </el-form-item>
+    <el-form-item label="Harga Satuan">
+      <el-input disabled v-model="all.harga" required type="text" placeholder="Harga Satuan" />
+    </el-form-item>
+    <el-form-item label="Sub Total">
+      <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
+    </el-form-item>
+  </div>
+  
+  <el-button type="primary" @click="addFind">
+    Tambah Produk
+  </el-button>   
+  <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+    Hapus Produk
+  </el-button>
+  <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
+</el-form>
 
 <div slot="footer" class="dialog-footer">
   <el-button @click="dialogFormVisible = false">
@@ -317,6 +317,8 @@ export default {
     this.$nextTick(() => {
       this.$refs['dataForm'].clearValidate()
     })
+    this.kasIn.all = [{product_id: '', total: '', qty: '', harga: '' }]
+    this.total_kasIn = ''
   },
   createData() {
 
@@ -403,113 +405,113 @@ export default {
   handleDelete(row, index) {
     this.listLoading = true
 
-   this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
+    this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      type: 'warning'
     }).then(() => {
-    axios.delete(`/stock/transaction/delete/${row.id}`)
-   .then((response) => {
-    this.listLoading = false
+      axios.delete(`/stock/transaction/delete/${row.id}`)
+      .then((response) => {
+        this.listLoading = false
 
-    this.$notify({
-      title: 'Success',
-      message: 'Delete Successfully',
-      type: 'success',
-      duration: 2000
-    })
-    this.list.splice(index, 1)
-  })
-   .catch((err) => {
-    this.listLoading = false
-    this.$notify({
-      title: 'Error',
-      message: 'Server Error',
-      type: 'warning',
-      duration: 2000
-    })
-  })
- }).catch(() => {
-    this.listLoading = false
-  this.$message({
-    type: 'info',
-    message: 'Delete canceled'
-  });          
-});
+        this.$notify({
+          title: 'Success',
+          message: 'Delete Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
+      })
+      .catch((err) => {
+        this.listLoading = false
+        this.$notify({
+          title: 'Error',
+          message: 'Server Error',
+          type: 'warning',
+          duration: 2000
+        })
+      })
+    }).catch(() => {
+      this.listLoading = false
+      this.$message({
+        type: 'info',
+        message: 'Delete canceled'
+      });          
+    });
 
- },
- handleFetchPv(pv) {
-  fetchPv(pv).then(response => {
-    this.pvData = response.data.pvData
-    this.dialogPvVisible = true
-  })
-},
-handleDownload() {
-  this.downloadLoading = true
-  import('@/vendor/Export2Excel').then(excel => {
-    const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-    const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-    const data = this.formatJson(filterVal)
-    excel.export_json_to_excel({
-      header: tHeader,
-      data,
-      filename: 'table-list'
+  },
+  handleFetchPv(pv) {
+    fetchPv(pv).then(response => {
+      this.pvData = response.data.pvData
+      this.dialogPvVisible = true
     })
-    this.downloadLoading = false
-  })
-},
-formatJson(filterVal) {
-  return this.list.map(v => filterVal.map(j => {
-    if (j === 'timestamp') {
-      return parseTime(v[j])
-    } else {
-      return v[j]
-    }
-  }))
-},
-getSortClass: function(key) {
-  const sort = this.listQuery.sort
-  return sort === `+${key}` ? 'ascending' : 'descending'
-},
-onChangeCash(event) {
-  console.log(event)
-},
-onChangeModal(event) {
-  console.log(event)
-},
-addFind() {
-  console.log(this.kasIn.all)
-  this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
-},
-deleteFind() {
-  this.kasIn.all.pop();
-},
-onChangeTotal() {
-  const total = this.kasIn.all.reduce(function(accumulator, item) {
+  },
+  handleDownload() {
+    this.downloadLoading = true
+    import('@/vendor/Export2Excel').then(excel => {
+      const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+      const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+      const data = this.formatJson(filterVal)
+      excel.export_json_to_excel({
+        header: tHeader,
+        data,
+        filename: 'table-list'
+      })
+      this.downloadLoading = false
+    })
+  },
+  formatJson(filterVal) {
+    return this.list.map(v => filterVal.map(j => {
+      if (j === 'timestamp') {
+        return parseTime(v[j])
+      } else {
+        return v[j]
+      }
+    }))
+  },
+  getSortClass: function(key) {
+    const sort = this.listQuery.sort
+    return sort === `+${key}` ? 'ascending' : 'descending'
+  },
+  onChangeCash(event) {
+    console.log(event)
+  },
+  onChangeModal(event) {
+    console.log(event)
+  },
+  addFind() {
+    console.log(this.kasIn.all)
+    this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
+  },
+  deleteFind() {
+    this.kasIn.all.pop();
+  },
+  onChangeTotal() {
+    const total = this.kasIn.all.reduce(function(accumulator, item) {
+      console.log(item.total)
+      return accumulator + parseInt(item.total)
+    }, 0)
+    this.total_kasIn = total
+  },
+  onChangeProduct(index){
+   const produk = this.product.filter((val) => {
+    if(val.id == this.kasIn.all[index]['product_id']) {
+     return val
+   }
+ })	
+   this.kasIn.all[index]['qty'] = produk[0]['qty'] == null ? '0' : produk[0]['qty']
+   this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
+   this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
+ }, 
+ onChangeQty(index){
+   const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
+   this.kasIn.all[index]['total'] = result
+   const total = this.kasIn.all.reduce(function(accumulator, item) {
     console.log(item.total)
     return accumulator + parseInt(item.total)
   }, 0)
-  this.total_kasIn = total
-},
-onChangeProduct(index){
- const produk = this.product.filter((val) => {
-  if(val.id == this.kasIn.all[index]['product_id']) {
-   return val
+   this.total_kasIn = total
  }
-})	
- this.kasIn.all[index]['qty'] = produk[0]['qty'] == null ? '0' : produk[0]['qty']
- this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
- this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
-}, 
-onChangeQty(index){
- const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
- this.kasIn.all[index]['total'] = result
-  const total = this.kasIn.all.reduce(function(accumulator, item) {
-    console.log(item.total)
-    return accumulator + parseInt(item.total)
-  }, 0)
-  this.total_kasIn = total
-}
 
 }
 }
