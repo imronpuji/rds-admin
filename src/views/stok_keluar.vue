@@ -55,6 +55,11 @@
         <span>{{ row.created_at }}</span>
       </template>
     </el-table-column>
+    <el-table-column label="Staff" width="150px" align="center">
+   <template slot-scope="{row}">
+        <span>{{ row.staff }}</span>
+      </template>
+  </el-table-column>
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
 
@@ -81,6 +86,7 @@
    </el-button>
  </template>
 </el-table-column>
+
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
