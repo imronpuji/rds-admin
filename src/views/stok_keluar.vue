@@ -58,7 +58,7 @@
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
 
-        <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row, $index)">
+        <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
           Delete
         </el-button>
 
@@ -121,7 +121,7 @@
     <el-button type="primary" @click="addFind">
       Tambah Produk
     </el-button>   
-    <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+    <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind" >
       Hapus Produk
     </el-button>
     <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
@@ -157,6 +157,8 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
+import checkPermission from '@/utils/permission' // 权限判断函数
+
 
 const calendarTypeOptions = [
 { key: 'cash', display_name: 'cash' },
@@ -259,6 +261,7 @@ export default {
     this.getList()
   },
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       axios.get('/stock/out').then(response => {

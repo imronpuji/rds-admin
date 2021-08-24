@@ -14,7 +14,7 @@
     <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
     </el-button>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate" v-if="checkPermission(['admin'])">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
     </el-button>
     <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
@@ -61,12 +61,12 @@ style="width: 100%;"
       <span>{{ row.desc }}</span>
   </template>
 </el-table-column>
-<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width" v-if="checkPermission(['admin'])">
+<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
     <template slot-scope="{row,$index}">
-       <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
+       <el-button type="danger" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
         Delete
-    </el-button>
-    <el-button v-if="row.status!='deleted'" size="mini" type="danger">
+        </el-button>
+    <el-button v-if="row.status!='deleted'" size="mini" type="primary">
         <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
     </el-button>
 </template>
