@@ -56,6 +56,11 @@
           <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
+       <el-table-column label="Staff" min-width="150px">
+        <template slot-scope="{row}">
+          <span @click="handleUpdate(row)">{{ row.staff }}</span>
+        </template>
+      </el-table-column>
        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
           <span>{{ row.created_at }}</span>
@@ -138,6 +143,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
+import { mapGetters } from 'vuex'
 
 const calendarTypeOptions = [
   { key: 'cash', display_name: 'cash' },
@@ -166,6 +172,13 @@ export default {
     typeFilter(type) {
       return calendarTypeKeyValue[type]
     }
+  },
+   computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
   },
   data() {
     return {
@@ -347,7 +360,8 @@ export default {
         keterangan : this.keterangan, 
         desc,
         akun_id,
-        total
+        total,
+        staff : this.name
       }
 
       var encodedValues = qs.stringify(

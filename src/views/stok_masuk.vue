@@ -50,6 +50,11 @@
         <span>{{ handleCurrency(row.total) }}</span>
       </template>
     </el-table-column>
+      <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ row.staff }}</span>
+      </template>
+    </el-table-column>
     <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
         <span>{{ row.created_at }}</span>
@@ -102,7 +107,7 @@
       <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
     </el-form-item>
   </div>
-  
+
   <el-button type="primary" @click="addFind">
     Tambah Produk
   </el-button>   
@@ -141,6 +146,7 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
+import { mapGetters } from 'vuex'
 
 const calendarTypeOptions = [
 { key: 'cash', display_name: 'cash' },
@@ -170,6 +176,14 @@ export default {
       return calendarTypeKeyValue[type]
     }
   },
+     computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
+  },
+
   data() {
     return {
       category : '',
@@ -182,7 +196,6 @@ export default {
       producttype : '',
       jenis_barang : '',
       keterangan : '',
-      name : '',
       selling_price : '',
       purchase_price : '',
       qty : '',
@@ -335,7 +348,8 @@ export default {
      cashout_id : this.cashout_id,
      product_id,
      qty,
-     total
+     total,
+     staff : this.name
    }
    var encodedValues = qs.stringify(
     data,

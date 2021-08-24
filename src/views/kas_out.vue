@@ -61,6 +61,11 @@ style="width: 100%;"
       <span>{{ row.desc }}</span>
   </template>
 </el-table-column>
+<el-table-column label="Staff" min-width="150px">
+    <template slot-scope="{row}">
+      <span @click="handleUpdate(row)">{{ row.staff }}</span>
+  </template>
+</el-table-column>
 <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
     <template slot-scope="{row,$index}">
        <el-button type="danger" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
@@ -139,6 +144,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import axios from '@/api/axios'
 import qs from 'qs'
 import checkPermission from '@/utils/permission' // 权限判断函数
+import { mapGetters } from 'vuex'
 
 
 const calendarTypeOptions = [
@@ -169,6 +175,13 @@ typeFilter(type) {
   return calendarTypeKeyValue[type]
 }
 },
+ computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
+    ])
+  },
 data() {
     return {
         config: {
@@ -333,7 +346,8 @@ createData() {
         keterangan : this.keterangan,
         desc,
         akun_id,
-        total
+        total,
+        staff:this.name
     }
 
     var encodedValues = qs.stringify(
