@@ -101,7 +101,7 @@
       <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
     </el-form-item>
     <el-form-item label="Harga Satuan">
-      <el-input disabled v-model="all.harga" required type="text" placeholder="Harga Satuan" />
+      <el-input v-model="all.harga" required type="text" placeholder="Harga Satuan"  @change="onChangeQty(index)" />
     </el-form-item>
     <el-form-item label="Sub Total">
       <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
@@ -338,9 +338,11 @@ export default {
     const total = []
     const qty = []
     const product_id = []
+    const purchase_price = []
     this.kasIn.all.map((val, index) => {
       qty.push(val.qty)
       total.push(parseInt(val.total))
+      purchase_price.push(parseInt(val.harga))
       product_id.push(val.product_id)
     })
     const data = {
@@ -349,6 +351,7 @@ export default {
      product_id,
      qty,
      total,
+     purchase_price, 
      staff : this.name
    }
    var encodedValues = qs.stringify(

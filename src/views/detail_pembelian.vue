@@ -60,7 +60,7 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Harga Satuan" width="150px" align="center">
   <template slot-scope="{row}">
-    <span>{{handleCurrency(row.product.selling_price)}}</span>
+    <span>{{handleCurrency(row.purchase_price)}}</span>
 </template>
 </el-table-column>
 <el-table-column label="Total" width="150px" align="center">
