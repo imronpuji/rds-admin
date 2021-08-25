@@ -51,11 +51,6 @@
           <span>{{ handleCurrency(row.cashin) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Keterangan" width="150px" align="center" sortable prop="cashin">
-        <template slot-scope="{row}">
-          <span>{{ row.desc }}</span>
-        </template>
-      </el-table-column>
        <el-table-column label="Staff" min-width="150px">
         <template slot-scope="{row}">
           <span @click="handleUpdate(row)">{{ row.staff }}</span>
@@ -358,7 +353,7 @@ export default {
       const data = {
         to: this.to_item,
         keterangan : this.keterangan, 
-        desc:null,
+        desc,
         akun_id,
         total,
         staff : this.name

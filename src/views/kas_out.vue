@@ -345,7 +345,7 @@ createData() {
       const data = {
         from: this.from,
         keterangan : this.keterangan,
-        desc:null,
+        desc,
         akun_id,
         total,
         staff:this.name
