@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
+        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
@@ -25,12 +27,6 @@
       </template>
     </el-table-column>
     <el-table-column label="Customer" min-width="150px">
-       <template slot="header" slot-scope="scope">
-        <el-input
-        v-model="search"
-          size="mini"
-          placeholder="Type to search"/>
-      </template>
       <template slot-scope="{row}">
         <span v-if="row.contact != null" class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
       </template>
