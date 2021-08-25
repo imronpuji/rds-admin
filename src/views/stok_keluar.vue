@@ -4,7 +4,7 @@
         <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
 
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
+        Tambah
       </el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export

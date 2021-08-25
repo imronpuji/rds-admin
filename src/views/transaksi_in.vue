@@ -1,34 +1,20 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="Title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.type" placeholder="Type" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
-      </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        Search
-      </el-button>
+        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
+        Tambah
       </el-button>
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
-      <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
-        reviewer
-      </el-checkbox>
     </div>
 
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list"
+      :data="list.filter(({desc}) => !search || desc.toLowerCase().includes(search.toLowerCase()))"
       :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
       border
       fit
@@ -49,6 +35,11 @@
       <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ handleCurrency(row.cashin) }}</span>
+        </template>
+      </el-table-column>
+       <el-table-column label="Keterangan" min-width="150px">
+        <template slot-scope="{row}">
+          <span @click="handleUpdate(row)">{{ row.desc }}</span>
         </template>
       </el-table-column>
        <el-table-column label="Staff" min-width="150px">
@@ -92,9 +83,6 @@
             <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
               <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
-          </el-form-item>
-          <el-form-item label="Desc">
-            <el-input v-model="all.desc" required type="text" placeholder="Please input" />
           </el-form-item>
           <el-form-item label="Sub Total">
             <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
@@ -177,6 +165,7 @@ export default {
   },
   data() {
     return {
+      search : '',
       config: {
           spinner: false,
           step: 10,
@@ -353,7 +342,7 @@ export default {
       const data = {
         to: this.to_item,
         keterangan : this.keterangan, 
-        desc,
+        desc : null,
         akun_id,
         total,
         staff : this.name
