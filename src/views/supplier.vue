@@ -14,7 +14,7 @@
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list.filter(({name}) => !search || desc.toLowerCase().includes(search.toLowerCase()))"
+      :data="list.filter(({name}) => !search || name.toLowerCase().includes(search.toLowerCase()))"
       border
       fit
       highlight-current-row
