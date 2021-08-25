@@ -98,9 +98,6 @@ style="width: 100%;"
             <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>   
     </el-form-item>
-<el-form-item style=" padding-left:4px" label="Desc">
-    <el-input v-model="all.desc" required type="text" placeholder="Please input" />
-</el-form-item>
 <el-form-item style=" padding-left:4px" label="Sub Total">
     <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
 </el-form-item>
@@ -348,7 +345,7 @@ createData() {
       const data = {
         from: this.from,
         keterangan : this.keterangan,
-        desc,
+        desc:null,
         akun_id,
         total,
         staff:this.name

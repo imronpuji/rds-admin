@@ -358,7 +358,7 @@ export default {
       const data = {
         to: this.to_item,
         keterangan : this.keterangan, 
-        desc,
+        desc:null,
         akun_id,
         total,
         staff : this.name
