@@ -90,6 +90,7 @@
         <el-select v-model="unit">
           <el-option  label="m3" value="m3" />
           <el-option  label="pcs" value="pcs" />
+          <el-option  label="btg" value="btg" />
         </el-select>
       </el-form-item>
       <el-form-item label="Jenis Barang">

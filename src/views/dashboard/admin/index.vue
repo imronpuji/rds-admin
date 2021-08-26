@@ -25,6 +25,7 @@
         </div>
       </el-col>
     </el-row> -->
+        <el-button type="primary" @click="refresh">refresh</el-button>
 
     <el-row :gutter="8">
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
@@ -93,6 +94,9 @@ export default {
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    },
+    refresh(){
+      window.location.reload();
     }
   }
 }

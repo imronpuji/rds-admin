@@ -46,20 +46,30 @@ TGL Transaksi : {{list[0]['created_at']}}
        <td style="text-align: right;">{{handleCurrency(test['total'])}}</td>
      </tr>
      <tr>
-     	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="5" >TOTAL</td>
+     	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="5" >TOTAL TAGIHAN</td>
      	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total)}}</td>
      </tr>
+     <tr>
+      <tr>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">PEMBAYARAN</th>
+        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['paid'])}}</td>
+      </tr>
+      <tr>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">KEKURANGAN</th>
+        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'])}}</td>
+      </tr>
   </tbody>
 </table>
+ 
 <div style="display: inline-block; border: 0px solid; width:40%">		
 	<pre>
 				
-	TTD
+
 
 
 	(	  			  )
 		           
-	PERW.CV.PUTRA QIRANA
+	       PERW.CV.PUTRA QIRANA
 	</pre>
 	</div>
 <div style="display: inline-block; margin-left:10px; float:right; border: 0px solid; width:40%">		
@@ -70,11 +80,12 @@ TGL Transaksi : {{list[0]['created_at']}}
 
 	(	  			  )
 		            
-	PEMBELI
+	              PEMBELI
 	</pre>
 	</div>
 	
-	</div>
+  
+  </div>
 </template>
 
 
@@ -91,7 +102,8 @@ data() {
         	list : [], 
         	total : '',
         	 contact : [], 
-        	 trans : ''
+        	 trans : '',
+           listCredit : []
 		}
 },
 async created() {
@@ -105,6 +117,7 @@ methods: {
   	    await axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(async response => {
           console.log(response)
           this.list = await response.data.stocktransaction[0].substocktransaction
+          this.listCredit = await response.data.stocktransaction[0]
           this.contact = await response.data.stocktransaction[0].contact})
   	    const total = await this.list.reduce((acc, val) => {
   	    	return acc + parseInt(val.total)
