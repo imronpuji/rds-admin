@@ -133,7 +133,7 @@
       </el-form-item>
     </div>
     <el-form-item label="Jumlah Pembayaran">
-      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText(value)"></v-money-spinner>
+      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
     </el-form-item>
     <el-form-item label="Jatuh Tempo">
       <el-date-picker
@@ -231,6 +231,7 @@ export default {
     return {
       jatuh_tempo : '',
       qty_before : '',
+      index_before :'',
       Pembayaran_sebelum : '',
       jumlah_bayar: '',
       kurang_bayar : '',
@@ -325,8 +326,8 @@ export default {
   },
   methods: {
     checkPermission,
-    handleChangeText(val){
-      console.log(val)
+    handleChangeText(i){
+      this.onChangeQty(this.index_before)
       if(this.dialogStatus == 'create'){
 
 
@@ -430,6 +431,10 @@ export default {
       this.$refs['dataForm'].clearValidate()
     })
      this.kasIn.all = [{product_id: '', total: '', qty: '', harga: '' }]
+     this.kurang_bayar = ''
+     this.sisa_bayar = ''
+     this.jumlah_bayar = ''
+     this.index_before = ''
      this.total_kasIn = ''
   },
   createData() {
@@ -621,6 +626,7 @@ onChangeProduct(index){
  const produk = this.product.filter((val) => {
   if(val.id == this.kasIn.all[index]['product_id']) {
   this.qty_before = val.qty
+  this.index_before = index
    return val
  }
 })	
