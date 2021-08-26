@@ -233,7 +233,7 @@ export default {
       qty_before : '',
       index_before :'',
       Pembayaran_sebelum : '',
-      jumlah_bayar: '',
+      jumlah_bayar: 0,
       kurang_bayar : '',
       sisa_bayar : '',
       kembalian : '',
@@ -328,6 +328,7 @@ export default {
     checkPermission,
     handleChangeText(i){
       this.onChangeQty(this.index_before)
+      this.onChangeQty
       if(this.dialogStatus == 'create'){
 
 
