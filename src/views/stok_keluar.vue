@@ -370,7 +370,11 @@ export default {
 
       axios.get('/product').then(response => {
       	
-       this.product = response.data.product
+       this.product = response.data.product.filter((val) => {
+        if(val.qty > 0){
+          return val
+        }
+       })
      })
     },
 
