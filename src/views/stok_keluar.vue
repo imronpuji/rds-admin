@@ -451,7 +451,7 @@ export default {
         qty,
         total,
         payment_due : this.jatuh_tempo,
-        paid : this.jumlah_bayar,
+        paid : this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
         staff : this.name
       }
       var encodedValues = qs.stringify(

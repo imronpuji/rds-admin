@@ -1,121 +1,121 @@
 <template>
   <div class="app-container">
-     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+   <div class="filter-container">
+    <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
 
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Tambah
-      </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
-        Export
-      </el-button>
-    </div>
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      Tambah
+    </el-button>
+    <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      Export
+    </el-button>
+  </div>
 
-<el-table
-:key="tableKey"
-v-loading="listLoading"
-:data="list.filter(({desc}) => !search || desc.toLowerCase().includes(search.toLowerCase()))"
-:default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
-border
-fit
-highlight-current-row
-style="width: 100%;"
-@sort-change="sortChange"
->
-<el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+  <el-table
+  :key="tableKey"
+  v-loading="listLoading"
+  :data="list.filter(({desc}) => !search || desc.toLowerCase().includes(search.toLowerCase()))"
+  :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
+  border
+  fit
+  highlight-current-row
+  style="width: 100%;"
+  @sort-change="sortChange"
+  >
+  <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
     <template slot-scope="{row}">
       <span>{{ row.id }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Keluar Dari Kas" min-width="150px">
+    </template>
+  </el-table-column>
+  <el-table-column label="Keluar Dari Kas" min-width="150px">
     <template slot-scope="{row}">
       <span class="link-type" @click="handleUpdate(row)">{{ row.from.name }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+    </template>
+  </el-table-column>
+  <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
     <template slot-scope="{row}">
       <span>{{ handleCurrency(row.cashout) }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
+    </template>
+  </el-table-column>
+  <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
     <template slot-scope="{row}">
       <span>{{ row.created_at }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Keterangan" width="150px" align="center" sortable prop="date">
+    </template>
+  </el-table-column>
+  <el-table-column label="Keterangan" width="150px" align="center" sortable prop="date">
     <template slot-scope="{row}" >
       <span>{{ row.desc }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Staff" min-width="150px">
+    </template>
+  </el-table-column>
+  <el-table-column label="Staff" min-width="150px">
     <template slot-scope="{row}">
       <span @click="handleUpdate(row)">{{ row.staff }}</span>
-  </template>
-</el-table-column>
-<el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+    </template>
+  </el-table-column>
+  <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
     <template slot-scope="{row,$index}">
-       <el-button type="danger" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
-        Delete
-        </el-button>
-    <el-button v-if="row.status!='deleted'" size="mini" type="primary">
-        <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
+     <el-button type="danger" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
+      Delete
     </el-button>
-</template>
+    <el-button v-if="row.status!='deleted'" size="mini" type="primary">
+      <router-link :to="'/kas/detail/' + row.id">Detail</router-link>
+    </el-button>
+  </template>
 </el-table-column>
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Keluar Dari Kas">
-          <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
-            <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
+  <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
+      <el-form-item label="Keluar Dari Kas">
+        <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
+          <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
-    </el-form-item>
-    <el-form-item label="Keterangan">
-      <el-input v-model="keterangan" placeholder="keterangan" />
-  </el-form-item>
+      </el-form-item>
+      <el-form-item label="Keterangan">
+        <el-input v-model="keterangan" placeholder="keterangan" />
+      </el-form-item>
 
-  <!-- multiple input -->
-  <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
-    <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
-        <el-select v-model="all.biaya" required filterable class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+      <!-- multiple input -->
+      <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
+        <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
+          <el-select v-model="all.biaya" required filterable class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
-        </el-select>   
-    </el-form-item>
-<el-form-item style=" padding-left:4px" label="Sub Total">
-    <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
-</el-form-item>
-</div>
-<el-button type="primary" @click="addFind">
-  Tambah Form
-</el-button>
-<el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
-  Hapus Form
-</el-button>
-<h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
-</el-form>
-<!-- multiple input -->
-<div slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">
-      Cancel
-  </el-button>
-  <el-button type="primary" @click="createData()">
-      Confirm
-  </el-button>
-</div>
-</el-dialog>
+          </el-select>   
+        </el-form-item>
+        <el-form-item style=" padding-left:4px" label="Sub Total">
+          <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
+        </el-form-item>
+      </div>
+      <el-button type="primary" @click="addFind">
+        Tambah Form
+      </el-button>
+      <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+        Hapus Form
+      </el-button>
+      <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
+    </el-form>
+    <!-- multiple input -->
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">
+        Cancel
+      </el-button>
+      <el-button type="primary" @click="createData()">
+        Confirm
+      </el-button>
+    </div>
+  </el-dialog>
 
-<el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-  <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-    <el-table-column prop="key" label="Channel" />
-    <el-table-column prop="pv" label="Pv" />
-</el-table>
-<span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
-</span>
-</el-dialog>
+  <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+    <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+      <el-table-column prop="key" label="Channel" />
+      <el-table-column prop="pv" label="Pv" />
+    </el-table>
+    <span slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+    </span>
+  </el-dialog>
 </div>
 </template>
 
@@ -151,34 +151,34 @@ export default {
         published: 'success',
         draft: 'info',
         deleted: 'danger'
+      }
+      return statusMap[status]
+    },
+    typeFilter(type) {
+      return calendarTypeKeyValue[type]
     }
-    return statusMap[status]
-},
-typeFilter(type) {
-  return calendarTypeKeyValue[type]
-}
-},
- computed: {
+  },
+  computed: {
     ...mapGetters([
       'name',
       'avatar',
       'roles'
-    ])
+      ])
   },
-data() {
+  data() {
     return {
       search : '',
-        config: {
-          spinner: false,
-          step: 10,
-          prefix: "Rp ",
-          precision: 0,
-          decimal: ',',
-          thousands: '.',
-          bootstrap: true,
-          amend: false,
-          masked: false,
-        },
+      config: {
+        spinner: false,
+        step: 10,
+        prefix: "Rp ",
+        precision: 0,
+        decimal: ',',
+        thousands: '.',
+        bootstrap: true,
+        amend: false,
+        masked: false,
+      },
       from: '',
       to_item: '',
       total_kasIn: '',
@@ -186,28 +186,28 @@ data() {
       keterangan : '',
       kasIn: {
         all: [{ biaya: '', total: '', desc: '' }]
-    },
-    tableKey: 0,
-    iscashout : '',
-    list: null,
-    total: 0,
-    listLoading: true,
-    listQuery: {
+      },
+      tableKey: 0,
+      iscashout : '',
+      list: null,
+      total: 0,
+      listLoading: true,
+      listQuery: {
         page: 1,
         limit: 20,
         importance: undefined,
         title: undefined,
         type: undefined,
         sort: '+id'
-    },
-    importanceOptions: [1, 2, 3],
-    calendarTypeOptions,
-    cash: [],
-    biaya: [],
-    sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-    statusOptions: ['published', 'draft', 'deleted'],
-    showReviewer: false,
-    temp: {
+      },
+      importanceOptions: [1, 2, 3],
+      calendarTypeOptions,
+      cash: [],
+      biaya: [],
+      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
+      statusOptions: ['published', 'draft', 'deleted'],
+      showReviewer: false,
+      temp: {
         id: undefined,
         code: '',
         date: '',
@@ -216,27 +216,27 @@ data() {
         to: '',
         chasin: '',
         total: ''
-    },
-    dialogFormVisible: false,
-    dialogStatus: '',
-    textMap: {
+      },
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
         update: 'Edit',
         create: 'Create'
-    },
-    dialogPvVisible: false,
-    pvData: [],
-    rules: {
+      },
+      dialogPvVisible: false,
+      pvData: [],
+      rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-    },
-    downloadLoading: false
-}
-},
-created() {
+      },
+      downloadLoading: false
+    }
+  },
+  created() {
     this.getList()
-},
-methods: {
+  },
+  methods: {
     checkPermission,
     getList() {
       this.listLoading = true
@@ -248,8 +248,8 @@ methods: {
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
-      }, 1.5 * 1000)
-    })
+        }, 1.5 * 1000)
+      })
       axios.get(`/akun/iscash`).then(response => {
         console.log(response)
         if(this.roles == 'kasir'){          
@@ -257,44 +257,44 @@ methods: {
         } else {
           this.cash = response.data.akun 
         }
-    })
+      })
 
       axios.get(`/akun/iscashout`).then(response => {
         this.iscashout = response.data.akun
-    });
+      });
 
-  },
+    },
 
-  handleCurrency(number){
-   const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
-   return idr
-},
-handleFilter() {
+    handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
+   },
+   handleFilter() {
     this.listQuery.page = 1
     this.getList()
-},
-handleModifyStatus(row, status) {
+  },
+  handleModifyStatus(row, status) {
     this.$message({
       message: '操作Success',
       type: 'success'
-  })
+    })
     row.status = status
-},
-sortChange(data) {
+  },
+  sortChange(data) {
     const { prop, order } = data
     if (prop === 'id') {
       this.sortByID(order)
-  }
-},
-sortByID(order) {
+    }
+  },
+  sortByID(order) {
     if (order === 'ascending') {
       this.listQuery.sort = '+id'
-  } else {
+    } else {
       this.listQuery.sort = '-id'
-  }
-  this.handleFilter()
-},
-resetTemp() {
+    }
+    this.handleFilter()
+  },
+  resetTemp() {
     this.temp = {
       id: undefined,
       importance: 1,
@@ -303,17 +303,17 @@ resetTemp() {
       title: '',
       status: 'published',
       type: ''
-  }
-},
-handleCreate() {
+    }
+  },
+  handleCreate() {
     this.resetTemp()
     this.dialogStatus = 'create'
     this.dialogFormVisible = true
     this.$nextTick(() => {
       this.$refs['dataForm'].clearValidate()
-  })
-},
-createData() {
+    })
+  },
+  createData() {
       // this.$refs['dataForm'].validate((valid) => {
       //   if (valid) {
       //     this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
@@ -328,7 +328,7 @@ createData() {
         desc.push(val.desc)
         total.push(parseInt(val.total))
         akun_id.push(val.biaya)
-    })
+      })
       const data = {
         from: this.from,
         keterangan : this.keterangan,
@@ -336,15 +336,15 @@ createData() {
         akun_id,
         total,
         staff:this.name
-    }
+      }
 
-    var encodedValues = qs.stringify(
+      var encodedValues = qs.stringify(
         data,
         { allowDots: true }
         )
-    console.log(encodedValues)
-    axios.post('/cash/out/create', encodedValues)
-    .then((response) => {
+      console.log(encodedValues)
+      axios.post('/cash/out/create', encodedValues)
+      .then((response) => {
         this.getList()
         this.dialogFormVisible = false
         this.$notify({
@@ -352,31 +352,31 @@ createData() {
           message: 'Created Successfully',
           type: 'success',
           duration: 2000
-      })
+        })
         this.kasIn.all = [{ biaya: '', desc: '', total: '' }]
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         this.listLoading = false
         this.$notify({
           title: 'Error',
           message: 'Server Error',
           type: 'warning',
           duration: 2000
+        })
       })
-    })
       // }
       // })
-  },
-  handleUpdate(row) {
+    },
+    handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-    })
-  },
-  updateData() {
+      })
+    },
+    updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
@@ -390,56 +390,56 @@ createData() {
               message: 'Update Successfully',
               type: 'success',
               duration: 2000
+            })
           })
-        })
-      }
-  })
-  },
-  handleDelete(row, index) {
+        }
+      })
+    },
+    handleDelete(row, index) {
 
-          this.listLoading = true
+      this.listLoading = true
 
-   this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+      this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel',
         type: 'warning'
-    }).then(() => {
-    axios.delete(`/cash/transaction/delete/${row.id}`)
-   .then((response) => {
-    this.listLoading = false
+      }).then(() => {
+        axios.delete(`/cash/transaction/delete/${row.id}`)
+        .then((response) => {
+          this.listLoading = false
 
-    this.$notify({
-      title: 'Success',
-      message: 'Delete Successfully',
-      type: 'success',
-      duration: 2000
-    })
-    this.list.splice(index, 1)
-  })
-   .catch((err) => {
-    this.listLoading = false
-    this.$notify({
-      title: 'Error',
-      message: 'Server Error',
-      type: 'warning',
-      duration: 2000
-    })
-  })
- }).catch(() => {
-    this.listLoading = false
-  this.$message({
-    type: 'info',
-    message: 'Delete canceled'
-  });          
-});
-  },
-  handleFetchPv(pv) {
+          this.$notify({
+            title: 'Success',
+            message: 'Delete Successfully',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+        .catch((err) => {
+          this.listLoading = false
+          this.$notify({
+            title: 'Error',
+            message: 'Server Error',
+            type: 'warning',
+            duration: 2000
+          })
+        })
+      }).catch(() => {
+        this.listLoading = false
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        });          
+      });
+    },
+    handleFetchPv(pv) {
       fetchPv(pv).then(response => {
         this.pvData = response.data.pvData
         this.dialogPvVisible = true
-    })
-  },
-  handleDownload() {
+      })
+    },
+    handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['id', 'name', 'cashout']
@@ -449,43 +449,43 @@ createData() {
           header: tHeader,
           data,
           filename: 'table-list'
-      })
+        })
         this.downloadLoading = false
-    })
-  },
-  formatJson(filterVal) {
+      })
+    },
+    formatJson(filterVal) {
       return this.list.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j])
-      } else {
+        } else {
           return v[j]
-      }
-  }))
-  },
-  getSortClass: function(key) {
+        }
+      }))
+    },
+    getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
-  },
-  onChangeCash(event) {
+    },
+    onChangeCash(event) {
       console.log(event)
-  },
-  onChangeModal(event) {
+    },
+    onChangeModal(event) {
       console.log(event)
-  },
-  addFind() {
+    },
+    addFind() {
       this.kasIn.all.push({ biaya: '', desc: '', total: '' })
-  },
-  deleteFind() {
+    },
+    deleteFind() {
       this.kasIn.all.pop();
-  },
-  onChangeTotal() {
+    },
+    onChangeTotal() {
       const total = this.kasIn.all.reduce(function(accumulator, item) {
         console.log(item.total)
         return accumulator + parseInt(item.total)
-    }, 0)
+      }, 0)
       this.total_kasIn = total
-  }
+    }
 
-}
+  }
 }
 </script>
