@@ -230,6 +230,7 @@ export default {
   data() {
     return {
       jatuh_tempo : '',
+      qty_before : '',
       Pembayaran_sebelum : '',
       jumlah_bayar: '',
       kurang_bayar : '',
@@ -619,6 +620,7 @@ onChangeTotal() {
 onChangeProduct(index){
  const produk = this.product.filter((val) => {
   if(val.id == this.kasIn.all[index]['product_id']) {
+  this.qty_before = val.qty
    return val
  }
 })	
@@ -627,6 +629,9 @@ onChangeProduct(index){
  this.kasIn.all[index]['total'] = parseInt(produk[0]['selling_price']) *  parseInt(produk[0]['qty'])
 }, 
 onChangeQty(index){
+  if(this.kasIn.all[index]['qty'] > this.qty_before){
+    this.kasIn.all[index]['qty'] = this.qty_before
+  } else {
  const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
  this.kasIn.all[index]['total'] = result
  const total = this.kasIn.all.reduce(function(accumulator, item) {
@@ -634,6 +639,7 @@ onChangeQty(index){
   return accumulator + parseInt(item.total)
 }, 0)
  this.total_kasIn = total
+}
 }
 
 }
