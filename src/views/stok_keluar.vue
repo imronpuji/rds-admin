@@ -434,7 +434,7 @@ export default {
      this.kasIn.all = [{product_id: '', total: '', qty: '', harga: '' }]
      this.kurang_bayar = ''
      this.sisa_bayar = ''
-     this.jumlah_bayar = ''
+     this.jumlah_bayar = 0
      this.index_before = ''
      this.total_kasIn = ''
   },
