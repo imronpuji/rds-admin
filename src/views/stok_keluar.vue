@@ -31,9 +31,24 @@
         <span v-if="row.contact != null" class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+    <el-table-column label="Total Tagihan" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
         <span>{{ handleCurrency(row.total) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Jumlah Bayar" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ handleCurrency(row.paid) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ handleCurrency(row.total - row.paid) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ row.payment_due }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
@@ -49,13 +64,20 @@
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
 
-        <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row, $index)" v-if="checkPermission(['admin'])">
+         <el-button v-if="row.total != row.jumlah_bayar" type="primary" size="mini" @click="handleUpdate(row)">
+          Kredit
+        </el-button>
+        <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
           Delete
         </el-button>
 
       <el-button size="mini" type="warning">
         <router-link :to="'/stok/keluar/detail/' + row.id">Detail</router-link>
       </el-button>
+       <el-button size="mini" type="warning">
+        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
+      </el-button>
+
     </template>
   </el-table-column>
   <el-table-column label="Surat Jalan" width="150px" align="center">
@@ -78,8 +100,8 @@
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
   <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-     <el-form-item label="Customer">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 550px; margin-left:50px;">
+     <el-form-item label="Customer" v-if="dialogStatus == 'create'">
       <el-select v-model="contact_id" required class="filter-item" placeholder="Please select">
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
@@ -89,7 +111,8 @@
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
-    <div v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
+
+    <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
       <el-form-item label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
           <el-option
@@ -110,13 +133,26 @@
         <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
       </el-form-item>
     </div>
-    <el-button type="primary" @click="addFind">
+    <el-form-item label="Jumlah Pembayaran">
+      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText(value)"></v-money-spinner>
+    </el-form-item>
+    <el-form-item label="Jatuh Tempo">
+      <el-date-picker
+        v-model="jatuh_tempo"
+        type="date"
+        placeholder="Jatuh Tempo">
+      </el-date-picker>
+    </el-form-item>
+    
+    <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
       Tambah Produk
     </el-button>   
-    <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind" >
+    <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
       Hapus Produk
     </el-button>
-    <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
+    <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
+    <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
+    <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
   </el-form>
   <!-- multiple input -->
 </el-form>
@@ -192,17 +228,25 @@ export default {
 
   },
 
-  // watch: {
-  //   // whenever question changes, this function will run
-  //   search: function (val) {
-  //     this.search = val
-  //     this.list =  this.list.filter(data => {
-  //       return data.contact.name.toLowerCase().includes(this.search.toLowerCase())
-  //     }) 
-  //   }
-  // },
   data() {
     return {
+      jatuh_tempo : '',
+      Pembayaran_sebelum : '',
+      jumlah_bayar: '',
+      kurang_bayar : '',
+      sisa_bayar : '',
+      kembalian : '',
+      config: {
+        spinner: false,
+        step: 10,
+        prefix: "Rp ",
+        precision: 0,
+        decimal: ',',
+        thousands: '.',
+        bootstrap: true,
+        amend: false,
+        masked: false,
+      },
       category : '',
       kontak : [],
       kas :[],
@@ -272,9 +316,33 @@ export default {
   },
   created() {
     this.getList()
+    let DD = new Date().getDate()
+    let MM = new Date().getMonth()
+    let YYYY = new Date().getFullYear()
+
+    this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
+    console.log(this.jatuh_tempo)
   },
   methods: {
     checkPermission,
+    handleChangeText(val){
+      console.log(val)
+      if(this.dialogStatus == 'create'){
+
+
+      if(this.jumlah_bayar > this.total_kasIn){
+        this.sisa_bayar = this.jumlah_bayar - this.total_kasIn
+        this.kurang_bayar = ''
+
+      } else {
+        this.kurang_bayar = this.total_kasIn - this.jumlah_bayar
+        this.sisa_bayar = ''
+
+      }
+    } else {
+      this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
+    }
+    },
     getList() {
       this.listLoading = true
       axios.get('/stock/out').then(response => {
@@ -383,6 +451,8 @@ export default {
         product_id,
         qty,
         total,
+        payment_due : this.jatuh_tempo,
+        paid : this.jumlah_bayar,
         staff : this.name
       }
       var encodedValues = qs.stringify(
@@ -413,14 +483,19 @@ export default {
       // })
     },
     handleUpdate(row) {
-      this.name = row.cashout.name
+      // this.name = row.contact.name
       this.id = row.id
-      this.selling_price = row.selling_price
-      this.purchase_price = row.purchase_price
-      this.unit = row.unit
-      this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
-      this.qty = row.qty
+      // this.unit = row.unit
+      // this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
+      // this.qty = row.qty
+      this.total_kasIn = row.total
+      this.cashin_id = row.cashin_id
+      this.jumlah_bayar = row.paid
+      this.jatuh_tempo = row.payment_due
+      this.total_kasIn = row.total
+      this.kurang_bayar = row.total - row.paid
       this.dialogStatus = 'update'
+      this.Pembayaran_sebelum = row.paid
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -429,14 +504,12 @@ export default {
     updateData() {
      this.listLoading = true
      const data = {
-      name : this.name,
-      selling_price : this.selling_price,
-      purchase_price : this.purchase_price,
-      unit : this.unit,
-      producttype : this.producttype
+      payment_due : this.jatuh_tempo,
+      cashin_id : this.cashin_id,
+      total : this.jumlah_bayar,
     }
-
-    axios.put(`/product/edit/${this.id}`, data)
+    console.log(data)
+    axios.put(`/stock/edit/${this.id}`, data)
     .then((response) => {
       this.getList()
       this.dialogFormVisible = false

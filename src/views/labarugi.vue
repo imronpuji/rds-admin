@@ -16,7 +16,7 @@
     </el-tree>
 
     <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Total HPP</h4>  <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
+        <h4 style="padding:0; margin:0">Total Pendapatan</h4>  <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
     </div>
 
     <el-tree
@@ -33,7 +33,7 @@
  </span>
 </el-tree>
 <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Total Pendapatan</h4>  <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
+        <h4 style="padding:0; margin:0">Total HPP</h4>  <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
     </div>
 
 
@@ -168,6 +168,7 @@ data() {
 },
 created() {
     this.getList()
+
 },
 methods: {
     getList() {

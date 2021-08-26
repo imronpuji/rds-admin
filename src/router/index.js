@@ -216,6 +216,18 @@ import nestedRouter from './modules/nested'
           },
 
           {
+            path: '/kredit/detail/:id',
+            component: () => import('@/views/kredit_detail'),
+            name: 'RolePermission',
+            hidden: true,
+            meta: 
+            {
+              title: 'Detail Kas',
+              roles: ['admin', 'kasir']
+            }
+          },
+
+          {
             path: '/transfer/detail/:id',
             component: () => import('@/views/transfer_detail'),
             name: 'RolePermission',
