@@ -46,25 +46,10 @@
         <span>{{ handleCurrency(row.total - row.paid) }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
-      <template slot-scope="{row}">
-        <span>{{ row.payment_due }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
-      <template slot-scope="{row}">
-        <span>{{ row.created_at }}</span>
-      </template>
-    </el-table-column>
-    <el-table-column label="Staff" width="150px" align="center">
-   <template slot-scope="{row}">
-        <span>{{ row.staff }}</span>
-      </template>
-  </el-table-column>
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
 
-         <el-button v-if="row.total != row.jumlah_bayar" type="primary" size="mini" @click="handleUpdate(row)">
+         <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
           Kredit
         </el-button>
         <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
@@ -80,21 +65,31 @@
 
     </template>
   </el-table-column>
-  <el-table-column label="Surat Jalan" width="150px" align="center">
+  <el-table-column label="Cetak" width="150px" align="center">
     <template slot-scope="{row}">
       <el-button type="primary" size="mini">
-       <router-link :to="'/stok/keluar/surat/jalan/' + row.id">Buat Surat Jalan</router-link>
+       <router-link :to="'/stok/keluar/surat/jalan/' + row.id"> Surat Jalan</router-link>
      </el-button>
+       <el-button type="primary" size="mini">
+     <router-link :to="'/stok/keluar/nota/' + row.id"> Nota</router-link>
+   </el-button>
    </template>
  </el-table-column> 
- <el-table-column label="Nota" width="150px" align="center">
-  <template slot-scope="{row}">
-    <el-button type="primary" size="mini">
-     <router-link :to="'/stok/keluar/nota/' + row.id">Cetak Nota</router-link>
-   </el-button>
- </template>
-</el-table-column>
-
+    <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ row.payment_due }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ row.created_at }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Staff" width="150px" align="center">
+   <template slot-scope="{row}">
+        <span>{{ row.staff }}</span>
+      </template>
+  </el-table-column>
 </el-table>
 
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -490,7 +485,7 @@ export default {
       // this.qty = row.qty
       this.total_kasIn = row.total
       this.cashin_id = row.cashin_id
-      this.jumlah_bayar = row.paid
+      this.jumlah_bayar = ''
       this.jatuh_tempo = row.payment_due
       this.total_kasIn = row.total
       this.kurang_bayar = row.total - row.paid

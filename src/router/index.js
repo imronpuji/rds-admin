@@ -261,7 +261,7 @@ import nestedRouter from './modules/nested'
           meta: {
             title: 'Kontak',
             icon: 'example',
-      roles: ['admin'] // you can set roles in root nav
+      roles: ['admin', 'kasir'] // you can set roles in root nav
     },
     children: [
     {
@@ -270,7 +270,7 @@ import nestedRouter from './modules/nested'
       name: 'PagePermission',
       meta: {
         title: 'Kontak',
-          roles: ['admin'] // or you can only set roles in sub nav
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
         }
       }
       ]
