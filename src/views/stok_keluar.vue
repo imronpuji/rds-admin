@@ -50,7 +50,7 @@
       <template slot-scope="{row,$index}">
 
          <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
-          Kredit
+          Bayar
         </el-button>
         <el-button type="primary" slot="reference" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
           Delete
