@@ -53,7 +53,7 @@ export default {
     TransactionTable,
     TableStok
   },
-  method : {
+  methods : {
      refresh(){
       window.location.reload();
     }
