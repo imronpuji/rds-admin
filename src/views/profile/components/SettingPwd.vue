@@ -29,14 +29,14 @@ export default {
           password : '',
           newPassword : '',
           rePassword : '',
-          id : ''
         }
       }
     }
   },
    computed: {
     ...mapGetters([
-      'token'
+      'token',
+      'id'
     ])
   },
   methods: {
@@ -47,8 +47,14 @@ export default {
         newPassword : this.user.newPassword,
         rePassword : this.user.rePassword
       }
-     axios.put(`/edit/password/${this.user.id}`, data)
+
+        this.user.password = ''
+        this.user.newPassword = '' 
+        this.user.rePassword = ''
+     axios.put(`/edit/password/${this.id}`, data)
      .then((response) => {
+
+      
       this.dialogFormVisible = false
       this.$notify({
         title: 'Success',
