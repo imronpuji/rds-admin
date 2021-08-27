@@ -31,7 +31,11 @@ const mutations = {
   },
   SET_EMAIL: (state, email) => {
     state.email = email
+  },
+  SET_ID: (state, id) => {
+    state.id = id
   }
+
 }
 
 const actions = {
@@ -64,7 +68,7 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction, email } = data.user[0]
+        const { roles, name, avatar, introduction, email, id } = data.user[0]
 
         // roles must be a non-empty array
         const role = roles.map((val) => val.name)
@@ -77,6 +81,7 @@ const actions = {
         }
 
       commit('SET_NAME', name)
+      commit('SET_ID', id)
       commit('SET_AVATAR', 'https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png')
       commit('SET_EMAIL', email)
       commit('SET_INTRODUCTION', 'introduction')

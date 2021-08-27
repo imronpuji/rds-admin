@@ -1,10 +1,13 @@
 <template>
   <el-form>
-    <el-form-item label="Name">
-      <el-input v-model.trim="user.name" />
+    <el-form-item label="Password Lama">
+      <el-input v-model.trim="user.password" />
     </el-form-item>
-    <el-form-item label="Email">
-      <el-input v-model.trim="user.email" />
+    <el-form-item label="Password Baru">
+      <el-input v-model.trim="user.newPassword" />
+    </el-form-item>
+    <el-form-item label="Konfirmasi Password">
+      <el-input v-model.trim="user.rePassword" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">Update</el-button>
@@ -24,6 +27,8 @@ export default {
           name: '',
           email: '',
           password : '',
+          newPassword : '',
+          rePassword : '',
           id : ''
         }
       }
@@ -36,14 +41,15 @@ export default {
   },
   methods: {
     submit() {
-      console.log(this.token)
 
-     axios.put(`/user/edit/${this.user.id}`, {name : this.user.name, email : this.user.email}, {
-       headers: {
-        'Authorization': `Bearier ${this.token}` 
+      const data = {
+        password : this.user.password,
+        newPassword : this.user.newPassword,
+        rePassword : this.user.rePassword
       }
-     })
+     axios.put(`/edit/password/${this.user.id}`, data)
      .then((response) => {
+      this.dialogFormVisible = false
       this.$notify({
         title: 'Success',
         message: 'Update Successfully',
@@ -59,7 +65,6 @@ export default {
     })
      })
      
-
      this.$store.dispatch('user/getInfo')
    }
  }
