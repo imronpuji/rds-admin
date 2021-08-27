@@ -259,9 +259,36 @@ export default {
         }
       })
 
-      axios.get(`/akun/iscashout`).then(response => {
-        this.iscashout = response.data.akun
-      });
+      // if(roles == 'admin'){
+      //   axios.get(`/akun/iscashout`).then(response => {
+      //     this.iscashout = response.data.akun
+      //   });
+      // } else {
+       axios.get('/report/Biaya').then((response) =>
+        {
+          console.log(response)
+            const biaya = []
+            function pecahFee(val){
+              
+              val.filter(values => {
+                if(values.children) {
+                  if(values.isheader == 0){
+
+                  biaya.push(values)
+                  }
+                  pecahFee(values.children)
+                } else {
+                  return false
+                }
+              })
+
+            }
+
+            console.log(pecahFee(response.data.akun))
+           this.iscashout = biaya
+
+        });
+     // }
 
     },
 
