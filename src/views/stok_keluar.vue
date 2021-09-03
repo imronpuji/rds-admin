@@ -631,7 +631,7 @@ onChangeProduct(index){
    return val
  }
 })	
- this.kasIn.all[index]['qty'] = produk[0]['qty'] == null ? '0' : produk[0]['qty']
+ this.kasIn.all[index]['qty'] = 0
  this.kasIn.all[index]['harga'] = produk[0]['selling_price']
  this.kasIn.all[index]['total'] = parseInt(produk[0]['selling_price']) *  parseInt(produk[0]['qty'])
 }, 
