@@ -508,7 +508,12 @@ export default {
    this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
  }, 
  onChangeQty(index){
-   const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
+
+  let qty = parseFloat(
+        this.kasIn.all[index]['qty'].replace(/,/g, ".")
+  ).toFixed(2);
+
+   const result = qty * parseInt(this.kasIn.all[index]['harga'])
    this.kasIn.all[index]['total'] = result
    const total = this.kasIn.all.reduce(function(accumulator, item) {
     console.log(item.total)

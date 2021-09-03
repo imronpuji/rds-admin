@@ -639,7 +639,12 @@ onChangeQty(index){
   if(this.kasIn.all[index]['qty'] > this.qty_before){
     this.kasIn.all[index]['qty'] = this.qty_before
   } else {
- const result = parseInt(this.kasIn.all[index]['qty']) * parseInt(this.kasIn.all[index]['harga'])
+
+  let qty = parseFloat(
+        this.kasIn.all[index]['qty'].replace(/,/g, ".")
+  ).toFixed(2);
+
+ const result = qty * parseInt(this.kasIn.all[index]['harga'])
  this.kasIn.all[index]['total'] = result
  const total = this.kasIn.all.reduce(function(accumulator, item) {
   console.log(item.total)
