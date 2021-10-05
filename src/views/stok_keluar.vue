@@ -67,18 +67,18 @@
 
     </template>
   </el-table-column>
-  <el-table-column label="Cetak" width="150px" align="center">
-    <template slot-scope="{row}">
-      <el-button type="primary" size="mini">
-       <router-link :to="'/stok/keluar/surat/jalan/' + row.id"> Surat Jalan</router-link>
+    <el-table-column label="Cetak" width="150px" align="center">
+      <template slot-scope="{row}">
+        <el-button type="primary" size="mini">
+         <router-link :to="'/stok/keluar/surat/jalan/' + row.id"> Surat Jalan</router-link>
+       </el-button>
+       <br>
+       <br>
+         <el-button type="primary" size="mini">
+       <router-link :to="'/stok/keluar/nota/' + row.id"> Nota</router-link>
      </el-button>
-     <br>
-     <br>
-       <el-button type="primary" size="mini">
-     <router-link :to="'/stok/keluar/nota/' + row.id"> Nota</router-link>
-   </el-button>
-   </template>
- </el-table-column> 
+     </template>
+   </el-table-column> 
     <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
         <span>{{ row.payment_due }}</span>
@@ -143,7 +143,7 @@
       </el-date-picker>
     </el-form-item>
     
-    <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
+    <el-button :loading="loading" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
       Tambah Produk
     </el-button>   
     <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
@@ -156,7 +156,7 @@
   <!-- multiple input -->
 </el-form>
 <div slot="footer" class="dialog-footer">
-  <el-button @click="dialogFormVisible = false">
+  <el-button  :loading="loading" @click="dialogFormVisible = false">
     Cancel
   </el-button>
   <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
@@ -312,7 +312,8 @@ export default {
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      loading : false
     }
   },
   created() {
@@ -445,7 +446,7 @@ export default {
       //     this.temp.author = 'vue-element-admin'
       //     createArticle(this.temp).then(() => {
       //
-
+      this.loading = true
 
       const total = []
       const qty = []
@@ -472,7 +473,8 @@ export default {
       axios.post('/stock/out/create', encodedValues)
       .then((response) => {
         this.getList()
-        this.dialogFormVisible = false
+        this.dialogFormVisible = false          
+        this.loading = false
         this.$notify({
           title: 'Success',
           message: 'Created Successfully',
@@ -482,6 +484,7 @@ export default {
       })
       .catch((err) => {
         this.listLoading = false
+        this.loading = false
         this.$notify({
           title: 'Error',
           message: 'Server Error',
@@ -610,8 +613,9 @@ onChangeModal(event) {
 
 },
 addFind() {
-
+  
   this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
+
 },
 deleteFind() {
   this.kasIn.all.pop();
@@ -637,7 +641,7 @@ onChangeProduct(index){
 }, 
 onChangeQty(index){
   if(this.kasIn.all[index]['qty'] > this.qty_before){
-    this.kasIn.all[index]['qty'] = this.qty_before
+    this.kasIn.all[index]['qty'] = 0
   } else {
 
   let qty = parseFloat(

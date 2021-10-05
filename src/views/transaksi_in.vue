@@ -101,7 +101,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="createData()">
+        <el-button :loading="loading" type="primary" @click="createData()">
           Confirm
         </el-button>
       </div>
@@ -223,7 +223,9 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
+      loading : false,
       rules: {
+
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
@@ -330,6 +332,8 @@ export default {
       //     this.temp.author = 'vue-element-admin'
       //     createArticle(this.temp).then(() => {
       //
+        
+      this.loading = true
 
       const desc = []
       const total = []
@@ -352,9 +356,11 @@ export default {
         data,
         { allowDots: true }
       )
-      console.log(encodedValues)
+
       axios.post('/cash/in/create', encodedValues)
         .then((response) => {
+      this.loading = false
+
           this.getList()
           this.dialogFormVisible = false
           this.$notify({
@@ -366,6 +372,8 @@ export default {
           this.kasIn.all = [{ modal: '', desc: '', total: '' }]
         })
         .catch((err) => {
+      this.loading = false
+
           this.listLoading = false
            this.$notify({
             title: 'Error',

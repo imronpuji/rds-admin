@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button size="mini" type="danger" @click="handleUpdate(row)">
+          <el-button size="mini" type="primary" @click="handleUpdate(row)">
             Edit
           </el-button>
         </template>
@@ -78,7 +78,7 @@
             <el-input v-model="address" placeholder="Alamat" />
         </el-form-item>
         <el-form-item label="Kontak">
-            <el-input v-model="contact" placeholder="Kontak" />
+            <el-input v-model="contact" placeholder="Kontak" type="number"/>
         </el-form-item>
         <el-form-item label="Deskripsi">
             <el-input v-model="desc" placeholder="desc" />
@@ -95,7 +95,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
         </el-button>
       </div>
@@ -107,7 +107,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button :loading="loading" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -204,6 +204,7 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
+      loading : false,
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
@@ -301,10 +302,12 @@ export default {
         contact : this.contact,
         type : this.tipe,
       }
-                this.dialogFormVisible = false
+      this.loading = true
 
       axios.post('/contact/create', data)
         .then((response) => {
+      this.loading = false
+
           this.getList()
           this.dialogFormVisible = false
           this.$notify({
@@ -315,6 +318,8 @@ export default {
           })
         })
         .catch((err) => {
+      this.loading = false
+
           this.listLoading = false
            this.$notify({
             title: 'Error',
@@ -348,9 +353,12 @@ export default {
         contact : this.contact,
         type : this.tipe,
       }
+      this.loading = true
 
       axios.put(`/contact/edit/${this.id}`, data)
         .then((response) => {
+      this.loading = false
+
           this.getList()
           this.dialogFormVisible = false
           this.$notify({
@@ -361,13 +369,20 @@ export default {
           })
           throw new Error('Something went badly wrong!')
         })
-        .catch((err) => err)
+        .catch((err) => {
+      this.loading = false
+
+        })
     },
     handleDelete(row, index) {
        this.listLoading = true
+      this.loading = true
+
       axios.delete(`/contact/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
+      this.loading = false
+
           console.log(response)
           this.$notify({
             title: 'Success',
@@ -378,6 +393,8 @@ export default {
           this.list.splice(index, 1)
         })
         .catch((err) => {
+      this.loading = false
+
           this.listLoading = false
            this.$notify({
             title: 'Error',

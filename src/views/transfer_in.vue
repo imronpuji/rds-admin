@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="danger" size="mini" @click="handleDelete(row, $index)">
+          <el-button :loading="loading" type="danger" size="mini" @click="handleDelete(row, $index)">
             Delete
           </el-button>
         </template>
@@ -94,7 +94,7 @@
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button type="primary" @click="createData()">
+        <el-button :loading="loading" type="primary" @click="createData()">
           Confirm
         </el-button>
       </div>
@@ -215,6 +215,7 @@ export default {
       },
       dialogPvVisible: false,
       pvData: [],
+      loading : false,
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
@@ -319,7 +320,7 @@ export default {
       //     this.temp.author = 'vue-element-admin'
       //     createArticle(this.temp).then(() => {
       //
-
+      this.loading = true
       const total = []
       const akun_id = []
       this.kasIn.all.map((val, index) => {
@@ -342,6 +343,8 @@ export default {
       console.log(encodedValues)
       axios.post('/cash/transfer/create', encodedValues)
         .then((response) => {
+      this.loading = false
+
           this.getList()
           this.dialogFormVisible = false
           this.$notify({
@@ -352,7 +355,10 @@ export default {
           })
           this.kasIn.all = [{ modal: '', desc: '', total: '' }]
         })
-        .catch((err) => err)
+        .catch((err) => {
+      this.loading = false
+
+        })
       // }
       // })
     },
@@ -397,6 +403,7 @@ export default {
     axios.delete(`/cash/transaction/delete/${row.id}`)
    .then((response) => {
     this.listLoading = false
+      this.loading = false
 
     this.$notify({
       title: 'Success',
@@ -407,6 +414,8 @@ export default {
     this.list.splice(index, 1)
   })
    .catch((err) => {
+      this.loading = false
+
     this.listLoading = false
     this.$notify({
       title: 'Error',
@@ -416,6 +425,8 @@ export default {
     })
   })
  }).catch(() => {
+      this.loading = false
+  
     this.listLoading = false
   this.$message({
     type: 'info',

@@ -55,6 +55,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -99,4 +100,5 @@ export default {
   .mobile .fixed-header {
     width: 100%;
   }
+
 </style>

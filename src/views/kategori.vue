@@ -59,7 +59,7 @@ style="width: 100%;"
         <el-button @click="dialogFormVisible = false">
           Cancel
       </el-button>
-      <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+      <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
           Confirm
       </el-button>
   </div>
@@ -71,7 +71,7 @@ style="width: 100%;"
     <el-table-column prop="pv" label="Pv" />
 </el-table>
 <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+    <el-button :loading="loadig" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
 </span>
 </el-dialog>
 </div>
@@ -167,6 +167,7 @@ data() {
     },
     dialogPvVisible: false,
     pvData: [],
+    loading : false,
     rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
@@ -258,11 +259,12 @@ createData() {
       const data = {
         name : this.name,
     }
-
+    this.loading = true
     axios.post('/producttype/create', data)
     .then((response) => {
       this.getList()
       this.dialogFormVisible = false
+      this.loading = false
       this.$notify({
         title: 'Success',
         message: 'Created Successfully',
@@ -271,6 +273,7 @@ createData() {
     })
   })
     .catch((err) => {
+      this.dialogFormVisible = false
       this.listLoading = false
       this.$notify({
         title: 'Error',
@@ -292,6 +295,8 @@ createData() {
     })
   },
   updateData() {
+      this.loading = true
+
      this.listLoading = true
      const data = {
         name : this.name,
@@ -299,6 +304,7 @@ createData() {
 
     axios.put(`/producttype/edit/${this.id}`, data)
     .then((response) => {
+      this.loading = false
       this.getList()
       this.dialogFormVisible = false
       this.$notify({
@@ -309,13 +315,18 @@ createData() {
     })
       throw new Error('Something went badly wrong!')
   })
-    .catch((err) => err)
+    .catch((err) => {
+      this.loading = false
+    })
 },
 handleDelete(row, index) {
  this.listLoading = true
+ this.loading = true
+
  axios.delete(`/producttype/delete/${row.id}`)
  .then((response) => {
   this.listLoading = false
+  this.loading = false
   console.log(response)
   this.$notify({
     title: 'Success',
@@ -327,6 +338,7 @@ handleDelete(row, index) {
 })
  .catch((err) => {
   this.listLoading = false
+  this.loading = false
   this.$notify({
     title: 'Error',
     message: 'Server Error',

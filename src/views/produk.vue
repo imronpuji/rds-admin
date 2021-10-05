@@ -103,7 +103,7 @@
       <el-button @click="dialogFormVisible = false">
         Cancel
       </el-button>
-      <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+      <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
         Confirm
       </el-button>
     </div>
@@ -115,7 +115,7 @@
       <el-table-column prop="pv" label="Pv" />
     </el-table>
     <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+      <el-button :loading="loading" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
     </span>
   </el-dialog>
 </div>
@@ -162,6 +162,7 @@ export default {
   data() {
     return {
       search : '',
+      loading : false,
       config: {
         spinner: false,
         step: 10,
@@ -326,9 +327,10 @@ export default {
         unit : this.unit,
         producttype : parseInt(this.producttype),
       }
-
+      this.loading = true
       axios.post('/product/create', data)
       .then((response) => {
+        this.loading = false
         this.getList()
         this.dialogFormVisible = false
         this.$notify({
@@ -339,6 +341,8 @@ export default {
         })
       })
       .catch((err) => {
+      this.loading = false
+
         this.listLoading = false
         this.$notify({
           title: 'Error',
@@ -373,9 +377,10 @@ export default {
       unit : this.unit,
       producttype : this.producttype
     }
-
+    this.loading = true
     axios.put(`/product/edit/${this.id}`, data)
     .then((response) => {
+      this.loading = false
       this.getList()
       this.dialogFormVisible = false
       this.$notify({
@@ -386,7 +391,10 @@ export default {
       })
       throw new Error('Something went badly wrong!')
     })
-    .catch((err) => err)
+    .catch((err) => {
+      this.loading = false
+
+    })
   },
   handleDelete(row, index) {
     this.listLoading = true

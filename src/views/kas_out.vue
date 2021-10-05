@@ -101,7 +101,7 @@
       <el-button @click="dialogFormVisible = false">
         Cancel
       </el-button>
-      <el-button type="primary" @click="createData()">
+      <el-button :loading="loading" type="primary" @click="createData()">
         Confirm
       </el-button>
     </div>
@@ -168,6 +168,7 @@ export default {
   data() {
     return {
       search : '',
+      loading : '',
       config: {
         spinner: false,
         step: 10,
@@ -347,7 +348,7 @@ export default {
       //     this.temp.author = 'vue-element-admin'
       //     createArticle(this.temp).then(() => {
       //
-
+      this.loading = true
       const desc = []
       const total = []
       const akun_id = []
@@ -369,9 +370,10 @@ export default {
         data,
         { allowDots: true }
         )
-      console.log(encodedValues)
       axios.post('/cash/out/create', encodedValues)
       .then((response) => {
+      this.loading = false
+
         this.getList()
         this.dialogFormVisible = false
         this.$notify({
@@ -384,6 +386,8 @@ export default {
       })
       .catch((err) => {
         this.listLoading = false
+      this.loading = false
+
         this.$notify({
           title: 'Error',
           message: 'Server Error',
