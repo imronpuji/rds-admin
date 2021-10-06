@@ -584,23 +584,21 @@ handleDownload() {
   this.downloadLoading = true
   import('@/vendor/Export2Excel').then(excel => {
     const tHeader = ['Customer', 'Total Tagihan', 'Jumlah Bayar', 'Hutang', 'Jatuh Tempo']
-    const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+    const filterVal = ['name', 'total', 'paid', 'hutang', 'payment_due']
     const data = this.formatJson(filterVal)
     excel.export_json_to_excel({
       header: tHeader,
       data,
-      filename: 'table-list'
+      filename: 'penjualan'
     })
     this.downloadLoading = false
   })
 },
 formatJson(filterVal) {
   return this.list.map(v => filterVal.map(j => {
-    if (j === 'timestamp') {
-      return parseTime(v[j])
-    } else {
-      return v[j]
-    }
+    v['name'] = v.contact.name
+    v['hutang'] = v.total - v.paid
+    return v[j]
   }))
 },
 getSortClass: function(key) {
