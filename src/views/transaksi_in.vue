@@ -80,7 +80,7 @@
         <!-- multiple input -->
         <div v-for="(all, index) in kasIn.all" style="padding:0px; margin:0px; border-radius:4px;">
           <el-form-item label="Sebagai Akun" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
-            <el-select v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+            <el-select filterable  v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
               <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>

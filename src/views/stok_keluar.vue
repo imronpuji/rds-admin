@@ -143,7 +143,7 @@
       </el-date-picker>
     </el-form-item>
     
-    <el-button :loading="loading" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
+    <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
       Tambah Produk
     </el-button>   
     <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
@@ -156,10 +156,10 @@
   <!-- multiple input -->
 </el-form>
 <div slot="footer" class="dialog-footer">
-  <el-button  :loading="loading" @click="dialogFormVisible = false">
+  <el-button   @click="dialogFormVisible = false">
     Cancel
   </el-button>
-  <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+  <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
     Simpan
   </el-button>
 </div>
@@ -274,6 +274,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      loading : false,
       listQuery: {
         page: 1,
         limit: 20,
@@ -313,7 +314,6 @@ export default {
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
       downloadLoading: false,
-      loading : false
     }
   },
   created() {
@@ -470,6 +470,7 @@ export default {
         data,
         { allowDots: true }
         )
+
       axios.post('/stock/out/create', encodedValues)
       .then((response) => {
         this.getList()

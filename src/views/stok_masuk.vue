@@ -107,7 +107,7 @@
   <el-button @click="dialogFormVisible = false">
     Cancel
   </el-button>
-  <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+  <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
     Simpan
   </el-button>
 </div>
@@ -236,7 +236,8 @@ export default {
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      loading : false,
     }
   },
   created() {
@@ -321,7 +322,7 @@ export default {
     this.total_kasIn = ''
   },
   createData() {
-
+    this.loading = true
     const total = []
     const qty = []
     const product_id = []
@@ -347,6 +348,8 @@ export default {
     )
    axios.post('/stock/in/create', encodedValues)
    .then((response) => {
+    this.loading = false
+
     this.getList()
     this.dialogFormVisible = false
     this.$notify({
@@ -357,6 +360,8 @@ export default {
     })
   })
    .catch((err) => {
+    this.loading = false
+
     this.listLoading = false
     this.$notify({
       title: 'Error',
@@ -384,6 +389,7 @@ export default {
     },
     updateData() {
      this.listLoading = true
+     this.loading = true
      const data = {
       name : this.name,
       selling_price : this.selling_price,
@@ -394,6 +400,8 @@ export default {
 
     axios.put(`/product/edit/${this.id}`, data)
     .then((response) => {
+    this.loading = false
+
       this.getList()
       this.dialogFormVisible = false
       this.$notify({
@@ -404,7 +412,10 @@ export default {
       })
       throw new Error('Something went badly wrong!')
     })
-    .catch((err) => err)
+    .catch((err) => {
+    this.loading = false
+
+    })
   },
   handleDelete(row, index) {
     this.listLoading = true
