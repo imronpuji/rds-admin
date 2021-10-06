@@ -583,7 +583,7 @@ handleFetchPv(pv) {
 handleDownload() {
   this.downloadLoading = true
   import('@/vendor/Export2Excel').then(excel => {
-    const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+    const tHeader = ['Customer', 'Total Tagihan', 'Jumlah Bayar', 'Hutang', 'Jatuh Tempo']
     const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
     const data = this.formatJson(filterVal)
     excel.export_json_to_excel({
