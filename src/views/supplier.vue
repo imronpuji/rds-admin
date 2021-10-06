@@ -413,24 +413,21 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+        const tHeader = ['Nama', 'Kontak', 'Alamat', 'Deskripsi', 'Tipe Kontak']
+        const filterVal = ['name', 'contact', 'address', 'desc', 'type']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'table-list'
+          filename: 'kontak'
         })
         this.downloadLoading = false
       })
     },
     formatJson(filterVal) {
       return this.list.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
+
           return v[j]
-        }
       }))
     },
     getSortClass: function(key) {

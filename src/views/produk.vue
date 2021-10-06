@@ -442,24 +442,22 @@ export default {
   handleDownload() {
     this.downloadLoading = true
     import('@/vendor/Export2Excel').then(excel => {
-      const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-      const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+      const tHeader = ['Nama Produk', 'QTY', 'Harga Beli', 'Harga Jual', 'Unit', 'Jenis Barang']
+      const filterVal = ['name', 'qty', 'selling_price', 'purchase_price', 'unit', 'type']
       const data = this.formatJson(filterVal)
       excel.export_json_to_excel({
         header: tHeader,
         data,
-        filename: 'table-list'
+        filename: 'produk'
       })
       this.downloadLoading = false
     })
   },
   formatJson(filterVal) {
     return this.list.map(v => filterVal.map(j => {
-      if (j === 'timestamp') {
-        return parseTime(v[j])
-      } else {
+        v['type'] = v.producttype.name
         return v[j]
-      }
+      
     }))
   },
   getSortClass: function(key) {
