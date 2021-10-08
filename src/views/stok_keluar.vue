@@ -126,10 +126,10 @@
         <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
       </el-form-item>
       <el-form-item label="Harga Satuan">
-        <el-input v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"/>
+        <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
       </el-form-item>
       <el-form-item label="Sub Total">
-        <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
+        <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" ></v-money-spinner>
       </el-form-item>
     </div>
     <el-form-item label="Jumlah Pembayaran">
@@ -268,7 +268,7 @@ export default {
       total_kasIn: '',
       pemasukan : '',
       kasIn: {
-        all: [{product_id: '', total: '', qty: '', harga: '' }]
+        all: [{product_id: '', total: '', qty: '', harga: 0 }]
       },
       tableKey: 0,
       list: null,
@@ -432,7 +432,7 @@ export default {
     this.$nextTick(() => {
       this.$refs['dataForm'].clearValidate()
     })
-     this.kasIn.all = [{product_id: '', total: '', qty: '', harga: '' }]
+     this.kasIn.all = [{product_id: '', total: '', qty: '', harga: 0}]
      this.kurang_bayar = ''
      this.sisa_bayar = ''
      this.jumlah_bayar = 0
@@ -613,7 +613,7 @@ onChangeModal(event) {
 },
 addFind() {
   
-  this.kasIn.all.push({product_id: '', total: '', qty: '', harga: '' })
+  this.kasIn.all.push({product_id: '', total: '', qty: '', harga: 0 })
 
 },
 deleteFind() {

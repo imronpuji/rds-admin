@@ -479,7 +479,7 @@ export default {
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: 'Kas-Masuk'
+          filename: 'Kas-Keluar'
         })
         this.downloadLoading = false
       })
