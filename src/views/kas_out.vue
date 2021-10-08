@@ -286,7 +286,7 @@ export default {
             }
 
             console.log(pecahFee(response.data.akun))
-           this.iscashout = biaya
+           this.iscashout = biaya.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) 
 
         });
      // }

@@ -263,7 +263,7 @@ export default {
 
       axios.get(`/akun/iscashin`).then(response => {
         console.log(response)
-        this.modal = response.data.akun
+        this.modal = response.data.akun.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) 
       })
       .catch(() => {
         this.listLoading = false
