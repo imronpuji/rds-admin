@@ -6,7 +6,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Tambah
       </el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
     </div>
@@ -455,10 +455,16 @@ export default {
       })
     },
     formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
-          v['from'] = v.from.name
-          v['to'] = v.to.name
-          return v[j]
+      return this.list.map((v, i) => filterVal.map((j, index) => {
+          
+          let from = v.from.name
+          let to = v.to.name
+          console.log(v[j])
+          if(from != undefined){
+            v['from'] = from
+            v['to'] = to
+            return v[j]
+          }
       }))
     },
     getSortClass: function(key) {
