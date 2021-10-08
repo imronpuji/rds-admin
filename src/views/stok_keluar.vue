@@ -84,7 +84,14 @@
         <span>{{ row.payment_due }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
+    <el-table-column width="150px" align="center"
+      prop="date"
+      label="Date"
+      sortable
+      column-key="date"
+      :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+      :filter-method="filterHandler"
+    >
       <template slot-scope="{row}">
         <span>{{ row.created_at }}</span>
       </template>
@@ -346,6 +353,10 @@ export default {
       this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
     }
     },
+     filterHandler(value, row, column) {
+        const property = column['property'];
+        return row[property] === value;
+    },
     getList() {
       this.listLoading = true
       axios.get('/stock/out').then(response => {
@@ -583,8 +594,8 @@ handleFetchPv(pv) {
 handleDownload() {
   this.downloadLoading = true
   import('@/vendor/Export2Excel').then(excel => {
-    const tHeader = ['Customer', 'Total Tagihan', 'Jumlah Bayar', 'Hutang', 'Jatuh Tempo']
-    const filterVal = ['name', 'total', 'paid', 'hutang', 'payment_due']
+    const tHeader = ['id','Customer', 'Total Tagihan', 'Jumlah Bayar', 'Hutang', 'Jatuh Tempo']
+    const filterVal = ['id','name', 'total', 'paid', 'hutang', 'payment_due']
     const data = this.formatJson(filterVal)
     excel.export_json_to_excel({
       header: tHeader,

@@ -413,8 +413,8 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Nama', 'Kontak', 'Alamat', 'Deskripsi', 'Tipe Kontak']
-        const filterVal = ['name', 'contact', 'address', 'desc', 'type']
+        const tHeader = ['id','Nama', 'Kontak', 'Alamat', 'Deskripsi', 'Tipe Kontak']
+        const filterVal = ['id','name', 'contact', 'address', 'desc', 'type']
         const data = this.formatJson(filterVal)
         excel.export_json_to_excel({
           header: tHeader,
