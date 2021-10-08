@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container" style="width:50%; box-shadow:2">
+    <div class="app-container" style="width:100%; box-shadow:2">
 
         <el-tree
         :data="listHarta"
