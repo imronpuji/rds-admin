@@ -274,9 +274,8 @@ export default {
               
               val.filter(values => {
                 if(values.children) {
-                  if(values.isheader == 0){
-
-                  biaya.push(values)
+                  if(values.iscashout == 0){
+                      biaya.push(values)
                   }
                   pecahFee(values.children)
                 } else {
