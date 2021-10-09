@@ -21,8 +21,8 @@
     style="width: 100%;"
     @sort-change="sortChange"
     >
-    <el-table-column label="ID" prop="id" sortable align="center" width="80" >
-      <template slot-scope="{row}">
+    <el-table-column sortable prop="cashin" label="ID" align="center" width="80" >
+      <template  slot-scope="{row}">
         <span>{{ row.id }}</span>
       </template>
     </el-table-column>
