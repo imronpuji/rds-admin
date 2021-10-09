@@ -106,20 +106,30 @@
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
   <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 550px; margin-left:50px;">
-     <el-form-item label="Customer" v-if="dialogStatus == 'create'">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="180px" style="width: 100% !important; margin-left:50px;" :inline="true">
+     <el-form-item class="k" label="Customer" v-if="dialogStatus == 'create'">
       <el-select v-model="contact_id" required class="filter-item" placeholder="Please select">
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
-    <el-form-item label="Masuk Ke Kas">
+    <el-form-item class="k" label="Masuk Ke Kas">
       <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
-
-    <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
-      <el-form-item label="Barang">
+    <el-form-item class="k" label="Jumlah Pembayaran">
+      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+    </el-form-item>
+    <el-form-item class="k" label="Jatuh Tempo">
+      <el-date-picker
+        v-model="jatuh_tempo"
+        type="date"
+        placeholder="Jatuh Tempo">
+      </el-date-picker>
+    </el-form-item>
+    
+    <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; width:100% !important">
+      <el-form-item class="k" label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
           <el-option
             v-for="item in product"
@@ -129,33 +139,19 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="Jumlah Barang">
+      <el-form-item class="k" label="Jumlah Barang">
         <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
       </el-form-item>
-      <el-form-item label="Harga Satuan">
+      <el-form-item class="k" label="Harga Satuan">
         <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
       </el-form-item>
-      <el-form-item label="Sub Total">
+      <el-form-item class="k" label="Sub Total">
         <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" ></v-money-spinner>
       </el-form-item>
     </div>
-    <el-form-item label="Jumlah Pembayaran">
-      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
-    </el-form-item>
-    <el-form-item label="Jatuh Tempo">
-      <el-date-picker
-        v-model="jatuh_tempo"
-        type="date"
-        placeholder="Jatuh Tempo">
-      </el-date-picker>
-    </el-form-item>
+
     
-    <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
-      Tambah Produk
-    </el-button>   
-    <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
-      Hapus Produk
-    </el-button>
+   
     <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
     <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
     <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
@@ -163,6 +159,12 @@
   <!-- multiple input -->
 </el-form>
 <div slot="footer" class="dialog-footer">
+ <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
+    Tambah Produk
+  </el-button>   
+  <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
+    Hapus Produk
+  </el-button>
   <el-button   @click="dialogFormVisible = false">
     Cancel
   </el-button>

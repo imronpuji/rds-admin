@@ -1,4 +1,5 @@
 <template>
+
   <div class="app-container">
      <div class="filter-container">
         <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
@@ -111,7 +112,11 @@
     </el-dialog>
   </div>
 </template>
-
+  <style type="text/css">
+    .el_dialog {
+      background: blue!important;
+    }
+  </style>
 <script>
 import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
