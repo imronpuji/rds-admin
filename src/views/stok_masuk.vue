@@ -64,7 +64,7 @@
     <el-form label-position="top"
 :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
      <el-form-item class="k" label="Supplier">
-      <el-select v-model="contact_id" required class="filter-item" placeholder="Please select">
+      <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select">
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>

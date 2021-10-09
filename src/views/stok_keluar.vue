@@ -108,7 +108,7 @@
   <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
     <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="180px" style="width: 100% !important; margin-left:50px;" :inline="true">
      <el-form-item class="k" label="Customer" v-if="dialogStatus == 'create'">
-      <el-select v-model="contact_id" required class="filter-item" placeholder="Please select">
+      <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select">
         <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
