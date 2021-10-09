@@ -649,7 +649,8 @@ onChangeProduct(index){
 })	
  this.kasIn.all[index]['qty'] = 0
  this.kasIn.all[index]['harga'] = produk[0]['selling_price']
- this.kasIn.all[index]['total'] = parseInt(produk[0]['selling_price'])
+ this.kasIn.all[index]['total'] = 0
+ // parseInt(produk[0]['selling_price'])
 }, 
 onChangeQty(index){
   if(this.kasIn.all[index]['qty'] > this.qty_before){
