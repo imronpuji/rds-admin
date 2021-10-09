@@ -127,7 +127,7 @@
         placeholder="Jatuh Tempo">
       </el-date-picker>
     </el-form-item>
-    
+
     <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; width:100% !important">
       <el-form-item class="k" label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
@@ -649,7 +649,7 @@ onChangeProduct(index){
 })	
  this.kasIn.all[index]['qty'] = 0
  this.kasIn.all[index]['harga'] = produk[0]['selling_price']
- this.kasIn.all[index]['total'] = parseInt(produk[0]['selling_price']) *  parseInt(produk[0]['qty'])
+ this.kasIn.all[index]['total'] = parseInt(produk[0]['selling_price'])
 }, 
 onChangeQty(index){
   if(this.kasIn.all[index]['qty'] > this.qty_before){
