@@ -169,7 +169,7 @@ export default {
   data() {
     return {
       search : '',
-      loading : '',
+      loading : false,
       config: {
         spinner: false,
         step: 10,
