@@ -26,7 +26,7 @@
         <span>{{ row.id }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Supplier" min-width="150px">
+    <el-table-column label="Supplier" min-width="150px" sortable>
       <template slot-scope="{row}">
         <span class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
       </template>
@@ -88,10 +88,11 @@
       <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
     </el-form-item>
     <el-form-item class="k" label="Harga Satuan">
-      <el-input v-model="all.harga" required type="text" placeholder="Harga Satuan"  @change="onChangeQty(index)" />
-    </el-form-item>
-    <el-form-item class="k" label="Sub Total">
-      <el-input disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" />
+        <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+      </el-form-item>
+      <el-form-item class="k" label="Sub Total">
+        <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()" ></v-money-spinner>
+      </el-form-item>
     </el-form-item>
   </div>
 
@@ -193,6 +194,17 @@ export default {
       to_item: '',
       total_kasIn: '',
       pemasukan : '',
+       config: {
+        spinner: false,
+        step: 10,
+        prefix: "Rp ",
+        precision: 0,
+        decimal: ',',
+        thousands: '.',
+        bootstrap: true,
+        amend: false,
+        masked: false,
+      },
       kasIn: {
         all: [{product_id: '', total: '', qty: '', harga: '' }]
       },
@@ -472,7 +484,7 @@ export default {
       excel.export_json_to_excel({
         header: tHeader,
         data,
-        filename: 'table-list'
+        filename: 'pembelian'
       })
       this.downloadLoading = false
     })
