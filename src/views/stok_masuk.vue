@@ -250,7 +250,7 @@ export default {
       this.listLoading = true
       axios.get('/stock/in').then(response => {
         console.log(response)
-        this.list = response.data.stocktransaction
+        this.list = response.data.stocktransaction.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)) 
         this.total = response.data.stocktransaction.length
 
         // Just to simulate the time of the request

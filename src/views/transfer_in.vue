@@ -461,16 +461,12 @@ export default {
       })
     },
     formatJson(filterVal) {
+
       return this.list.map((v, i) => filterVal.map((j, index) => {
+
+             return j == 'from' || j == 'to' ? v[j]['name'] : v[j]
+
           
-          let from = v.from.name
-          let to = v.to.name
-          console.log(v[j])
-          if(from != undefined){
-            v['from'] = from
-            v['to'] = to
-            return v[j]
-          }
       }))
     },
     getSortClass: function(key) {

@@ -221,8 +221,8 @@ export default {
     getList() {
       this.listLoading = true
       axios.get('/contact').then(response => {
-        console.log(response)
-        this.list = response.data.contact
+        this.list = response.data.contact.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) 
+        console.log(this.list)
         this.total = response.data.contact.length
 
         // Just to simulate the time of the request
