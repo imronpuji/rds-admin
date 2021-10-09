@@ -67,24 +67,25 @@
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
   <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
-      <el-form-item label="Keluar Dari Kas">
+    <el-form label-position="top"
+:inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="150px" style="width: 100%; margin-left:50px;">
+      <el-form-item class="k" label="Keluar Dari Kas">
         <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeCash($event)">
           <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item label="Keterangan">
+      <el-form-item class="k" label="Keterangan">
         <el-input v-model="keterangan" placeholder="keterangan" />
       </el-form-item>
 
       <!-- multiple input -->
-      <div v-for="(all, index) in kasIn.all" style=" padding:8px; margin:8px; border-radius:4px;">
-        <el-form-item style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px" label="Sebagai Akun">
+      <div v-for="(all, index) in kasIn.all" style="display:flex; padding:8px; border-radius:4px; width:100%">
+        <el-form-item class="k" style=" padding-left:4px" label="Sebagai Akun">
           <el-select v-model="all.biaya" required filterable class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>   
         </el-form-item>
-        <el-form-item style=" padding-left:4px" label="Sub Total">
+        <el-form-item class="k" style=" padding-left:4px" label="Sub Total">
           <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
       </div>

@@ -72,21 +72,22 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
      <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Dari Kas">
+      <el-form label-position="top"
+:inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
+        <el-form-item class="k" label="Dari Kas">
           <el-select v-model="from" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Ke Kas">
+        <el-form-item class="k" label="Ke Kas">
           <el-select v-model="to_item" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Keterangan">
+        <el-form-item class="k" label="Keterangan">
           <el-input v-model="keterangan" required type="text" placeholder="Please input" />
         </el-form-item>
-        <el-form-item label="Sub Total">
+        <el-form-item class="k" label="Sub Total">
           <v-money-spinner v-model="total_transfer" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
       </el-form>

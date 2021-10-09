@@ -10,7 +10,7 @@
         Export
       </el-button>
     </div>
-
+ 
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -67,24 +67,25 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Masuk Ke Kas">
+      <el-form label-position="top"
+:inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
+        <el-form-item class="k" label="Masuk Ke Kas">
           <el-select v-model="to_item" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in cash" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Keterangan">
+        <el-form-item class="k" label="Keterangan">
             <el-input v-model="keterangan" placeholder="Keterangan" />
         </el-form-item>
 
         <!-- multiple input -->
-        <div v-for="(all, index) in kasIn.all" style="padding:0px; margin:0px; border-radius:4px;">
-          <el-form-item label="Sebagai Akun" style="border-left: 2px solid rgba(0,0,0,0.1); padding-left:4px">
+        <div v-for="(all, index) in kasIn.all" style=" display:flex; width:100%; padding:0px; margin:0px; ">
+          <el-form-item class="k" label="Sebagai Akun" style=" padding-left:4px">
             <el-select filterable  v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
               <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
             </el-select>
           </el-form-item>
-          <el-form-item label="Sub Total">
+          <el-form-item class="k" label="Sub Total">
             <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
           </el-form-item>
         </div>

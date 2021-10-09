@@ -70,20 +70,21 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Nama">
+      <el-form label-position="top"
+:inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
+        <el-form-item class="k" label="Nama">
             <el-input v-model="name" placeholder="Nama" />
         </el-form-item>
-        <el-form-item label="Alamat">
+        <el-form-item class="k" label="Alamat">
             <el-input v-model="address" placeholder="Alamat" />
         </el-form-item>
-        <el-form-item label="Kontak">
+        <el-form-item class="k" label="Kontak">
             <el-input v-model="contact" placeholder="Kontak" type="number"/>
         </el-form-item>
-        <el-form-item label="Deskripsi">
+        <el-form-item class="k" label="Deskripsi">
             <el-input v-model="desc" placeholder="desc" />
         </el-form-item>
-        <el-form-item label="Tipe Kontak">
+        <el-form-item class="k" label="Tipe Kontak">
           <el-select v-model="tipe">
             <el-option label="supplier" value="supplier" />
             <el-option label="karyawan" value="karyawan" />

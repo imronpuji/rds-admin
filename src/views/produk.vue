@@ -76,24 +76,25 @@
 <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
   <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-      <el-form-item label="Nama Barang">
+    <el-form label-position="top"
+:inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
+      <el-form-item class="k" label="Nama Barang">
         <el-input v-model="name" placeholder="Nama Barang" />
       </el-form-item>
-      <el-form-item label="Harga Beli">
+      <el-form-item class="k" label="Harga Beli">
         <v-money-spinner v-model="purchase_price" v-bind="config"></v-money-spinner>
       </el-form-item>
-      <el-form-item label="Harga Jual">
+      <el-form-item class="k" label="Harga Jual">
         <v-money-spinner v-model="selling_price" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
       </el-form-item>
-      <el-form-item label="UNIT">
+      <el-form-item class="k" label="UNIT">
         <el-select v-model="unit">
           <el-option  label="m3" value="m3" />
           <el-option  label="pcs" value="pcs" />
           <el-option  label="btg" value="btg" />
         </el-select>
       </el-form-item>
-      <el-form-item label="Jenis Barang">
+      <el-form-item class="k" label="Jenis Barang">
         <el-select v-model="producttype" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
           <el-option v-for="item in jenis_barang" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
