@@ -26,12 +26,12 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Nama" min-width="150px">
+      <el-table-column sortable label="Nama" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Kontak" width="150px" align="center" sortable prop="cashin">
+      <el-table-column label="No. Telepon" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ row.contact }}</span>
         </template>
@@ -78,8 +78,8 @@
         <el-form-item class="k" label="Alamat">
             <el-input v-model="address" placeholder="Alamat" />
         </el-form-item>
-        <el-form-item class="k" label="Kontak">
-            <el-input v-model="contact" placeholder="Kontak" type="number"/>
+        <el-form-item class="k" label="No. Telepon">
+            <el-input v-model="contact" placeholder="No. Telepon" type="number"/>
         </el-form-item>
         <el-form-item class="k" label="Deskripsi">
             <el-input v-model="desc" placeholder="desc" />
@@ -108,7 +108,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button :loading="loading" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button :loading="loading" type="primary" @click="dialogPvVisible = false">Konfirmasi</el-button>
       </span>
     </el-dialog>
   </div>
@@ -201,7 +201,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'Tambah Kontak'
       },
       dialogPvVisible: false,
       pvData: [],
