@@ -259,13 +259,14 @@ export default {
         } else {
           this.cash = response.data.akun 
         }
-      })
+      })  
 
-      // if(roles == 'admin'){
-      //   axios.get(`/akun/iscashout`).then(response => {
-      //     this.iscashout = response.data.akun
-      //   });
-      // } else {
+      if(this.roles == 'admin'){
+        axios.get('/akun/iscashout').then(response => {
+          console.log(response)
+          this.iscashout = response.data.akun.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+        });
+      } else {
        axios.get('/report/Biaya').then((response) =>
         {
           console.log(response)
@@ -289,7 +290,7 @@ export default {
            this.iscashout = biaya.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)) 
 
         });
-     // }
+     }
 
     },
 

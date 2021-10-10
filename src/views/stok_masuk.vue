@@ -534,7 +534,9 @@ export default {
   let qty = parseFloat(
         this.kasIn.all[index]['qty'].replace(/,/g, ".")
   ).toFixed(2);
-
+  this.kasIn.all[index]['qty'] = parseFloat(
+        this.kasIn.all[index]['qty'].replace(/,/g, ".")
+  ).toFixed(2)
    const result = qty * parseInt(this.kasIn.all[index]['harga'])
    this.kasIn.all[index]['total'] = result
    const total = this.kasIn.all.reduce(function(accumulator, item) {
