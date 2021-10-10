@@ -21,12 +21,12 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="ID" prop="cashin" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column sortable label="Nama" min-width="150px">
+      <el-table-column prop="cashin" sortable label="Nama" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
         </template>
@@ -46,7 +46,7 @@
           <span>{{ row.desc }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Tipe Kontak" width="150px" align="center" sortable>
+      <el-table-column label="Tipe Kontak" width="150px" align="center" prop="cashin" sortable>
         <template slot-scope="{row}" >
           <span>{{ row.type }}</span>
         </template>
