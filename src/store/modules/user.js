@@ -78,6 +78,10 @@ const actions = {
             commit('SET_ROLES', ['user'])
         } else {
           commit('SET_ROLES', role)
+          if(!localStorage.getItem('role')){
+            localStorage.setItem('role', role)
+            window.location.reload()
+          }
         }
 
       commit('SET_NAME', name)
@@ -95,6 +99,7 @@ const actions = {
 
   // user logout
   logout({ commit, state, dispatch }) {
+    localStorage.removeItem('role')
     return new Promise((resolve, reject) => {
 
       NProgress.start()

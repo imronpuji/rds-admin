@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+
 Vue.use(Router)
 
 /* Layout */
@@ -38,6 +39,11 @@ import nestedRouter from './modules/nested'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+
+
+ // role
+let role = localStorage.getItem('role')
+
  export const constantRoutes = [
  {
   path: '/redirect',
@@ -175,7 +181,7 @@ import nestedRouter from './modules/nested'
       name: 'DirectivePermission',
       meta: 
       {
-        title: 'Kas Keluar',
+        title: role == 'kasir' ? 'Biaya' : 'Kas Keluar',
         roles: ['admin', 'kasir']
               // if do not set roles, means: this page does not require permission
             }
