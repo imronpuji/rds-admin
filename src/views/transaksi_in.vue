@@ -49,7 +49,7 @@
       </el-table-column>
        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
-          <span>{{ row.created_at }}</span>
+          <span>{{ row.date }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -77,6 +77,13 @@
         <el-form-item class="k" label="Keterangan">
             <el-input v-model="keterangan" placeholder="Keterangan" />
         </el-form-item>
+              <el-form-item class="k" label="Tgl Transaksi">
+      <el-date-picker
+        v-model="dates"
+        type="date"
+        placeholder="Tanggal Transaksi">
+      </el-date-picker>
+    </el-form-item>
 
         <!-- multiple input -->
         <div v-for="(all, index) in kasIn.all" style=" display:flex; width:100%; padding:0px; flex-wrap:wrap; margin:0px; ">
@@ -167,6 +174,7 @@ export default {
   },
   data() {
     return {
+      dates : '',
       search : '',
       config: {
           spinner: false,
@@ -240,6 +248,11 @@ export default {
   },
   methods: {
     getList() {
+              let DD = new Date().getDate()
+    let MM = new Date().getMonth()
+    let YYYY = new Date().getFullYear()
+
+    this.dates = `${YYYY}-${MM}-${DD}`
       this.listLoading = true
       axios.get('/cash/in').then(response => {
         console.log(response)
@@ -351,6 +364,7 @@ export default {
         desc : null,
         akun_id,
         total,
+        date : this.dates,
         staff : this.name
       }
 

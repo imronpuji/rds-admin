@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column label="Date" width="150px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.created_at }}</span>
+          <span>{{ row.date }}</span>
         </template>
       </el-table-column>
 
@@ -90,6 +90,13 @@
         <el-form-item class="k" label="Sub Total">
           <v-money-spinner v-model="total_transfer" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
+              <el-form-item class="k" label="Tgl Transaksi">
+      <el-date-picker
+        v-model="dates"
+        type="date"
+        placeholder="Tanggal Transaksi">
+      </el-date-picker>
+    </el-form-item>
       </el-form>
       <!-- multiple input -->
       <div slot="footer" class="dialog-footer">
@@ -165,6 +172,7 @@ export default {
   },
   data() {
     return {
+      dates : '',
       search : '',
       config: {
           spinner: false,
@@ -235,6 +243,11 @@ export default {
   },
   methods: {
     getList() {
+       let DD = new Date().getDate()
+    let MM = new Date().getMonth()
+    let YYYY = new Date().getFullYear()
+
+    this.dates = `${YYYY}-${MM}-${DD}`
       this.listLoading = true
       axios.get('/cash/transfer').then(response => {
         console.log(response)
@@ -337,6 +350,7 @@ export default {
       const data = {
         from: this.from,
         to: this.to_item,
+        date : this.dates,
         desc : this.keterangan,
         total : this.total_transfer,
         staff : this.name

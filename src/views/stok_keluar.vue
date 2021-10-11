@@ -340,6 +340,7 @@ export default {
     let YYYY = new Date().getFullYear()
 
     this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
+    this.dates = `${YYYY}-${MM}-${DD}`
     console.log(this.jatuh_tempo)
   },
   methods: {

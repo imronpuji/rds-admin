@@ -73,6 +73,16 @@
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
+     <el-form-item class="k" label="Jumlah Pembayaran">
+      <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+    </el-form-item>
+    <el-form-item class="k" label="Jatuh Tempo">
+      <el-date-picker
+        v-model="jatuh_tempo"
+        type="date"
+        placeholder="Jatuh Tempo">
+      </el-date-picker>
+    </el-form-item>
     <el-form-item class="k" label="Tgl Transaksi">
       <el-date-picker
         v-model="dates"
@@ -182,6 +192,8 @@ export default {
 
   data() {
     return {
+      jatuh_tempo : '',
+      jumlah_bayar : '',
       dates : '',
       category : '',
       kontak : [],
@@ -264,6 +276,12 @@ export default {
   },
   created() {
     this.getList()
+    let DD = new Date().getDate()
+    let MM = new Date().getMonth()
+    let YYYY = new Date().getFullYear()
+
+    this.dates = `${YYYY}-${MM}-${DD}`
+    this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
   },
   methods: {
     getList() {
@@ -361,6 +379,8 @@ export default {
      product_id,
      qty,
      total,
+     payment_due : this.jatuh_tempo,
+     paid :  this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
      purchase_price, 
      date : this.dates,
      staff : this.name
