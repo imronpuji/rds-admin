@@ -94,6 +94,7 @@
       <el-date-picker
         v-model="dates"
         type="date"
+        format="dd-MM-yyyy"
         placeholder="Tanggal Transaksi">
       </el-date-picker>
     </el-form-item>
