@@ -80,9 +80,7 @@
           <el-button type="primary" size="mini">
              <router-link :to="'/stok/keluar/surat/jalan/' + row.id"> Surat Jalan</router-link>
            </el-button>
-           <br>
-           <br>
-             <el-button type="primary" size="mini">
+             <el-button type="warning" size="mini">
            <router-link :to="'/stok/keluar/nota/' + row.id"> Nota</router-link>
          </el-button>
           <div slot="reference" class="name-wrapper">
@@ -137,6 +135,7 @@
       <el-date-picker
         v-model="jatuh_tempo"
         type="date"
+        format="dd/MM/yyyy"
         placeholder="Jatuh Tempo">
       </el-date-picker>
     </el-form-item>
@@ -144,6 +143,7 @@
       <el-date-picker
         v-model="dates"
         type="date"
+        format="dd/MM/yyyy"
         placeholder="Tanggal Transaksi">
       </el-date-picker>
     </el-form-item>
