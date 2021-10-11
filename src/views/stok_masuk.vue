@@ -43,7 +43,7 @@
     </el-table-column>
     <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
-        <span>{{ row.created_at }}</span>
+        <span>{{ row.date }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -72,6 +72,13 @@
       <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
+    </el-form-item>
+    <el-form-item class="k" label="Tgl Transaksi">
+      <el-date-picker
+        v-model="dates"
+        type="date"
+        placeholder="Tanggal Transaksi">
+      </el-date-picker>
     </el-form-item>
     <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap">
       <el-form-item class="k" label="Barang">
@@ -175,6 +182,7 @@ export default {
 
   data() {
     return {
+      dates : '',
       category : '',
       kontak : [],
       kas :[],
@@ -354,8 +362,10 @@ export default {
      qty,
      total,
      purchase_price, 
+     date : this.dates,
      staff : this.name
    }
+   console.log(data)
    var encodedValues = qs.stringify(
     data,
     { allowDots: true }

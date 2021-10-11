@@ -93,7 +93,7 @@
       :filter-method="filterHandler"
     >
       <template slot-scope="{row}">
-        <span>{{ row.created_at }}</span>
+        <span>{{ row.date }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Staff" width="150px" align="center">
@@ -125,6 +125,13 @@
         v-model="jatuh_tempo"
         type="date"
         placeholder="Jatuh Tempo">
+      </el-date-picker>
+    </el-form-item>
+     <el-form-item class="k" label="Tgl Transaksi">
+      <el-date-picker
+        v-model="dates"
+        type="date"
+        placeholder="Tanggal Transaksi">
       </el-date-picker>
     </el-form-item>
 
@@ -238,6 +245,7 @@ export default {
 
   data() {
     return {
+      dates: '',
       jatuh_tempo : '',
       qty_before : '',
       index_before :'',
@@ -474,6 +482,7 @@ export default {
         cashin_id : this.cashout_id,
         product_id,
         qty,
+        date : this.dates,
         total,
         payment_due : this.jatuh_tempo,
         paid : this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
