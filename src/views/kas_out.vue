@@ -250,7 +250,7 @@ export default {
   methods: {
     checkPermission,
     getList() {
-        let DD = new Date().getDate()
+    let DD = new Date().getDate()
     let MM = new Date().getMonth()
     let YYYY = new Date().getFullYear()
 

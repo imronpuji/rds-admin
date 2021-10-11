@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" v-loading="loading">
         <div class="filter-container">
             <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
                 Add
@@ -9,13 +9,10 @@
             <span class="custom-tree-node" slot-scope="{ node, data }">
                 <span>{{ node.label }}</span>
                 <span style="margin-left:20px">
-                    <el-popconfirm
-                    title="Are you sure to delete this?"
-                    >
-                        <el-button slot="reference" type="text" size="mini" @click="() => handleDelete(data, data)">
-                            Delete
-                        </el-button>
-                    </el-popconfirm>
+                  
+                    <el-button slot="reference" type="text" size="mini" @click="() => handleDelete(data, data)">
+                        Delete
+                    </el-button>
 
                 <el-button type="text" size="mini" @click="() => handleUpdate(data, data)">
                     Edit
@@ -218,7 +215,8 @@ import
                 }
                 ]
             },
-            downloadLoading: false
+            downloadLoading: false,
+            loading: false
         }
     },
 
@@ -372,15 +370,18 @@ import
             .catch((err) => err)
         },
         handleDelete(row, index) {
-            const loading = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
+            this.loading = true
+            this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                type: 'warning'
+            }).then(() => {
+
+
 
             axios.delete(`/akun/delete/${row.id}`)
             .then((response) => {
+                this.loading = false
                 this.getList()
                 loading.close();
                 console.log(response)
@@ -393,6 +394,7 @@ import
 
             })
             .catch((err) => err)
+            })
         },
         handleFetchPv(pv) {
             fetchPv(pv).then(response => {
