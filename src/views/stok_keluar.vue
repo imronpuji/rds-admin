@@ -128,7 +128,7 @@
       </el-date-picker>
     </el-form-item>
 
-    <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; width:100% !important">
+    <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap: wrap; width:100% !important">
       <el-form-item class="k" label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
           <el-option
@@ -158,17 +158,17 @@
   </el-form>
   <!-- multiple input -->
 </el-form>
-<div slot="footer" class="dialog-footer">
- <el-button type="primary" @click="addFind" v-if="dialogStatus == 'create'">
+<div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
+ <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
     Tambah Produk
   </el-button>   
-  <el-button v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
+  <el-button style="margin:20px 10px" v-if="kasIn.all.length > 1 && dialogStatus == 'create'" type="primary" @click="deleteFind" >
     Hapus Produk
   </el-button>
-  <el-button   @click="dialogFormVisible = false">
+  <el-button style="margin:20px 10px"   @click="dialogFormVisible = false">
     Cancel
   </el-button>
-  <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+  <el-button style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
     Simpan
   </el-button>
 </div>

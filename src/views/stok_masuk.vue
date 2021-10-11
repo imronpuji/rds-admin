@@ -73,7 +73,7 @@
         <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
     </el-form-item>
-    <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex">
+    <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap">
       <el-form-item class="k" label="Barang">
         <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
           <el-option
@@ -100,17 +100,17 @@
   <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
 </el-form>
 
-<div slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="addFind">
+<div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
+    <el-button style="margin:20px 10px" type="primary" @click="addFind">
     Tambah Produk
   </el-button>   
-  <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+  <el-button style="margin:20px 10px" v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
     Hapus Produk
   </el-button>
-  <el-button @click="dialogFormVisible = false">
+  <el-button style="margin:20px 10px" @click="dialogFormVisible = false">
     Cancel
   </el-button>
-  <el-button :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+  <el-button style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
     Simpan
   </el-button>
 </div>
