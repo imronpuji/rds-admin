@@ -79,7 +79,7 @@
         </el-form-item>
 
         <!-- multiple input -->
-        <div v-for="(all, index) in kasIn.all" style=" display:flex; width:100%; padding:0px; margin:0px; ">
+        <div v-for="(all, index) in kasIn.all" style=" display:flex; width:100%; padding:0px; flex-wrap:wrap; margin:0px; ">
           <el-form-item class="k" label="Sebagai Akun" style=" padding-left:4px">
             <el-select filterable  v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
               <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
@@ -89,20 +89,21 @@
             <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
           </el-form-item>
         </div>
-        <el-button type="primary" @click="addFind">
-          Tambah Form
-        </el-button>   
-        <el-button v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
-          Hapus Form
-        </el-button>
+        
         <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
       </el-form>
       <!-- multiple input -->
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+      <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
+        <el-button style="margin:20px 10px" type="primary" @click="addFind">
+          Tambah Form
+        </el-button>   
+        <el-button style="margin:20px 10px" v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
+          Hapus Form
+        </el-button>
+        <el-button style="margin:20px 10px" @click="dialogFormVisible = false">
           Cancel
         </el-button>
-        <el-button :loading="loading" type="primary" @click="createData()">
+        <el-button style="margin:20px 10px" :loading="loading" type="primary" @click="createData()">
           Confirm
         </el-button>
       </div>
