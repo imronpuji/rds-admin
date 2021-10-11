@@ -527,7 +527,8 @@ export default {
  })	
    this.kasIn.all[index]['qty'] = 0;
    this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
-   this.kasIn.all[index]['total'] = parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
+   this.kasIn.all[index]['total'] = 0;
+   // parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
  }, 
  onChangeQty(index){
 
