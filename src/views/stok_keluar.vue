@@ -349,9 +349,9 @@ export default {
   created() {
     this.getList()
     let DD = new Date().getDate()
-    let MM = new Date().getMonth()
+    let MM = new Date().getMonth() + 1
     let YYYY = new Date().getFullYear()
-
+    alert(MM)
     this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
     this.dates = `${YYYY}-${MM}-${DD}`
     console.log(this.jatuh_tempo)

@@ -245,7 +245,7 @@ export default {
   methods: {
     getList() {
        let DD = new Date().getDate()
-    let MM = new Date().getMonth()
+    let MM = new Date().getMonth() + 1
     let YYYY = new Date().getFullYear()
 
     this.dates = `${YYYY}-${MM}-${DD}`
