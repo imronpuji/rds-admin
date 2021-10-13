@@ -9,6 +9,26 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
+
+        <div class="block"></div>
+      <el-date-picker
+        v-model="start"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Dari">
+      </el-date-picker>
+      <el-date-picker
+        style="margin-left:8px"
+        v-model="end"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Sampai">
+      </el-date-picker>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        Filter
+      </el-button>
     </div>
 
     <el-table
@@ -36,9 +56,24 @@
         <span>{{ handleCurrency(row.total) }}</span>
       </template>
     </el-table-column>
-      <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
+    <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
       <template slot-scope="{row}">
         <span>{{ row.staff }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ row.payment_due }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ handleCurrency(row.paid) }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
+      <template slot-scope="{row}">
+        <span>{{ handleCurrency(row.total - row.paid) }}</span>
       </template>
     </el-table-column>
     <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
@@ -46,14 +81,29 @@
         <span>{{ row.date }}</span>
       </template>
     </el-table-column>
-    <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+     <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
       <template slot-scope="{row,$index}">
-       <el-button type="danger" size="mini" @click="handleDelete(row, $index)">
-        Delete
-      </el-button>
-      <el-button size="mini" type="primary">
+
+        <el-popover trigger="hover" placement="top">
+            <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
+          Bayar
+        </el-button>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">Aksi</el-tag>
+          </div>
+        <el-button type="primary" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
+          Delete
+        </el-button>
+        <br>
+        <br>
+      <el-button size="mini" type="warning">
         <router-link :to="'/stok/masuk/detail/' + row.id">Detail</router-link>
       </el-button>
+
+       <el-button size="mini" type="warning">
+        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
+      </el-button>
+        </el-popover>
     </template>
   </el-table-column>
 </el-table>
@@ -155,6 +205,7 @@ import Pagination from '@/components/Pagination' // secondary package based on e
 import axios from '@/api/axios'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 const calendarTypeOptions = [
 { key: 'cash', display_name: 'cash' },
@@ -194,6 +245,8 @@ export default {
 
   data() {
     return {
+      start : '',
+      end : '',
       jatuh_tempo : '',
       jumlah_bayar : '',
       dates : '',
@@ -286,9 +339,10 @@ export default {
     this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
   },
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
-      axios.get('/stock/in').then(response => {
+      axios.post('/stock/in').then(response => {
         console.log(response)
         this.list = response.data.stocktransaction.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)) 
         this.total = response.data.stocktransaction.length
@@ -562,6 +616,24 @@ export default {
    this.kasIn.all[index]['total'] = 0;
    // parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
  }, 
+
+ handleFilterByDate(){
+   this.listLoading = true
+   let data = {
+    start_date : this.start,
+    end_date : this.end
+   }
+      axios.post(`/stock/in`, data).then(response => {
+        this.list = response.data.stocktransaction
+        this.total = response.data.stocktransaction.length
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+  
+},
  onChangeQty(index){
 
   let qty = parseFloat(

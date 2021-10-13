@@ -9,6 +9,25 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
+      <div class="block"></div>
+      <el-date-picker
+        v-model="start"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Dari">
+      </el-date-picker>
+      <el-date-picker
+        style="margin-left:8px"
+        v-model="end"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Sampai">
+      </el-date-picker>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        Filter
+      </el-button>
     </div>
 
     <el-table
@@ -139,7 +158,7 @@
         placeholder="Jatuh Tempo">
       </el-date-picker>
     </el-form-item>
-     <el-form-item class="k" label="Tgl Transaksi">
+     <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
       <el-date-picker
         v-model="dates"
         type="date"
@@ -258,6 +277,9 @@ export default {
 
   data() {
     return {
+      
+      start: '',
+      end : '',
       dates: '',
       jatuh_tempo : '',
       qty_before : '',
@@ -287,6 +309,7 @@ export default {
       cashout_id:"",
       satuan : '',
       producttype : '',
+      hutang : '',
       jenis_barang : '',
       keterangan : '',
       selling_price : '',
@@ -353,7 +376,6 @@ export default {
     let YYYY = new Date().getFullYear()
     this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
     this.dates = `${YYYY}-${MM}-${DD}`
-    console.log(this.jatuh_tempo)
   },
   methods: {
     checkPermission,
@@ -537,9 +559,9 @@ export default {
       // this.unit = row.unit
       // this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
       // this.qty = row.qty
+
       this.total_kasIn = row.total
       this.cashin_id = row.cashin_id
-      this.jumlah_bayar = ''
       this.jatuh_tempo = row.payment_due
       this.total_kasIn = row.total
       this.kurang_bayar = row.total - row.paid
@@ -551,14 +573,24 @@ export default {
       })
     },
     updateData() {
+    if(this.kurang_bayar < this.jumlah_bayar){
+      this.$notify({
+        title: 'Gagal',
+        message: 'Jumlah Pembayaran Melebihi Jumlah Hutang',
+        type: 'warning',
+        duration: 2000
+      })
+      return false
+    }
      this.listLoading = true
+     this.loading = true
      const data = {
       payment_due : this.jatuh_tempo,
       cashin_id : this.cashin_id,
       total : this.jumlah_bayar,
     }
     console.log(data)
-    axios.put(`/stock/edit/${this.id}`, data)
+    axios.put(`/stock/out/paid/${this.id}`, data)
     .then((response) => {
       this.getList()
       this.dialogFormVisible = false
@@ -674,6 +706,25 @@ onChangeProduct(index){
  this.kasIn.all[index]['total'] = 0
  // parseInt(produk[0]['selling_price'])
 }, 
+
+handleFilterByDate(){
+   this.listLoading = true
+   let data = {
+    start_date : this.start,
+    end_date : this.end
+   }
+      axios.post(`/stock/out`, data).then(response => {
+        console.log(response)
+        this.list = response.data.stocktransaction
+        this.total = response.data.stocktransaction.length
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+  
+},
 onChangeQty(index){
   if(this.kasIn.all[index]['qty'] > this.qty_before){
     this.kasIn.all[index]['qty'] = 0
