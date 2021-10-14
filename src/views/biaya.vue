@@ -9,6 +9,25 @@
     <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
       Export
     </el-button>
+          <div class="block"></div>
+      <el-date-picker
+        v-model="start"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Dari">
+      </el-date-picker>
+      <el-date-picker
+        style="margin-left:8px"
+        v-model="end"
+        class="filter-item"
+        type="date"
+        format="dd-MM-yyyy"
+        placeholder="Sampai">
+      </el-date-picker>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        Filter
+      </el-button>
   </div>
 
   <el-table
@@ -178,6 +197,8 @@ export default {
   },
   data() {
     return {
+      start : '',
+      end : '',
       search : '',
       loading : false,
       config: {
@@ -255,6 +276,23 @@ export default {
   },
   methods: {
     checkPermission,
+          handleFilterByDate(){
+   this.listLoading = true
+   let data = {
+    start_date : this.start,
+    end_date : this.end
+   }
+      axios.post(`/cash/out`, data).then(response => {
+        console.log(response)
+        this.list = response.data.cashtransaction
+        this.total = response.data.cashtransaction.length
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+  },
     getList() {
       this.listLoading = true
       axios.get('/cash/out').then(response => {
