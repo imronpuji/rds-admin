@@ -34,7 +34,7 @@
       :key="tableKey"
       v-loading="listLoading"
       :data="list.filter(({desc}) => !search || desc.toLowerCase().includes(search.toLowerCase()))"
-      :default-sort = "{prop: 'date', order: 'descending', prop:'cashin'}"
+      :default-sort = "{prop: 'id'}"
       border
       fit
       highlight-current-row
