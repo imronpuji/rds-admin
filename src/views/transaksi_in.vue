@@ -278,7 +278,7 @@ export default {
       this.listLoading = true
       axios.get('/cash/in').then(response => {
         console.log(response)
-        this.list = response.data.cashtransaction
+        this.list = response.data.cashtransaction.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
         this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request
