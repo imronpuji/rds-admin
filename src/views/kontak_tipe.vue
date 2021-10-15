@@ -31,7 +31,7 @@ style="width: 100%;"
       <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
   </template>
 </el-table-column>
-<el-table-column label="No. Telepon" width="150px" align="center" sortable prop="cashin">
+<el-table-column label="Maximal Hutang" width="150px" align="center" sortable prop="cashin">
     <template slot-scope="{row}">
       <span>{{ handleCurrency(row.maxdebt) }}</span>
   </template>
