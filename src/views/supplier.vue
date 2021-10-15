@@ -86,9 +86,7 @@
         </el-form-item>
         <el-form-item class="k" label="Tipe Kontak">
           <el-select v-model="tipe">
-            <el-option label="supplier" value="supplier" />
-            <el-option label="karyawan" value="karyawan" />
-            <el-option label="customer" value="customer" />
+            <el-option  v-for="item in kontak" :label="item.name" :value="item.name" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -211,7 +209,8 @@ export default {
         // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      kontak : '',
     }
   },
   created() {
@@ -230,6 +229,8 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+
+      axios.get('/contacttype').then((response) => this.kontak = response.data.contacttype)
 
     },
     handleCurrency(number){
