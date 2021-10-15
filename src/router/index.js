@@ -47,8 +47,8 @@ import nestedRouter from './modules/nested'
   {
     path: '/redirect/:path(.*)',
     component: () => import('@/views/redirect/index')
-  }
-  ]
+}
+]
 },
 {
   path: '/login',
@@ -80,8 +80,8 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/dashboard/index'),
     name: 'Dashboard',
     meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-  }
-  ]
+}
+]
 },
 {
   path: '/profile',
@@ -94,8 +94,8 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/profile/index'),
     name: 'Profile',
     meta: { title: 'Profile', icon: 'user', noCache: true }
-  }
-  ]
+}
+]
 }
 ]
 
@@ -114,10 +114,10 @@ import nestedRouter from './modules/nested'
     title: 'Penjualan',
     icon: 'shopping',
       roles: ['admin', 'kasir'] // you can set roles in root nav
-    },
-    children : 
-    [
-    {
+  },
+  children : 
+  [
+  {
       path: '/stok/keluar',
       component: () => import('@/views/stok_keluar'),
       name: 'PagePermission',
@@ -125,25 +125,25 @@ import nestedRouter from './modules/nested'
         icon: 'component',
         title: 'Penjualan',
               roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-            }
           }
-          ]
-        },
+      }
+      ]
+  },
 
 
-        {
-          path: '/stok/masuk',
-          component: Layout,
-          name: 'stok',
-          meta: 
-          {
-            title: 'Pembelian',
-            icon: 'shopping',
+  {
+      path: '/stok/masuk',
+      component: Layout,
+      name: 'stok',
+      meta: 
+      {
+        title: 'Pembelian',
+        icon: 'shopping',
       roles: ['admin'] // you can set roles in root nav
-    },
-    children : 
-    [
-    {
+  },
+  children : 
+  [
+  {
       path: '/stok/masuk',
       component: () => import('@/views/stok_masuk'),
       name: 'PagePermission',
@@ -152,24 +152,24 @@ import nestedRouter from './modules/nested'
         icon: 'nested',
         title: 'Pembelian',
               roles: ['admin'] // or you can only set roles in sub nav
-            }
           }
-          ]
-        },
-        {
-          path: '/setarakas',
-          component: Layout,
-          name: 'Kas / Setoran Kas',
-          meta: 
-          {
-            title: 'Kas',
-            icon: 'bug',
+      }
+      ]
+  },
+  {
+      path: '/setarakas',
+      component: Layout,
+      name: 'Kas / Setoran Kas',
+      meta: 
+      {
+        title: 'Kas',
+        icon: 'bug',
       roles: ['admin', 'kasir'] // you can set roles in root nav
-    },
-    children: 
-    [
+  },
+  children: 
+  [
 
-    {
+  {
       path: '/kas/keluar',
       component: () => import('@/views/kas_out'),
       name: 'DirectivePermission',
@@ -178,225 +178,234 @@ import nestedRouter from './modules/nested'
         title: 'Kas Keluar',
         roles: ['admin']
               // if do not set roles, means: this page does not require permission
-            }
-          },
-          {
-            path: '/kas/masuk',
-            component: () => import('@/views/transaksi_in'),
-            name: 'RolePermission',
-            meta: 
-            {
-              title: 'Kas Masuk',
-              roles: ['admin']
-            }
-          },
-
-          {
-            path: '/kas/detail/:id',
-            component: () => import('@/views/kas_detail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Kas',
-              roles: ['admin', 'kasir']
-            }
-          },
-
-          {
-            path: '/kas/outdetail/:id',
-            component: () => import('@/views/kas_outdetail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Kas',
-              roles: ['admin', 'kasir']
-            }
-          },
-
-          {
-            path: '/kredit/detail/:id',
-            component: () => import('@/views/kredit_detail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Kas',
-              roles: ['admin', 'kasir']
-            }
-          },
-
-          {
-            path: '/transfer/detail/:id',
-            component: () => import('@/views/transfer_detail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Transfer',
-              roles: ['admin']
-            }
-          },
-          {
-            path: '/transfer-transaksi',
-            component: () => import('@/views/transfer_in'),
-            name: 'RolePermission',
-            meta: 
-            {
-              title: 'Transfer Kas',
-              roles: ['admin']
-            }
           }
-          ]
-        },
-
-
-
-
+      },
+      {
+        path: '/kas/masuk',
+        component: () => import('@/views/transaksi_in'),
+        name: 'RolePermission',
+        meta: 
         {
-          path: '/kon',
-          component: Layout,
-          name: 'kontak',
-          meta: {
-            title: 'Kontak',
-            icon: 'example',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
-    },
-    children: [
+          title: 'Kas Masuk',
+          roles: ['admin']
+      }
+  },
+
+  {
+    path: '/kas/detail/:id',
+    component: () => import('@/views/kas_detail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
     {
+      title: 'Detail Kas',
+      roles: ['admin', 'kasir']
+  }
+},
+
+{
+    path: '/kas/outdetail/:id',
+    component: () => import('@/views/kas_outdetail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Kas',
+      roles: ['admin', 'kasir']
+  }
+},
+
+{
+    path: '/kredit/detail/:id',
+    component: () => import('@/views/kredit_detail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Kas',
+      roles: ['admin', 'kasir']
+  }
+},
+
+{
+    path: '/transfer/detail/:id',
+    component: () => import('@/views/transfer_detail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Transfer',
+      roles: ['admin']
+  }
+},
+{
+    path: '/transfer-transaksi',
+    component: () => import('@/views/transfer_in'),
+    name: 'RolePermission',
+    meta: 
+    {
+      title: 'Transfer Kas',
+      roles: ['admin']
+  }
+}
+]
+},
+
+
+
+
+{
+  path: '/kon',
+  component: Layout,
+  name: 'kontak',
+  meta: {
+    title: 'Kontak',
+    icon: 'example',
+      roles: ['admin', 'kasir'] // you can set roles in root nav
+  },
+  children: [
+  {
       path: '/kontak',
       component: () => import('@/views/supplier'),
       name: 'PagePermission',
       meta: {
         title: 'Kontak',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
       }
-      ]
-    },
-
-    {
-      path: '/stok',
-      component: Layout,
-      name: 'stok',
+  },
+  {
+      path: '/kontak/tipe',
+      component: () => import('@/views/kontak_tipe'),
+      name: 'PagePermission',
       meta: {
-        title: 'Persedian',
-        icon: 'shopping',
+        title: 'Tipe Kontak',
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+      }
+  }
+  ]
+},
+
+{
+  path: '/stok',
+  component: Layout,
+  name: 'stok',
+  meta: {
+    title: 'Persedian',
+    icon: 'shopping',
       roles: ['admin', 'kasir'] // you can set roles in root nav
-    },
-    children: [
-    {
+  },
+  children: [
+  {
       path: '/kategori',
       component: () => import('@/views/kategori'),
       name: 'PagePermission',
       meta: {
         title: 'Kategori',
           roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/produk',
-        component: () => import('@/views/produk'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Produk',
+      }
+  },
+  {
+    path: '/produk',
+    component: () => import('@/views/produk'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Produk',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/stok/masuk',
-        component: () => import('@/views/stok_masuk'),
-        name: 'PagePermission',
-        hidden : true,
+      }
+  },
+  {
+    path: '/stok/masuk',
+    component: () => import('@/views/stok_masuk'),
+    name: 'PagePermission',
+    hidden : true,
 
-        meta: {
-          title: 'Pembelian',
+    meta: {
+      title: 'Pembelian',
           roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/stok/keluar',
-        component: () => import('@/views/stok_keluar'),
-        name: 'PagePermission',
-        hidden : true,
+      }
+  },
+  {
+    path: '/stok/keluar',
+    component: () => import('@/views/stok_keluar'),
+    name: 'PagePermission',
+    hidden : true,
 
-        meta: {
-          title: 'Penjualan',
+    meta: {
+      title: 'Penjualan',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/stok/keluar/detail/:id',
-        component: () => import('@/views/detail_penjualan'),
-        name: 'PagePermission',
-        hidden : true,
-        meta: {
-          title: 'Detail Penjualan',
+      }
+  },
+  {
+    path: '/stok/keluar/detail/:id',
+    component: () => import('@/views/detail_penjualan'),
+    name: 'PagePermission',
+    hidden : true,
+    meta: {
+      title: 'Detail Penjualan',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
-      },
+      }
+  },
 
-      {
-        path: '/stok/masuk/detail/:id',
-        component: () => import('@/views/detail_pembelian'),
-        name: 'PagePermission',
-        hidden : true,
-        meta: {
-          title: 'detail pembelian',
+  {
+    path: '/stok/masuk/detail/:id',
+    component: () => import('@/views/detail_pembelian'),
+    name: 'PagePermission',
+    hidden : true,
+    meta: {
+      title: 'detail pembelian',
           roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
+      }
+  },
 
-      ]
-    },
+  ]
+},
 
-    {
-      path: '/laporan',
-      component: Layout,
-      name: 'laporan',
-      meta: {
-        title: 'Laporan',
-        icon: 'excel',
+{
+  path: '/laporan',
+  component: Layout,
+  name: 'laporan',
+  meta: {
+    title: 'Laporan',
+    icon: 'excel',
       roles: ['admin'] // you can set roles in root nav
-    },
-    children: [
-    {
+  },
+  children: [
+  {
       path: '/neraca',
       component: () => import('@/views/neraca'),
       name: 'PagePermission',
       meta: {
         title: 'Neraca',
           roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: '/laba/rugi',
-        component: () => import('@/views/labarugi'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Laba Rugi',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
       }
-      ]
-    },
+  },
+  {
+    path: '/laba/rugi',
+    component: () => import('@/views/labarugi'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Laba Rugi',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  }
+  ]
+},
 
-    {
-     path: '/finansial',
-     component: Layout,
-     name: 'finansial',
-     hidden : true,
-     meta: 
-     {
+{
+   path: '/finansial',
+   component: Layout,
+   name: 'finansial',
+   hidden : true,
+   meta: 
+   {
       title: 'Finansial',
       icon: 'people',
       roles: ['admin', 'kasir'] // you can set roles in root nav
-    },
-    children: 
-    [
+  },
+  children: 
+  [
 
-    {
+  {
       path: '/kategori/detail/:nama/:id',
       component: () => import('@/views/kategori_detail'),
       name: 'PagePermission',
@@ -405,67 +414,67 @@ import nestedRouter from './modules/nested'
       {
         title: 'Kategori',
               roles: ['admin'] // or you can only set roles in sub nav
-            }
-          },
-          {
-            path: '/akun',
-            component: () => import('@/views/akun'),
-            name: 'DirectivePermission',
-            hidden : true,
-            meta: 
-            {
-              title: 'Akun',
-              roles: ['admin']
-            }
-          },
-          {
-            path: '/kas/detail/:id',
-            component: () => import('@/views/kas_detail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Kas',
-              roles: ['admin']
-            }
-          },
-
-          {
-            path: '/kas/outdetail/:id',
-            component: () => import('@/views/kas_outdetail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Kas',
-              roles: ['admin', 'kasir']
-            }
-          },
-
-          {
-            path: '/transfer/detail/:id',
-            component: () => import('@/views/transfer_detail'),
-            name: 'RolePermission',
-            hidden: true,
-            meta: 
-            {
-              title: 'Detail Transfer',
-              roles: ['admin']
-            }
           }
-          ]
-        },
-
-
-
-
-
-
-
-
+      },
+      {
+        path: '/akun',
+        component: () => import('@/views/akun'),
+        name: 'DirectivePermission',
+        hidden : true,
+        meta: 
         {
-          path: '/permission',
-          component: Layout,
+          title: 'Akun',
+          roles: ['admin']
+      }
+  },
+  {
+    path: '/kas/detail/:id',
+    component: () => import('@/views/kas_detail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Kas',
+      roles: ['admin']
+  }
+},
+
+{
+    path: '/kas/outdetail/:id',
+    component: () => import('@/views/kas_outdetail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Kas',
+      roles: ['admin', 'kasir']
+  }
+},
+
+{
+    path: '/transfer/detail/:id',
+    component: () => import('@/views/transfer_detail'),
+    name: 'RolePermission',
+    hidden: true,
+    meta: 
+    {
+      title: 'Detail Transfer',
+      roles: ['admin']
+  }
+}
+]
+},
+
+
+
+
+
+
+
+
+{
+  path: '/permission',
+  component: Layout,
     hidden: true, // will always show the root menu
     name: 'Permission',
     meta: 
@@ -473,30 +482,30 @@ import nestedRouter from './modules/nested'
       title: 'Permission',
       icon: 'lock',
       roles: ['admin'] // you can set roles in root nav
-    },
-    children: 
-    [
-    {
+  },
+  children: 
+  [
+  {
       path: 'role',
       component: () => import('@/views/permission/role'),
       name: 'RolePermission',
       meta: {
         title: 'Role Permission',
         roles: ['admin']
-      }
-    },
-    {
-      path: 'user',
-      component: () => import('@/views/user'),
-      name: 'RolePermission',
-      meta: 
-      {
-        title: 'User',
-        roles: ['admin']
-      }
     }
-    ]
-  },
+},
+{
+  path: 'user',
+  component: () => import('@/views/user'),
+  name: 'RolePermission',
+  meta: 
+  {
+    title: 'User',
+    roles: ['admin']
+}
+}
+]
+},
 
 
 {
@@ -508,11 +517,11 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/biaya'),
     name: 'biaya',
     meta: { title: 'Biaya', icon: 'money',  roles: ['admin', 'kasir'] }
-  }
-  ]
+}
+]
 },
 
-  {
+{
     path: '/stok/keluar/surat/jalan/:id',
     component: () => import('@/views/pdfnota'),
     name: 'PagePermission',
@@ -520,19 +529,19 @@ import nestedRouter from './modules/nested'
     meta: {
       title: 'surat jalan',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
-      },
+      }
+  },
 
-      {
-        path: '/stok/keluar/nota/:id',
-        component: () => import('@/views/pdfnotavalid'),
-        name: 'PagePermission',
-        hidden : true,
-        meta: {
-          title: 'Nota',
+  {
+    path: '/stok/keluar/nota/:id',
+    component: () => import('@/views/pdfnotavalid'),
+    name: 'PagePermission',
+    hidden : true,
+    meta: {
+      title: 'Nota',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-        }
-      },
+      }
+  },
 
 
   // 404 page must be placed at the end !!!
