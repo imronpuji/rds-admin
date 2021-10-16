@@ -107,7 +107,7 @@ import nestedRouter from './modules/nested'
  export const asyncRoutes = [
 
  {
-    path: '/stok/keluar',
+    path: '/penjualan',
     component: Layout,
     name: 'stok',
     meta: {
@@ -116,7 +116,7 @@ import nestedRouter from './modules/nested'
       roles: ['admin', 'kasir'] // you can set roles in root nav
   },
   children: [{
-      path: '/stok/keluar',
+      path: '/penjualan',
       component: () => import('@/views/stok_keluar'),
       name: 'PagePermission',
       meta: {
@@ -129,7 +129,7 @@ import nestedRouter from './modules/nested'
 
 
 {
-    path: '/stok/masuk',
+    path: '/pembelian',
     component: Layout,
     name: 'stok',
     meta: {
@@ -138,7 +138,7 @@ import nestedRouter from './modules/nested'
       roles: ['admin'] // you can set roles in root nav
   },
   children: [{
-      path: '/stok/masuk',
+      path: '/pembelian',
       component: () => import('@/views/stok_masuk'),
       name: 'PagePermission',
       meta: {
@@ -160,7 +160,7 @@ import nestedRouter from './modules/nested'
   children: [
 
   {
-    path: '/kas/keluar',
+    path: '/penjualan',
     component: () => import('@/views/kas_out'),
     name: 'DirectivePermission',
     meta: {
@@ -170,7 +170,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/kas/masuk',
+    path: '/pembelian',
     component: () => import('@/views/transaksi_in'),
     name: 'RolePermission',
     meta: {
@@ -314,7 +314,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/stok/masuk',
+    path: '/pembelian',
     component: () => import('@/views/stok_masuk'),
     name: 'PagePermission',
     hidden: true,
@@ -325,7 +325,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/stok/keluar',
+    path: '/penjualan',
     component: () => import('@/views/stok_keluar'),
     name: 'PagePermission',
     hidden: true,
@@ -336,7 +336,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/stok/keluar/detail/:id',
+    path: '/penjualan/detail/:id',
     component: () => import('@/views/detail_penjualan'),
     name: 'PagePermission',
     hidden: true,
@@ -347,7 +347,7 @@ import nestedRouter from './modules/nested'
   },
 
   {
-    path: '/stok/masuk/detail/:id',
+    path: '/pembelian/detail/:id',
     component: () => import('@/views/detail_pembelian'),
     name: 'PagePermission',
     hidden: true,
@@ -536,7 +536,7 @@ import nestedRouter from './modules/nested'
 },
 
 {
-    path: '/stok/keluar/surat/jalan/:id',  
+    path: '/penjualan/jalan/:id',  
     component: () => import('@/views/pdfnota'),
     name: 'PagePermission',
     hidden: true,
@@ -547,7 +547,7 @@ import nestedRouter from './modules/nested'
 },
 
 {
-    path: '/stok/keluar/nota/:id',
+    path: '/penjualan/nota/:id',
     component: () => import('@/views/pdfnotavalid'),
     name: 'PagePermission',
     hidden: true,

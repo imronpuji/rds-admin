@@ -82,7 +82,7 @@
                     <br>
                     <br>
                     <el-button size="mini" type="warning">
-                        <router-link :to="'/stok/masuk/detail/' + row.id">Detail</router-link>
+                        <router-link :to="'/pembelian/detail/' + row.id">Detail</router-link>
                     </el-button>
 
                     <el-button size="mini" type="warning">
