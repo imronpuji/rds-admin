@@ -60,7 +60,7 @@
                     Edit
                 </el-button>
                 <el-button size="mini" type="warning">
-                    <router-link :to="'/produk/kustom/' + row.id">Detail</router-link>
+                    <router-link :to="'/produk/kustom/' + row.id">Harga Kusus</router-link>
                 </el-button>
             </template>
         </el-table-column>

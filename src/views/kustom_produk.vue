@@ -22,7 +22,7 @@
                 <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Harga" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
