@@ -295,6 +295,15 @@ import nestedRouter from './modules/nested'
       }
   },
   {
+    path: '/satuan',
+    component: () => import('@/views/satuan'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Setting Satuan',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
     path: '/produk/kustom/:id',
     component: () => import('@/views/kustom_produk'),
     name: 'PagePermission',

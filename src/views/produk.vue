@@ -81,9 +81,7 @@
             </el-form-item>
             <el-form-item class="k" label="UNIT">
                 <el-select v-model="unit">
-                    <el-option label="m3" value="m3" />
-                    <el-option label="pcs" value="pcs" />
-                    <el-option label="btg" value="btg" />
+                    <el-option v-for="item in units" :label="item.name" :value="item.name" />
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jenis Barang">
@@ -214,6 +212,7 @@ export default {
                 type: undefined,
                 sort: '+id'
             },
+            units : '',
             importanceOptions: [1, 2, 3],
             calendarTypeOptions,
             cash: [],
@@ -280,6 +279,10 @@ export default {
             })
             axios.get('/producttype').then(response => {
                 this.jenis_barang = response.data.producttype
+            })
+
+             axios.get('/unit').then(response => {
+                this.units = response.data.unit
             })
         },
         handleCurrency(number) {
