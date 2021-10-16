@@ -133,6 +133,8 @@
             </div>
 
             <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
+            <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
+            <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
         </el-form>
 
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
@@ -231,7 +233,10 @@ export default {
         return {
             id : '',
             start: '',
+            index_before: '',
             end: '',
+            sisa_bayar : '',
+            kurang_bayar : '',
             names : '',
             jatuh_tempo: '',
             jumlah_bayar: '',
@@ -345,6 +350,24 @@ export default {
     },
     methods: {
         checkPermission,
+        handleChangeText(i) {
+            this.onChangeQty(this.index_before)
+
+            if (this.dialogStatus == 'create') {
+
+                if (this.jumlah_bayar > this.total_kasIn) {
+                    this.sisa_bayar = this.jumlah_bayar - this.total_kasIn
+                    this.kurang_bayar = ''
+
+                } else {
+                    this.kurang_bayar = this.total_kasIn - this.jumlah_bayar
+                    this.sisa_bayar = ''
+
+                }
+            } else {
+                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
+            }
+        },
         getList() {
             this.listLoading = true
             axios.post('/stock/in').then(response => {
@@ -658,6 +681,8 @@ export default {
         onChangeProduct(index) {
             const produk = this.product.filter((val) => {
                 if (val.id == this.kasIn.all[index]['product_id']) {
+                    this.qty_before = val.qty
+                    this.index_before = index
                     return val
                 }
             })
