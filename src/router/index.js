@@ -314,7 +314,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/produk/kustom/',
+    path: '/produk/kustom/:id',
     component: () => import('@/views/kustom_produk'),
     name: 'PagePermission',
     meta: {

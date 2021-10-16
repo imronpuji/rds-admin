@@ -1,6 +1,6 @@
 
 
- <template>
+<template>
   <div class="app-container">
     <el-table
       :key="tableKey"
