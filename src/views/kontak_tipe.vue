@@ -66,7 +66,7 @@ style="width: 100%;"
         <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>
     </el-form-item>
     <el-form-item class="k" label="Tipe Kontak">
-      <el-select v-model="tipe">
+      <el-select v-model="category">
         <el-option label="supplier" value="supplier" />
         <el-option label="customer" value="customer" />
         <el-option label="karyawan" value="karyawan" />
@@ -294,8 +294,9 @@ createData() {
       const data = {
         name : this.name,
         maxdebt : this.maxdebt,
-        category : this.type
+        category : this.category
     }
+    console.log(data)
     this.loading = true
 
     axios.post('/contacttype/create', data)
@@ -344,7 +345,7 @@ createData() {
      const data = {
         name : this.name,
         maxdebt : this.maxdebt,
-        category : this.type,
+        category : this.category,
     }
     this.loading = true
 
