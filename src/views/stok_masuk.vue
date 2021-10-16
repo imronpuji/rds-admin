@@ -51,6 +51,11 @@
                 <span>{{ handleCurrency(row.paid) }}</span>
             </template>
         </el-table-column>
+        <el-table-column label="Potongan" width="150px" align="center" sortable prop="cashin">
+            <template slot-scope="{row}">
+                <span>{{ handleCurrency(row.discount) }}</span>
+            </template>
+        </el-table-column>
         <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total - row.paid) }}</span>
@@ -104,6 +109,9 @@
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
                 <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+            </el-form-item>
+            <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
+                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
             </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
@@ -231,6 +239,7 @@ export default {
 
     data() {
         return {
+            discount : 0,
             id : '',
             start: '',
             index_before: '',
@@ -356,11 +365,11 @@ export default {
             if (this.dialogStatus == 'create') {
 
                 if (this.jumlah_bayar > this.total_kasIn) {
-                    this.sisa_bayar = this.jumlah_bayar - this.total_kasIn
+                    this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn
                     this.kurang_bayar = ''
 
                 } else {
-                    this.kurang_bayar = this.total_kasIn - this.jumlah_bayar
+                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount)
                     this.sisa_bayar = ''
 
                 }
@@ -474,6 +483,7 @@ export default {
                 product_id,
                 qty,
                 total,
+                discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
                 purchase_price,
