@@ -35,6 +35,7 @@
     :key="tableKey"
     v-loading="listLoading"
     :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))"
+    :default-sort="{prop:'id'}"
     border
     fit
     highlight-current-row
@@ -344,7 +345,7 @@ export default {
       this.listLoading = true
       axios.post('/stock/in').then(response => {
         console.log(response)
-        this.list = response.data.stocktransaction.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)) 
+        this.list = response.data.stocktransaction.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0)) 
         this.total = response.data.stocktransaction.length
 
         // Just to simulate the time of the request

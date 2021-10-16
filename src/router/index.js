@@ -314,6 +314,15 @@ import nestedRouter from './modules/nested'
       }
   },
   {
+    path: '/produk/kustom/',
+    component: () => import('@/views/kustom_produk'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Kostum Harga',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
     path: '/stok/masuk',
     component: () => import('@/views/stok_masuk'),
     name: 'PagePermission',

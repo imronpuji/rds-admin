@@ -31,6 +31,11 @@ style="width: 100%;"
       <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
   </template>
 </el-table-column>
+<el-table-column prop="cashin" sortable label="Kategori" min-width="150px">
+    <template slot-scope="{row}">
+      <span class="link-type">{{ row.category }}</span>
+  </template>
+</el-table-column>
 <el-table-column label="Maximal Hutang" width="150px" align="center" sortable prop="cashin">
     <template slot-scope="{row}">
       <span>{{ handleCurrency(row.maxdebt) }}</span>
@@ -59,6 +64,13 @@ style="width: 100%;"
     </el-form-item>
     <el-form-item class="k" label="Maximal Hutang">
         <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>
+    </el-form-item>
+    <el-form-item class="k" label="Tipe Kontak">
+      <el-select v-model="tipe">
+        <el-option label="supplier" value="supplier" />
+        <el-option label="customer" value="customer" />
+        <el-option label="karyawan" value="karyawan" />
+      </el-select>
     </el-form-item>
     </el-form>
 <div slot="footer" class="dialog-footer">
@@ -282,6 +294,7 @@ createData() {
       const data = {
         name : this.name,
         maxdebt : this.maxdebt,
+        category : this.type
     }
     this.loading = true
 
@@ -315,6 +328,7 @@ createData() {
   handleUpdate(row) {
       this.name = row.name
       this.maxdebt = row.maxdebt
+      this.type = row.category
       this.id = row.id
       this.address = row.address
       this.desc = row.desc
@@ -330,6 +344,7 @@ createData() {
      const data = {
         name : this.name,
         maxdebt : this.maxdebt,
+        category : this.type,
     }
     this.loading = true
 
