@@ -746,9 +746,17 @@ export default {
 
         },
         filterProductPrice(){
-            alert('kjkj')
             axios.get(`/product?contact_id=${this.contact_id}`).then(response => {
                 console.log(response.data);
+                this.kasIn.all = {}
+                this.kasIn.all = 
+                [{
+                    product_id: '',
+                    total: 0,
+                    qty: 0,
+                    harga: 0
+                }];
+  
                 this.product = response.data.product
             })
         },
