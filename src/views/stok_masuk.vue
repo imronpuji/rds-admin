@@ -28,7 +28,7 @@
         </el-table-column>
         <el-table-column label="Supplier" min-width="150px" sortable>
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
+                <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : 'kontak kosong'  }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
@@ -93,7 +93,7 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
             <el-form-item class="k" label="Supplier">
-                <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select">
+                <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select" @change="filterProductPrice()">
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
@@ -347,7 +347,7 @@ export default {
             this.listLoading = true
             axios.post('/stock/in').then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction.sort((a, b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
+                this.list = response.data.stocktransaction
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
@@ -360,9 +360,9 @@ export default {
                 this.kas = response.data.akun
             })
 
-            axios.get('/contact').then(response => {
+            axios.get('/contact/supplier').then(response => {
                 console.log(response)
-                this.kontak = response.data.contact.filter((val) => val.type == 'supplier')
+                this.kontak = response.data.contact
             })
 
             axios.get('/product').then(response => {
@@ -532,6 +532,23 @@ export default {
 
                 })
         },
+
+        filterProductPrice(){
+            axios.get(`/product?contact_id=${this.contact_id}`).then(response => {
+                console.log(response.data);
+                this.kasIn.all = {}
+                this.kasIn.all = 
+                [{
+                    product_id: '',
+                    total: 0,
+                    qty: 0,
+                    harga: 0
+                }];
+  
+                this.product = response.data.product
+            })
+        },
+
         handleDelete(row, index) {
             this.listLoading = true
 

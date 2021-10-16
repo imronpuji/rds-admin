@@ -10,7 +10,7 @@ import Layout from '@/layout'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+import nestedRouter from './modules/nested' 
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -38,64 +38,65 @@ import nestedRouter from './modules/nested'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
- export const constantRoutes = [
- {
-  path: '/redirect',
-  component: Layout,
-  hidden: true,
-  children: [
-  {
-    path: '/redirect/:path(.*)',
-    component: () => import('@/views/redirect/index')
-}
-]
+ export const constantRoutes = [{
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [{
+      path: '/redirect/:path(.*)',
+      component: () => import('@/views/redirect/index')
+  }]
 },
 {
-  path: '/login',
-  component: () => import('@/views/login/index'),
-  hidden: true
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
 },
 {
-  path: '/auth-redirect',
-  component: () => import('@/views/login/auth-redirect'),
-  hidden: true
+    path: '/auth-redirect',
+    component: () => import('@/views/login/auth-redirect'),
+    hidden: true
 },
 {
-  path: '/404',
-  component: () => import('@/views/error-page/404'),
-  hidden: true
+    path: '/404',
+    component: () => import('@/views/error-page/404'),
+    hidden: true
 },
 {
-  path: '/401',
-  component: () => import('@/views/error-page/401'),
-  hidden: true
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    hidden: true
 },
 {
-  path: '/',
-  component: Layout,
-  redirect: '/dashboard',
-  children: [
-  {
-    path: 'dashboard',
-    component: () => import('@/views/dashboard/index'),
-    name: 'Dashboard',
-    meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
-}
-]
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      name: 'Dashboard',
+      meta: {
+        title: 'Dashboard',
+        icon: 'dashboard',
+        affix: true
+    }
+}]
 },
 {
-  path: '/profile',
-  component: Layout,
-  redirect: '/profile/index',
-  hidden : true,
-  children: [
-  {
-    path: 'index',
-    component: () => import('@/views/profile/index'),
-    name: 'Profile',
-    meta: { title: 'Profile', icon: 'user', noCache: true }
-}
-]
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: true,
+    children: [{
+      path: 'index',
+      component: () => import('@/views/profile/index'),
+      name: 'Profile',
+      meta: {
+        title: 'Profile',
+        icon: 'user',
+        noCache: true
+    }
+}]
 }
 ]
 
@@ -106,98 +107,84 @@ import nestedRouter from './modules/nested'
  export const asyncRoutes = [
 
  {
-  path: '/stok/keluar',
-  component: Layout,
-  name: 'stok',
-  meta: 
-  {
-    title: 'Penjualan',
-    icon: 'shopping',
+    path: '/stok/keluar',
+    component: Layout,
+    name: 'stok',
+    meta: {
+      title: 'Penjualan',
+      icon: 'shopping',
       roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children : 
-  [
-  {
+  children: [{
       path: '/stok/keluar',
       component: () => import('@/views/stok_keluar'),
       name: 'PagePermission',
       meta: {
         icon: 'component',
         title: 'Penjualan',
-              roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-          }
-      }
-      ]
-  },
+        roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+    }
+}]
+},
 
 
-  {
-      path: '/stok/masuk',
-      component: Layout,
-      name: 'stok',
-      meta: 
-      {
-        title: 'Pembelian',
-        icon: 'shopping',
+{
+    path: '/stok/masuk',
+    component: Layout,
+    name: 'stok',
+    meta: {
+      title: 'Pembelian',
+      icon: 'shopping',
       roles: ['admin'] // you can set roles in root nav
   },
-  children : 
-  [
-  {
+  children: [{
       path: '/stok/masuk',
       component: () => import('@/views/stok_masuk'),
       name: 'PagePermission',
-      meta: 
-      {
+      meta: {
         icon: 'nested',
         title: 'Pembelian',
-              roles: ['admin'] // or you can only set roles in sub nav
-          }
-      }
-      ]
-  },
-  {
-      path: '/setarakas',
-      component: Layout,
-      name: 'Kas / Setoran Kas',
-      meta: 
-      {
-        title: 'Kas',
-        icon: 'bug',
+        roles: ['admin'] // or you can only set roles in sub nav
+    }
+}]
+},
+{
+    path: '/setarakas',
+    component: Layout,
+    name: 'Kas / Setoran Kas',
+    meta: {
+      title: 'Kas',
+      icon: 'bug',
       roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children: 
-  [
+  children: [
 
   {
-      path: '/kas/keluar',
-      component: () => import('@/views/kas_out'),
-      name: 'DirectivePermission',
-      meta: 
-      {
-        title: 'Kas Keluar',
-        roles: ['admin']
-              // if do not set roles, means: this page does not require permission
-          }
-      },
-      {
-        path: '/kas/masuk',
-        component: () => import('@/views/transaksi_in'),
-        name: 'RolePermission',
-        meta: 
-        {
-          title: 'Kas Masuk',
-          roles: ['admin']
+    path: '/kas/keluar',
+    component: () => import('@/views/kas_out'),
+    name: 'DirectivePermission',
+    meta: {
+      title: 'Kas Keluar',
+      roles: ['admin']
+          // if do not set roles, means: this page does not require permission
       }
   },
-
   {
+    path: '/kas/masuk',
+    component: () => import('@/views/transaksi_in'),
+    name: 'RolePermission',
+    meta: {
+      title: 'Kas Masuk',
+      roles: ['admin']
+  }
+},
+
+{
     path: '/kas/detail/:id',
     component: () => import('@/views/kas_detail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Kas',
       roles: ['admin', 'kasir']
   }
@@ -208,8 +195,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/kas_outdetail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Kas',
       roles: ['admin', 'kasir']
   }
@@ -220,8 +206,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/kredit_detail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Kas',
       roles: ['admin', 'kasir']
   }
@@ -232,8 +217,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/transfer_detail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Transfer',
       roles: ['admin']
   }
@@ -242,8 +226,7 @@ import nestedRouter from './modules/nested'
     path: '/transfer-transaksi',
     component: () => import('@/views/transfer_in'),
     name: 'RolePermission',
-    meta: 
-    {
+    meta: {
       title: 'Transfer Kas',
       roles: ['admin']
   }
@@ -255,30 +238,29 @@ import nestedRouter from './modules/nested'
 
 
 {
-  path: '/kon',
-  component: Layout,
-  name: 'kontak',
-  meta: {
-    title: 'Kontak',
-    icon: 'example',
+    path: '/kon',
+    component: Layout,
+    name: 'kontak',
+    meta: {
+      title: 'Kontak',
+      icon: 'example',
       roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children: [
-  {
-      path: '/kontak',
-      component: () => import('@/views/supplier'),
-      name: 'PagePermission',
-      meta: {
-        title: 'Kontak',
+  children: [{
+    path: '/kontak',
+    component: () => import('@/views/supplier'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Kontak',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
       }
   },
   {
-      path: '/kontak/tipe',
-      component: () => import('@/views/kontak_tipe'),
-      name: 'PagePermission',
-      meta: {
-        title: 'Tipe Kontak',
+    path: '/kontak/tipe',
+    component: () => import('@/views/kontak_tipe'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Tipe Kontak',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
       }
   }
@@ -286,21 +268,20 @@ import nestedRouter from './modules/nested'
 },
 
 {
-  path: '/stok',
-  component: Layout,
-  name: 'stok',
-  meta: {
-    title: 'Persedian',
-    icon: 'shopping',
-      roles: ['admin', 'kasir'] // you can set roles in root nav
+    path: '/stok',
+    component: Layout,
+    name: 'stok',
+    meta: {
+        title: 'Persediaan',
+        icon: 'shopping',
+        roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children: [
-  {
-      path: '/kategori',
-      component: () => import('@/views/kategori'),
-      name: 'PagePermission',
-      meta: {
-        title: 'Kategori',
+  children: [{
+    path: '/kategori',
+    component: () => import('@/views/kategori'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Kategori',
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },
@@ -326,7 +307,7 @@ import nestedRouter from './modules/nested'
     path: '/stok/masuk',
     component: () => import('@/views/stok_masuk'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
 
     meta: {
       title: 'Pembelian',
@@ -337,7 +318,7 @@ import nestedRouter from './modules/nested'
     path: '/stok/keluar',
     component: () => import('@/views/stok_keluar'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
 
     meta: {
       title: 'Penjualan',
@@ -348,7 +329,7 @@ import nestedRouter from './modules/nested'
     path: '/stok/keluar/detail/:id',
     component: () => import('@/views/detail_penjualan'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
     meta: {
       title: 'Detail Penjualan',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
@@ -359,7 +340,7 @@ import nestedRouter from './modules/nested'
     path: '/stok/masuk/detail/:id',
     component: () => import('@/views/detail_pembelian'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
     meta: {
       title: 'detail pembelian',
           roles: ['admin'] // or you can only set roles in sub nav
@@ -370,21 +351,51 @@ import nestedRouter from './modules/nested'
 },
 
 {
-  path: '/laporan',
-  component: Layout,
-  name: 'laporan',
-  meta: {
-    title: 'Laporan',
-    icon: 'excel',
+    path: '/pesanan',
+    component: Layout,
+    name: 'stok',
+    meta: {
+        title: 'Pesanan',
+        icon: 'shopping',
+        roles: ['admin', 'kasir'] // you can set roles in root nav
+  },
+  children: [{
+    path: '/tunai',
+    component: () => import('@/views/kategori'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Tunai',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
+    path: '/non/tunai',
+    component: () => import('@/views/produk'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Non Tunai',
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+      }
+  },
+
+  ]
+},
+
+{
+    path: '/laporan',
+    component: Layout,
+    name: 'laporan',
+    meta: {
+      title: 'Laporan',
+      icon: 'excel',
       roles: ['admin'] // you can set roles in root nav
   },
-  children: [
-  {
-      path: '/neraca',
-      component: () => import('@/views/neraca'),
-      name: 'PagePermission',
-      meta: {
-        title: 'Neraca',
+  children: [{
+    path: '/neraca',
+    component: () => import('@/views/neraca'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Neraca',
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },
@@ -401,48 +412,43 @@ import nestedRouter from './modules/nested'
 },
 
 {
-   path: '/finansial',
-   component: Layout,
-   name: 'finansial',
-   hidden : true,
-   meta: 
-   {
+    path: '/finansial',
+    component: Layout,
+    name: 'finansial',
+    hidden: true,
+    meta: {
       title: 'Finansial',
       icon: 'people',
       roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children: 
-  [
+  children: [
 
   {
-      path: '/kategori/detail/:nama/:id',
-      component: () => import('@/views/kategori_detail'),
-      name: 'PagePermission',
-      hidden: true,
-      meta: 
-      {
-        title: 'Kategori',
-              roles: ['admin'] // or you can only set roles in sub nav
-          }
-      },
-      {
-        path: '/akun',
-        component: () => import('@/views/akun'),
-        name: 'DirectivePermission',
-        hidden : true,
-        meta: 
-        {
-          title: 'Akun',
-          roles: ['admin']
+    path: '/kategori/detail/:nama/:id',
+    component: () => import('@/views/kategori_detail'),
+    name: 'PagePermission',
+    hidden: true,
+    meta: {
+      title: 'Kategori',
+          roles: ['admin'] // or you can only set roles in sub nav
       }
   },
   {
+    path: '/akun',
+    component: () => import('@/views/akun'),
+    name: 'DirectivePermission',
+    hidden: true,
+    meta: {
+      title: 'Akun',
+      roles: ['admin']
+  }
+},
+{
     path: '/kas/detail/:id',
     component: () => import('@/views/kas_detail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Kas',
       roles: ['admin']
   }
@@ -453,8 +459,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/kas_outdetail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Kas',
       roles: ['admin', 'kasir']
   }
@@ -465,8 +470,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/transfer_detail'),
     name: 'RolePermission',
     hidden: true,
-    meta: 
-    {
+    meta: {
       title: 'Detail Transfer',
       roles: ['admin']
   }
@@ -474,96 +478,93 @@ import nestedRouter from './modules/nested'
 ]
 },
 
-
-
-
-
-
-
-
 {
-  path: '/permission',
-  component: Layout,
+    path: '/permission',
+    component: Layout,
     hidden: true, // will always show the root menu
     name: 'Permission',
-    meta: 
-    {
+    meta: {
       title: 'Permission',
       icon: 'lock',
       roles: ['admin'] // you can set roles in root nav
   },
-  children: 
-  [
-  {
-      path: 'role',
-      component: () => import('@/views/permission/role'),
-      name: 'RolePermission',
-      meta: {
-        title: 'Role Permission',
-        roles: ['admin']
-    }
+  children: [{
+    path: 'role',
+    component: () => import('@/views/permission/role'),
+    name: 'RolePermission',
+    meta: {
+      title: 'Role Permission',
+      roles: ['admin']
+  }
 },
 {
-  path: 'user',
-  component: () => import('@/views/user'),
-  name: 'RolePermission',
-  meta: 
-  {
-    title: 'User',
-    roles: ['admin']
-}
+    path: 'user',
+    component: () => import('@/views/user'),
+    name: 'RolePermission',
+    meta: {
+      title: 'User',
+      roles: ['admin']
+  }
 }
 ]
 },
 
 
 {
-  path: '/biaya',
-  component: Layout,
-  children: [
-  {
     path: '/biaya',
-    component: () => import('@/views/biaya'),
-    name: 'biaya',
-    meta: { title: 'Biaya', icon: 'money',  roles: ['admin', 'kasir'] }
-}
-]
+    component: Layout,
+    children: [{
+      path: '/biaya',
+      component: () => import('@/views/biaya'),
+      name: 'biaya',
+      meta: {
+        title: 'Biaya',
+        icon: 'money',
+        roles: ['admin', 'kasir']
+    }
+}]
 },
 
 {
-    path: '/stok/keluar/surat/jalan/:id',
+    path: '/stok/keluar/surat/jalan/:id',  
     component: () => import('@/views/pdfnota'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
     meta: {
       title: 'surat jalan',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-      }
-  },
+      roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+  }
+},
 
-  {
+{
     path: '/stok/keluar/nota/:id',
     component: () => import('@/views/pdfnotavalid'),
     name: 'PagePermission',
-    hidden : true,
+    hidden: true,
     meta: {
       title: 'Nota',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-      }
-  },
+      roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+  }
+},
 
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-  ]
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+}
+]
 
-  const createRouter = () => new Router({
+const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+}),
   routes: constantRoutes
 })
 
-  const router = createRouter()
+const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
