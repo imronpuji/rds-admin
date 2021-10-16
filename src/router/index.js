@@ -160,7 +160,7 @@ import nestedRouter from './modules/nested'
   children: [
 
   {
-    path: '/penjualan',
+    path: '/kas/keluar',
     component: () => import('@/views/kas_out'),
     name: 'DirectivePermission',
     meta: {
@@ -170,7 +170,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/pembelian',
+    path: '/kas/masuk',
     component: () => import('@/views/transaksi_in'),
     name: 'RolePermission',
     meta: {
@@ -304,6 +304,24 @@ import nestedRouter from './modules/nested'
       }
   },
   {
+    path: '/tunai',
+    component: () => import('@/views/kategori'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Item Keluar',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
+    path: '/non/tunai',
+    component: () => import('@/views/item_masuk'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Item Masuk',
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+      }
+  },
+  {
     path: '/produk/kustom/:id',
     component: () => import('@/views/kustom_produk'),
     name: 'PagePermission',
@@ -360,36 +378,6 @@ import nestedRouter from './modules/nested'
   ]
 },
 
-{
-    path: '/pesanan',
-    component: Layout,
-    name: 'stok',
-    meta: {
-        title: 'Pesanan',
-        icon: 'shopping',
-        roles: ['admin', 'kasir'] // you can set roles in root nav
-  },
-  children: [{
-    path: '/tunai',
-    component: () => import('@/views/kategori'),
-    name: 'PagePermission',
-    meta: {
-      title: 'Tunai',
-          roles: ['admin'] // or you can only set roles in sub nav
-      }
-  },
-  {
-    path: '/non/tunai',
-    component: () => import('@/views/produk'),
-    name: 'PagePermission',
-    meta: {
-      title: 'Non Tunai',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
-      }
-  },
-
-  ]
-},
 
 {
     path: '/laporan',
