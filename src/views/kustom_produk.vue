@@ -47,7 +47,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
-            <el-form-item class="k" label="Tipe Kontak">
+            <el-form-item class="k" label="Tipe Kontak" >
                 <el-select v-model="tipe">
                     <el-option v-for="item in kontak" :label="item.name" :value="item.name" />
                 </el-select>

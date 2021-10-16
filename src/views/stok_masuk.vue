@@ -92,7 +92,7 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
-            <el-form-item class="k" label="Supplier">
+            <el-form-item class="k" label="Supplier" v-if="dialogStatus == 'create'">
                 <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select" @change="filterProductPrice()">
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
@@ -109,11 +109,11 @@
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item class="k" label="Tgl Transaksi">
-                <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi">
+            <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
+                <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi" >
                 </el-date-picker>
             </el-form-item>
-            <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap">
+            <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap" v-if="dialogStatus == 'create'">
                 <el-form-item class="k" label="Barang">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
                         <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
@@ -229,8 +229,10 @@ export default {
 
     data() {
         return {
+            id : '',
             start: '',
             end: '',
+            names : '',
             jatuh_tempo: '',
             jumlah_bayar: '',
             dates: '',
@@ -489,31 +491,27 @@ export default {
             // })
         },
         handleUpdate(row) {
-            this.name = row.cashout.name
-            this.id = row.id
+            console.log(row.id)
+            this.ids = row.id
+            this.names = row.cashout.name
             this.selling_price = row.selling_price
             this.purchase_price = row.purchase_price
             this.unit = row.unit
-            this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
             this.qty = row.qty
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
-            this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
-            })
+
         },
         updateData() {
             this.listLoading = true
             this.loading = true
             const data = {
-                name: this.name,
-                selling_price: this.selling_price,
-                purchase_price: this.purchase_price,
-                unit: this.unit,
-                producttype: this.producttype
+                cashout_id: this.cashout_id,
+                total: this.jumlah_bayar,
+                payment_due: this.jatuh_tempo,
             }
 
-            axios.put(`/product/edit/${this.id}`, data)
+            axios.put(`/stock/in/paid/${this.ids}`, data)
                 .then((response) => {
                     this.loading = false
 
@@ -529,6 +527,21 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false
+                    if(err.response.status == 400){
+                        this.$notify({
+                            title: 'Gagal',
+                            message: err.response.data.error,
+                            type: 'warning',
+                            duration: 2000
+                        })
+                    } else {
+                        this.$notify({
+                            title: 'Gagal',
+                            message: 'Server Error',
+                            type: 'warning',
+                            duration: 2000
+                        })
+                    }
 
                 })
         },

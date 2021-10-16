@@ -24,10 +24,10 @@
             reviewer
         </el-checkbox>
     </div>
-    <div v-for="data in cashin">
+<!--     <div v-for="data in cashin">
         <h5 style="margin:4px; padding:0">Masuk Ke Akun : {{ data.to.name }}</h5>
         <h5 style="margin:4px; padding:0">Total : {{ handleCurrency(data.cashin) }}</h5>
-    </div>
+    </div> -->
 
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
         <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
@@ -38,7 +38,7 @@
         <el-table-column label="Nama" min-width="150px">
             <template slot-scope="{row}">
                 <span class="link-type" @click="handleUpdate(row)">
-                    <span>{{row.cashin.name}}</span>
+                    <span>{{row.cashin == null ? row.cashout.name : row.cashin.name}}</span>
                 </span>
             </template>
         </el-table-column>
