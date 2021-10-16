@@ -298,6 +298,7 @@ import nestedRouter from './modules/nested'
     path: '/produk/kustom/:id',
     component: () => import('@/views/kustom_produk'),
     name: 'PagePermission',
+    hidden : true,
     meta: {
       title: 'Kostum Harga',
           roles: ['admin'] // or you can only set roles in sub nav
