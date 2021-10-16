@@ -139,7 +139,7 @@ export default {
     },
     data() {
         return {
-            maxdebt: '',
+            maxdebt: 0,
             name: '',
             search: '',
             category: '',

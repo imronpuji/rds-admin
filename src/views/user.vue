@@ -310,7 +310,7 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/role/delete/${row.id}`)
+      axios.delete(`/unit/delete/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)
