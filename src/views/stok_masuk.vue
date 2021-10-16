@@ -138,7 +138,7 @@
         </el-form>
 
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
-            <el-button style="margin:20px 10px" type="primary" @click="addFind">
+            <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
                 Tambah Produk
             </el-button>
             <el-button style="margin:20px 10px" v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
