@@ -415,6 +415,15 @@ import nestedRouter from './modules/nested'
       title: 'Laba Rugi',
           roles: ['admin'] // or you can only set roles in sub nav
       }
+  },
+  {
+    path: '/hutang/penjualan',
+    component: () => import('@/views/hutang_penjualan'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Piutang Beredar',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
   }
   ]
 },
@@ -534,7 +543,7 @@ import nestedRouter from './modules/nested'
 },
 
 {
-    path: '/penjualan/jalan/:id',  
+    path: '/penjualan/surat/jalan/:id',  
     component: () => import('@/views/pdfnota'),
     name: 'PagePermission',
     hidden: true,
