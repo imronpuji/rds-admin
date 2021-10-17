@@ -26,42 +26,42 @@
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Supplier" min-width="150px" sortable>
+        <el-table-column label="Supplier" min-width="150px" sortable prop="name">
             <template slot-scope="{row}">
                 <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : 'kontak kosong'  }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="total">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
             <template slot-scope="{row}">
                 <span>{{ row.staff }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
             <template slot-scope="{row}">
                 <span>{{ row.payment_due }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="paid">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.paid) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Potongan" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Potongan" width="150px" align="center" sortable prop="discount">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.discount) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Hutang" width="150px" align="center" sortable prop="debt">
             <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.total - row.paid) }}</span>
+                <span>{{ handleCurrency(row.debt) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
             <template slot-scope="{row}">
                 <span>{{ row.date }}</span>
             </template>
@@ -384,7 +384,10 @@ export default {
             this.listLoading = true
             axios.post('/stock/in').then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+                this.list = response.data.stocktransaction.map((val) => {
+                    val['debt'] = val.total - paid
+                    return val;
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
