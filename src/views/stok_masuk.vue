@@ -385,7 +385,7 @@ export default {
             axios.post('/stock/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = val.total - paid
+                    val['debt'] = val.total - val.paid
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
