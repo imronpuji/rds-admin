@@ -282,7 +282,7 @@ export default {
     },
     handleUpdate(row) {
       this.id = row.id
-      this.name = row.name
+      this.unit = row.name
       this.desc = row.desc
       this.roles = row.roles
       this.dialogStatus = 'update'
@@ -294,10 +294,11 @@ export default {
     updateData() {
       this.listLoading = true
       const data = {
-        role : this.roles,
+        name : this.unit,
+        desc : this.desc,
       }
       console.log(data)
-      axios.post(`/unit/edit/${this.id}`, data)
+      axios.put(`/unit/edit/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false

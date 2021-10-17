@@ -119,17 +119,6 @@
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Masuk Ke Kas">
-                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
-            </el-form-item>
-            <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
-            </el-form-item>
-             <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
-            </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
@@ -138,7 +127,7 @@
                 <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi">
                 </el-date-picker>
             </el-form-item>
-
+            
             <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap: wrap; width:100% !important">
                 <el-form-item class="k" :label="index == 0 ? 'Harga Barang' : ''">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
@@ -156,7 +145,23 @@
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
+                <el-button style="margin:20px 10px" type="primary" @click="deleteFormProdukByIndex(index)">
+                    X
+                </el-button>
             </div>
+
+            <el-form-item class="k" label="Masuk Ke Kas">
+                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
+            <el-form-item class="k" label="Jumlah Pembayaran">
+                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+            </el-form-item>
+             <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
+                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
+            </el-form-item>
+
 
             <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
             <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
@@ -402,6 +407,14 @@ export default {
         filterHandler(value, row, column) {
             const property = column['property'];
             return row[property] === value;
+        },
+        deleteFormProdukByIndex(i){
+            this.kasIn.all = this.kasIn.all.filter((val, index) => {
+                if(i != index){
+                    return val;
+                }
+            })
+
         },
         getList() {
             this.listLoading = true
