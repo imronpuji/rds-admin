@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column label="Tipe Kontak" width="150px" align="center" prop="cashin" sortable>
             <template slot-scope="{row}">
-                <span>{{ row.type.name }}</span>
+                <span>{{ row.type != null ? row.type.name : 'tipe belum disetting' }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Date" width="150px" align="center" sortable prop="date">

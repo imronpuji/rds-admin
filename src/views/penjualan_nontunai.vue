@@ -552,7 +552,7 @@ export default {
                 }
             )
 
-            axios.post('/stock/pending/out/create', encodedValues)
+            axios.post('/stock/out/pending/create', encodedValues)
                 .then((response) => {
                     this.getList()
                     this.dialogFormVisible = false

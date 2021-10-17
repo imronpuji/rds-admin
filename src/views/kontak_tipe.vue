@@ -27,6 +27,11 @@
                 <span class="link-type">{{ row.category }}</span>
             </template>
         </el-table-column>
+        <el-table-column prop="cashin" sortable label="Jatuh Tempo" min-width="150px">
+            <template slot-scope="{row}">
+                <span class="link-type">{{ row.max_paydue }}</span>
+            </template>
+        </el-table-column>
         <el-table-column label="Maximal Hutang" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.maxdebt) }}</span>
@@ -51,6 +56,9 @@
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
             <el-form-item class="k" label="Nama">
                 <el-input v-model="name" placeholder="Nama" />
+            </el-form-item>
+            <el-form-item class="k" label="Jatuh Tempo">
+                <el-input v-model="max_paydue" placeholder="10/hari" />
             </el-form-item>
             <el-form-item class="k" label="Maximal Hutang">
                 <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>
@@ -140,6 +148,7 @@ export default {
     data() {
         return {
             maxdebt: 0,
+            max_paydue : '',
             name: '',
             search: '',
             category: '',
@@ -324,7 +333,8 @@ export default {
             const data = {
                 name: this.name,
                 maxdebt: this.maxdebt,
-                category: this.category
+                category: this.category,
+                max_paydue : this.max_paydue
             }
             console.log(data)
             this.loading = true
@@ -376,6 +386,7 @@ export default {
                 name: this.name,
                 maxdebt: this.maxdebt,
                 category: this.category,
+                max_paydue : this.max_paydue
             }
             this.loading = true
 
