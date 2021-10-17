@@ -792,7 +792,7 @@ export default {
                     qty = this.kasIn.all[index]['qty'].replace('.', "")
                 } else {
                     qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
-
+                    this.kasIn.all[index]['qty'] = qty
                 }
                 
                 
