@@ -108,12 +108,12 @@
 
       <!-- multiple input -->
       <div v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap:wrap; border-radius:4px; width:100%">
-        <el-form-item class="k" label="Sebagai Akun">
+        <el-form-item class="k" :label="index == 0 ? 'Sebagai Akun' : ''">
           <el-select v-model="all.biaya" required filterable class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
             <el-option v-for="item in iscashout" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>   
         </el-form-item>
-        <el-form-item class="k" style=" padding-left:4px" label="Sub Total">
+        <el-form-item class="k" style=" padding-left:4px" :label="index == 0 ? 'Sub Total' : ''">
           <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
       </div>
