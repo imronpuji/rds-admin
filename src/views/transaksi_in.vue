@@ -81,12 +81,12 @@
 
             <!-- multiple input -->
             <div v-for="(all, index) in kasIn.all" style=" display:flex; width:100%; padding:0px; flex-wrap:wrap; margin:0px; ">
-                <el-form-item class="k" label="Sebagai Akun" style=" padding-left:4px">
+                <el-form-item class="k" :label="index == 0 ? 'Sebagai Akun' : ''" style=" padding-left:4px">
                     <el-select filterable v-model="all.modal" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
                         <el-option v-for="item in modal" :key="item.id" :label="item.name" :value="item.id" />
                     </el-select>
                 </el-form-item>
-                <el-form-item class="k" label="Sub Total">
+                <el-form-item class="k" :label="index == 0 ? 'Sub Total' : ''">
                     <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
                 </el-form-item>
             </div>

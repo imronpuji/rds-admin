@@ -122,19 +122,19 @@
                 </el-date-picker>
             </el-form-item>
             <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap" v-if="dialogStatus == 'create'">
-                <el-form-item class="k" label="Barang">
+                <el-form-item class="k" :label="index == 0 ? 'Barang' : ''">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
                         <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item class="k" label="Jumlah Barang">
+                <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
-                <el-form-item class="k" label="Harga Satuan">
+                <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''">
                     <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
-                <el-form-item class="k" label="Sub Total">
+                <el-form-item class="k" :label="index == 0 ? 'Sub Total' : ''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 </el-form-item>
