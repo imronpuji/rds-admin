@@ -120,11 +120,20 @@ import nestedRouter from './modules/nested'
       component: () => import('@/views/stok_keluar'),
       name: 'PagePermission',
       meta: {
-        icon: 'component',
         title: 'Penjualan',
         roles: ['admin', 'kasir'] // or you can only set roles in sub nav
     }
-}]
+}, 
+    {
+      path: '/penjualan/non/tunai',
+      component: () => import('@/views/penjualan_nontunai'),
+      name: 'PagePermission',
+      meta: {
+        title: 'Penjualan Non Tunai',
+        roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+    }
+}
+]
 },
 
 

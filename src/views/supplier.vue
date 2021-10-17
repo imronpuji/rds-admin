@@ -76,7 +76,7 @@
             </el-form-item>
             <el-form-item class="k" label="Tipe Kontak">
                 <el-select v-model="tipe">
-                    <el-option v-for="item in kontak" :label="item.name" :value="item.name" />
+                    <el-option v-for="item in kontak" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
         </el-form>
