@@ -734,12 +734,21 @@ export default {
         },
         onChangeQty(index) {
 
-            let qty = parseFloat(
-                this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            ).toFixed(2);
-            this.kasIn.all[index]['qty'] = parseFloat(
-                this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            ).toFixed(2)
+            // let qty = parseFloat(
+            //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
+            // ).toFixed(2);
+            // this.kasIn.all[index]['qty'] = parseFloat(
+            //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
+            // ).toFixed(2)
+
+            let qty = 0;
+            if(this.kasIn.all[index]['qty'].length > 3){
+
+                qty = this.kasIn.all[index]['qty'].replace('.', "")
+            } else {
+                qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
+
+            }
             const result = qty * parseInt(this.kasIn.all[index]['harga'])
             this.kasIn.all[index]['total'] = result
             const total = this.kasIn.all.reduce(function (accumulator, item) {
