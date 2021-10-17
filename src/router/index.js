@@ -151,11 +151,21 @@ import nestedRouter from './modules/nested'
       component: () => import('@/views/stok_masuk'),
       name: 'PagePermission',
       meta: {
-        icon: 'nested',
+        icon: '',
         title: 'Pembelian',
         roles: ['admin'] // or you can only set roles in sub nav
     }
-}]
+}, {
+      path: '/pembelian/non/tunai',
+      component: () => import('@/views/pembelian_nontunai'),
+      name: 'PagePermission',
+      meta: {
+        icon: '',
+        title: 'Pembelian Non Tunai',
+        roles: ['admin'] // or you can only set roles in sub nav
+    }
+} 
+]
 },
 {
     path: '/setarakas',
