@@ -70,9 +70,7 @@
             <template slot-scope="{row,$index}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
-                        Bayar
-                    </el-button>
+
                     <div slot="reference" class="name-wrapper">
                         <el-tag size="medium">Aksi</el-tag>
                     </div>
@@ -81,13 +79,6 @@
                     </el-button>
                     <br>
                     <br>
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/pembelian/detail/' + row.id">Detail</router-link>
-                    </el-button>
-
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
-                    </el-button>
                 </el-popover>
             </template>
         </el-table-column>
@@ -509,7 +500,7 @@ export default {
                     allowDots: true
                 }
             )
-            axios.post('/stock/pending/in/create', encodedValues)
+            axios.post('/stock/in/pending/create', encodedValues)
                 .then((response) => {
                     this.loading = false
 

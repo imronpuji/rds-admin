@@ -55,7 +55,7 @@
 
                 <el-popover trigger="hover" placement="top">
                     <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
-                        Bayar
+                        Proses Penjualan
                     </el-button>
                     <div slot="reference" class="name-wrapper">
                         <el-tag size="medium">Aksi</el-tag>
@@ -66,11 +66,7 @@
                     <br>
                     <br>
                     <el-button size="mini" type="warning">
-                        <router-link :to="'penjualan/detail/' + row.id">Detail</router-link>
-                    </el-button>
-
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
+                        <router-link :to="'/penjualan/detail/' + row.id">Detail</router-link>
                     </el-button>
                 </el-popover>
 
@@ -80,9 +76,6 @@
             <template slot-scope="{row}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button type="primary" size="mini">
-                        <router-link target="_blank" :to="'/penjualan/surat/jalan/' + row.id"> Surat Jalan</router-link>
-                    </el-button>
                     <el-button type="warning" size="mini">
                         <router-link target="_blank" :to="'/penjualan/nota/' + row.id"> Nota</router-link>
                     </el-button>
