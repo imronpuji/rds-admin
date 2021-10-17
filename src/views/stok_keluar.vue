@@ -598,7 +598,7 @@ export default {
             // this.qty = row.qty
 
             this.total_kasIn = row.total
-            this.cashin_id = row.cashin_id
+            this.cashout_id = row.cashin_id
             this.jatuh_tempo = row.payment_due
             this.total_kasIn = row.total
             this.kurang_bayar = row.total - row.paid
@@ -623,7 +623,7 @@ export default {
             this.loading = true
             const data = {
                 payment_due: this.jatuh_tempo,
-                cashin_id: this.cashin_id,
+                cashin_id: this.cashout_id,
                 total: this.jumlah_bayar,
             }
             console.log(data)
