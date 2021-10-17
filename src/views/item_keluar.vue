@@ -542,7 +542,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 type: 'warning'
             }).then(() => {
-                axios.delete(`/stock/out/nonmoney/delete/${row.id}`)
+                axios.delete(`/stock/nonmoney/delete/${row.id}`)
                     .then((response) => {
                         this.listLoading = false
 
