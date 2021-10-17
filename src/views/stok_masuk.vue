@@ -102,17 +102,6 @@
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Bayar Dengan">
-                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
-            </el-form-item>
-            <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
-            </el-form-item>
-            <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
-            </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
@@ -121,6 +110,7 @@
                 <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi" >
                 </el-date-picker>
             </el-form-item>
+
             <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap" v-if="dialogStatus == 'create'">
                 <el-form-item class="k" :label="index == 0 ? 'Barang' : ''">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
@@ -137,8 +127,24 @@
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total' : ''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
+                <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
+                    <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
+                        X
+                    </el-button>
                 </el-form-item>
             </div>
+            
+            <el-form-item class="k" label="Bayar Dengan">
+                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
+            <el-form-item class="k" label="Jumlah Pembayaran">
+                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+            </el-form-item>
+            <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
+                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
+            </el-form-item>
 
             <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
             <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
@@ -148,9 +154,6 @@
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
             <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
                 Tambah Produk
-            </el-button>
-            <el-button style="margin:20px 10px" v-if="kasIn.all.length > 1" type="primary" @click="deleteFind">
-                Hapus Produk
             </el-button>
             <el-button style="margin:20px 10px" @click="dialogFormVisible = false">
                 Cancel
@@ -411,6 +414,16 @@ export default {
             }).format(number)
             return idr
         },
+
+         deleteFormProdukByIndex(i){
+            this.kasIn.all = this.kasIn.all.filter((val, index) => {
+                if(i != index){
+                    return val;
+                }
+            })
+
+        },
+
         handleFilter() {
             this.listQuery.page = 1
             this.getList()

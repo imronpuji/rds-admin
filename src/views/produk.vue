@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column label="Unit" width="150px" align="center" sortable prop="date">
             <template slot-scope="{row}">
-                <span>{{ row.unit.name }}</span>
+                <span>{{ row.unit == null ? 'unit tidak ada' : row.unit.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Jenis Barang" width="150px" align="center" sortable prop="date">
