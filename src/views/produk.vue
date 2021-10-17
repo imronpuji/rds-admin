@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column label="Unit" width="150px" align="center" sortable prop="date">
             <template slot-scope="{row}">
-                <span>{{ row.unit }}</span>
+                <span>{{ row.unit.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Jenis Barang" width="150px" align="center" sortable prop="date">
@@ -81,7 +81,7 @@
             </el-form-item>
             <el-form-item class="k" label="UNIT">
                 <el-select v-model="unit">
-                    <el-option v-for="item in units" :label="item.name" :value="item.name" />
+                    <el-option v-for="item in units" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jenis Barang">
@@ -394,7 +394,7 @@ export default {
             this.id = row.id
             this.selling_price = row.selling_price
             this.purchase_price = row.purchase_price
-            this.unit = row.unit
+            this.unit = row.units
             this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
             this.qty = row.qty
             this.dialogStatus = 'update'
