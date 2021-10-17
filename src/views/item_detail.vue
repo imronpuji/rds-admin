@@ -27,11 +27,6 @@
                 <span>{{ row.qty }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date" v-if="checkPermission(['admin'])">
-            <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.purchase_price) }}</span>
-            </template>
-        </el-table-column>
         <el-table-column label="Total" width="150px" align="center" sortable prop="date">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
