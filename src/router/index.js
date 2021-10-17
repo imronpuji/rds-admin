@@ -261,7 +261,7 @@ import nestedRouter from './modules/nested'
     name: 'PagePermission',
     meta: {
       title: 'Tipe Kontak',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
       }
   }
   ]
