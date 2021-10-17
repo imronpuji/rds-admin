@@ -139,7 +139,7 @@ methods: {
 
   async print() {
   	await window.print()
-  	await this.$router.push('/stok/keluar')
+  	await this.$router.push('/penjualan')
   }
 
  }
