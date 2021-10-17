@@ -386,8 +386,7 @@ export default {
     methods: {
         checkPermission,
         handleChangeText(i) {
-            this.onChangeQty(this.index_before)
-            this.onChangeQty
+
             if (this.dialogStatus == 'create') {
 
                 if (this.jumlah_bayar > this.total_kasIn) {
