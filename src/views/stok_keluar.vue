@@ -81,10 +81,10 @@
 
                 <el-popover trigger="hover" placement="top">
                     <el-button type="primary" size="mini">
-                        <router-link :to="'/penjualan/surat/jalan/' + row.id"> Surat Jalan</router-link>
+                        <router-link target="_blank" :to="'/penjualan/surat/jalan/' + row.id"> Surat Jalan</router-link>
                     </el-button>
                     <el-button type="warning" size="mini">
-                        <router-link :to="'/penjualan/nota/' + row.id"> Nota</router-link>
+                        <router-link target="_blank" :to="'/penjualan/nota/' + row.id"> Nota</router-link>
                     </el-button>
                     <div slot="reference" class="name-wrapper">
                         <el-tag size="medium">Cetak</el-tag>
