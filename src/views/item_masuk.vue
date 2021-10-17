@@ -26,12 +26,8 @@
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Supplier" min-width="150px" sortable>
-            <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : 'kontak kosong'  }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+
+        <el-table-column label="Total" min-width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
@@ -41,54 +37,20 @@
                 <span>{{ row.staff }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.payment_due }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.paid) }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Potongan" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.discount) }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.total - row.paid) }}</span>
-            </template>
-        </el-table-column>
         <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ row.date }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
+        <el-table-column label="Actions" align="left" width="150" class-name="small-padding fixed-width">
             <template slot-scope="{row,$index}">
+                <el-button v-if="row.total != row.paid" type="primary" size="mini">
+                    <router-link :to="'/item/detail/' + row.id">Detail</router-link>
+                </el-button>
 
-                <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
-                        Bayar
-                    </el-button>
-                    <div slot="reference" class="name-wrapper">
-                        <el-tag size="medium">Aksi</el-tag>
-                    </div>
-                    <el-button type="primary" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
-                        Delete
-                    </el-button>
-                    <br>
-                    <br>
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/pembelian/detail/' + row.id">Detail</router-link>
-                    </el-button>
-
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
-                    </el-button>
-                </el-popover>
+                <el-button type="danger" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
+                    Delete
+                </el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -97,14 +59,6 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
-            <el-form-item class="k" label="Supplier" v-if="dialogStatus == 'create'">
-                <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select">
-                    <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
-            </el-form-item>
-            <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
-            </el-form-item>
             <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
                 <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi" >
                 </el-date-picker>
@@ -118,6 +72,9 @@
                 </el-form-item>
                 <el-form-item class="k" label="Jumlah Barang">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
+                </el-form-item>
+                <el-form-item class="k" label="Deskripsi">
+                    <el-input v-model="all.desc" :value="all.desc" required type="text" placeholder="Deskripsi" />
                 </el-form-item>
                 <el-form-item class="k" label="Harga Satuan">
                     <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
@@ -271,7 +228,8 @@ export default {
                     product_id: '',
                     total: '',
                     qty: '',
-                    harga: ''
+                    harga: '',
+                    desc : ''
                 }]
             },
             tableKey: 0,
@@ -365,7 +323,7 @@ export default {
         },
         getList() {
             this.listLoading = true
-            axios.post('/stock/in/nonmoney').then(response => {
+            axios.get('/stock/in/nonmoney').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction
                 this.total = response.data.stocktransaction.length
@@ -656,7 +614,8 @@ export default {
                 product_id: '',
                 total: '',
                 qty: '',
-                harga: ''
+                harga: '',
+                desc : ''
             })
         },
         deleteFind() {
