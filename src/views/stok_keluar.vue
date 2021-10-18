@@ -403,7 +403,6 @@ export default {
                 }
             } else {
                 this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
-            } this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
             }
         },
         filterHandler(value, row, column) {
