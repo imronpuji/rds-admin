@@ -393,6 +393,16 @@ import nestedRouter from './modules/nested'
       }
   },
 
+    {
+        path: '/pesanan/detail/:id',
+    component: () => import('@/views/detail_pesanan'),
+    name: 'PagePermission',
+    hidden: true,
+    meta: {
+      title: 'Detail Pesanan',
+          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+      }
+  },
   {
     path: '/pembelian/detail/:id',
     component: () => import('@/views/detail_pembelian'),

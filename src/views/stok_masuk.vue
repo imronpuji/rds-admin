@@ -386,7 +386,7 @@ export default {
             axios.post('/stock/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = val.total - val.paid - val.discount
+                    val['debt'] = val.total - (val.paid + val.discount)
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -502,7 +502,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.discount,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 purchase_price,
                 date: this.dates,
                 staff: this.name

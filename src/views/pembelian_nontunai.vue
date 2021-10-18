@@ -134,7 +134,7 @@
                 <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
             <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount"  @change="handleChangeText()" v-bind="config"></v-money-spinner>
+                <v-money-spinner v-model="discount"  v-bind="config"></v-money-spinner>
             </el-form-item>
 
             <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
@@ -490,7 +490,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.discount,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 purchase_price,
                 date: this.dates,
                 staff: this.name
