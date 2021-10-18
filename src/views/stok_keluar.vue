@@ -389,7 +389,7 @@ export default {
 
             if (this.dialogStatus == 'create') {
 
-                if (this.jumlah_bayar > this.total_kasIn || this.jumlah_bayar == this.total_kasIn) {
+                if (this.jumlah_bayar > this.total_kasIn || this.jumlah_bayar == this.total_kasIn || this.jumlah_bayar < this.total_kasIn) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
                     this.kurang_bayar = ''
 
