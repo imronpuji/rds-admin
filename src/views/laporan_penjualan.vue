@@ -75,7 +75,7 @@ export default {
           console.log(response)
           this.list = response.data.stock
           response.data.stock.map((val) => {
-            this.data.push([val.name, val.substocktransaction_sum_total])
+            this.data = [['laporan', 'penjualan'], [val.name, val.substocktransaction_sum_total]]
           })
 
           // Just to simulate the time of the request

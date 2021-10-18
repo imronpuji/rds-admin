@@ -755,12 +755,16 @@ export default {
         handleFilterByDate() {
             this.listLoading = true
             let data = {
-                start_date: this.start,
-                end_date: this.end
+                start_date: this.start.toISOString().split('T')[0],
+                end_date: this.end.toISOString().split('T')[0]
             }
             axios.post(`/stock/out`, data).then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+
+                this.list = response.data.stocktransaction.map(val => {
+                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
+                    return val
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
