@@ -133,8 +133,8 @@
             <el-form-item class="k" label="Jumlah Pembayaran">
                 <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
-            <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
+            <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
+                <v-money-spinner v-model="discount"  @change="handleChangeText()" v-bind="config"></v-money-spinner>
             </el-form-item>
 
             <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
