@@ -18,6 +18,9 @@
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="filterReportByDate">
         Filter
     </el-button>  
+     <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+            Export
+        </el-button>
     <el-table
      
       :data="list"
@@ -33,9 +36,14 @@
           <span class="link-type">{{ row.name }}</span>
         </template>
       </el-table-column>  
+      <el-table-column label="Total Barang" min-width="150px">
+        <template slot-scope="{row}">
+          <span >{{row.substocktransaction_sum_total }}</span>
+        </template>
+      </el-table-column> 
       <el-table-column label="Total Penjualan" min-width="150px">
         <template slot-scope="{row}">
-          <span >{{ handleCurrency(row.substocktransaction_sum_total) }}</span>
+          <span >{{ handleCurrency(row.substocktransaction_sum_qty) }}</span>
         </template>
       </el-table-column>     
     </el-table>
@@ -64,6 +72,26 @@ export default {
   },
 
   methods : {
+    handleDownload() {
+        this.downloadLoading = true
+        import('@/vendor/Export2Excel').then(excel => {
+            const tHeader = ['id', 'Customer', 'Total Barang', 'Total Penjualan']
+            const filterVal = ['id', 'name', 'substocktransaction_sum_qty', 'substocktransaction_sum_total']
+            const data = this.formatJson(filterVal)
+            excel.export_json_to_excel({
+                header: tHeader,
+                data,
+                filename: 'laporan_penjualan'
+            })
+            this.downloadLoading = false
+        })
+    },
+
+     formatJson(filterVal) {
+            return this.list.map(v => filterVal.map(j => {
+                return v[j]
+            }))
+        },
 
     filterReportByDate(){
       this.listLoading = true
