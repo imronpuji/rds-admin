@@ -68,8 +68,8 @@ export default {
     filterReportByDate(){
       this.listLoading = true
       let data = {
-          start_date: this.start,
-          end_date: this.end
+        start_date: this.start.toISOString().split('T')[0],
+        end_date: this.end.toISOString().split('T')[0]
       }
       axios.post(`/stock/out/report`, data).then(response => {
           console.log(response)
