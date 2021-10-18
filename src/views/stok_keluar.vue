@@ -544,10 +544,10 @@ export default {
                 product_id,
                 qty,
                 date: this.dates,
-                total,
+                total : total - this.discount,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.discount,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
                 staff: this.name
             }
             var encodedValues = qs.stringify(
