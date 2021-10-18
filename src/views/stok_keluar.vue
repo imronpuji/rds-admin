@@ -389,7 +389,7 @@ export default {
 
             if (this.dialogStatus == 'create') {
 
-                if (this.jumlah_bayar > this.total_kasIn) {
+                if (this.jumlah_bayar > this.total_kasIn || this.jumlah_bayar == this.total_kasIn) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
                     this.kurang_bayar = ''
 
@@ -419,7 +419,7 @@ export default {
             axios.get('/stock/out').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = val.total - val.paid
+                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -544,7 +544,7 @@ export default {
                 product_id,
                 qty,
                 date: this.dates,
-                total : total - this.discount,
+                total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
