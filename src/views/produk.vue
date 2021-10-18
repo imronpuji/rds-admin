@@ -27,6 +27,13 @@
                 <span>{{ row.qty }}</span>
             </template>
         </el-table-column>
+        <el-table-column label="Kategori" width="150px" align="center" sortable prop="category">
+            <template slot-scope="{row}">
+                <span v-if="row.category == 'service'">Jasa</span>
+                <span v-if="row.category == 'product'">Produk</span>
+                <span v-else>Belum Ada Kategori</span>
+            </template>
+        </el-table-column>
         <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date" v-if="checkPermission(['admin'])">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.purchase_price) }}</span>
@@ -91,7 +98,8 @@
             </el-form-item>
              <el-form-item class="k" label="Kategori">
                 <el-select v-model="category">
-                    <el-option v-for="item in units" :label="item.name" :value="item.id" />
+                    <el-option label="Jasa" value="service" />
+                    <el-option label="Produk" value="product" />
                 </el-select>
             </el-form-item>
         </el-form>
@@ -366,6 +374,7 @@ export default {
                 purchase_price: this.purchase_price,
                 unit: this.unit,
                 producttype: parseInt(this.producttype),
+                category : this.category
             }
             this.loading = true
             axios.post('/product/create', data)
@@ -397,6 +406,7 @@ export default {
         handleUpdate(row) {
             this.name = row.name
             this.id = row.id
+            this.category = row.category
             this.selling_price = row.selling_price
             this.purchase_price = row.purchase_price
             this.unit = row.units
@@ -415,7 +425,9 @@ export default {
                 selling_price: this.selling_price,
                 purchase_price: this.purchase_price,
                 unit: this.unit,
-                producttype: this.producttype
+                producttype: this.producttype,
+                category : this.category
+
             }
             this.loading = true
             axios.put(`/product/edit/${this.id}`, data)

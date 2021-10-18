@@ -545,6 +545,7 @@ export default {
                 qty,
                 date: this.dates,
                 total,
+                discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
                 staff: this.name
