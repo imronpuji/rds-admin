@@ -391,6 +391,7 @@ export default {
 
                 if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
+                    this.jumlah_bayar = this.jumlah_bayar - this.sisa_bayar
                     this.kurang_bayar = ''
 
                 }

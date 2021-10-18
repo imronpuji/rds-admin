@@ -67,7 +67,6 @@ export default {
         this.data.push([val.name, val.substocktransaction_sum_total])
       })
       
-
     })
   },
 
@@ -99,12 +98,15 @@ export default {
         start_date: this.start.toISOString().split('T')[0],
         end_date: this.end.toISOString().split('T')[0]
       }
+      this.data.pop()
       axios.post(`/stock/out/report`, data).then(response => {
           console.log(response)
-          this.list = response.data.stock
+          this.data = [['laporan', 'penjualan']]
           response.data.stock.map((val) => {
-            this.data = [['laporan', 'penjualan'], [val.name, val.substocktransaction_sum_total]]
+             this.data.push([val.name, val.substocktransaction_sum_total])
           })
+          console.log(this.data)
+          this.list = response.data.stock
 
           // Just to simulate the time of the request
           setTimeout(() => {
