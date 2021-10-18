@@ -58,6 +58,10 @@ TGL Transaksi : {{list[0]['created_at']}}
         <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">KEKURANGAN</th>
         <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'])}}</td>
       </tr>
+      <tr>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">POTONGAN</th>
+        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
+      </tr>
   </tbody>
 </table>
  
