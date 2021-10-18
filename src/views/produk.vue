@@ -89,6 +89,11 @@
                     <el-option v-for="item in jenis_barang" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
+             <el-form-item class="k" label="Kategori">
+                <el-select v-model="category">
+                    <el-option v-for="item in units" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">
