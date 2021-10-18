@@ -10,9 +10,9 @@
             Export
         </el-button>
         <div class="block"></div>
-        <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
+        <el-date-picker v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
+        <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
@@ -120,11 +120,11 @@
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
-                <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
+                <el-date-picker v-model="jatuh_tempo" type="date" placeholder="Jatuh Tempo">
                 </el-date-picker>
             </el-form-item>
             <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
-                <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi">
+                <el-date-picker v-model="dates" type="date" placeholder="Tanggal Transaksi">
                 </el-date-picker>
             </el-form-item>
             
@@ -377,7 +377,7 @@ export default {
     },
     created() {
         this.getList()
-        let DD = new Date().getDate()
+        let DD = new Date().getDate() 
         let MM = new Date().getMonth() + 1
         let YYYY = new Date().getFullYear()
         this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
@@ -758,9 +758,10 @@ export default {
         handleFilterByDate() {
             this.listLoading = true
             let data = {
-                start_date: this.start.toISOString().split('T')[0],
-                end_date: this.end.toISOString().split('T')[0]
+                start_date: this.start,
+                end_date: this.end
             }
+            console.log(data)
             axios.post(`/stock/out`, data).then(response => {
                 console.log(response)
 

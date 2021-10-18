@@ -36,14 +36,14 @@
           <span class="link-type">{{ row.name }}</span>
         </template>
       </el-table-column>  
-      <el-table-column label="Total Barang" min-width="150px">
-        <template slot-scope="{row}">
-          <span >{{row.substocktransaction_sum_total }}</span>
-        </template>
-      </el-table-column> 
       <el-table-column label="Total Penjualan" min-width="150px">
         <template slot-scope="{row}">
-          <span >{{ handleCurrency(row.substocktransaction_sum_qty) }}</span>
+          <span >{{handleCurrency(row.substocktransaction_sum_total) }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="Total Barang" min-width="150px">
+        <template slot-scope="{row}">
+          <span >{{ row.substocktransaction_sum_qty }}</span>
         </template>
       </el-table-column>     
     </el-table>

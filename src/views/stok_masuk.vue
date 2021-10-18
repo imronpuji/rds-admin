@@ -31,19 +31,9 @@
                 <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : ''  }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="total">
+        <el-table-column label="Tagihan" width="150px" align="center" sortable prop="total">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
-            <template slot-scope="{row}">
-                <span>{{ row.staff }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
-            <template slot-scope="{row}">
-                <span>{{ row.payment_due }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="paid">
@@ -59,6 +49,16 @@
         <el-table-column label="Hutang" width="150px" align="center" sortable prop="debt">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.debt) }}</span>
+            </template>
+        </el-table-column>
+          <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
+            <template slot-scope="{row}">
+                <span>{{ row.staff }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
+            <template slot-scope="{row}">
+                <span>{{ row.payment_due }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Date" width="150px" align="center" sortable prop="date">
@@ -386,7 +386,7 @@ export default {
             axios.post('/stock/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = val.total - val.paid
+                    val['debt'] = val.total - val.paid - val.discount
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -722,11 +722,11 @@ export default {
         handleFilterByDate() {
             this.listLoading = true
             let data = {
-                start_date: this.start.toISOString().split('T')[0],
-                end_date: this.end.toISOString().split('T')[0]
+                start_date: this.start,
+                end_date: this.end
             }
             axios.post(`/stock/in`, data).then(response => {
-            console.log(response);
+
                 this.list = response.data.stocktransaction.map(val => {
                     val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
                     return val
