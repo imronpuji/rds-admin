@@ -382,12 +382,16 @@ export default {
 
             if (this.dialogStatus == 'create') {
 
-                if (this.jumlah_bayar > this.total_kasIn) {
+                if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
+                    this.jumlah_bayar = this.jumlah_bayar - this.sisa_bayar
                     this.kurang_bayar = ''
 
-                } else {
-                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount)
+                }
+
+                 else {
+                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount) 
+
                     this.sisa_bayar = ''
 
                 }
@@ -536,7 +540,7 @@ export default {
                 date: this.dates,
                 total,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.discount,
                 staff: this.name
             }
             var encodedValues = qs.stringify(
