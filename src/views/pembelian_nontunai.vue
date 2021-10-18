@@ -77,6 +77,9 @@
                     <el-button type="primary" size="mini" @click="handleDelete(row)" v-if="checkPermission(['admin'])">
                         Delete
                     </el-button>
+                    <el-button size="mini" type="warning">
+                        <router-link :to="'/pesanan/detail/' + row.id">Detail</router-link>
+                    </el-button>
                     <br>
                     <br>
                 </el-popover>
@@ -134,7 +137,7 @@
                 <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
             <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount"  v-bind="config"></v-money-spinner>
+                <v-money-spinner v-model="discount"  @change="handleChangeText()"  v-bind="config"></v-money-spinner>
             </el-form-item>
 
             <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
@@ -376,7 +379,10 @@ export default {
             this.listLoading = true
             axios.post('/stock/pending/in').then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+                this.list = response.data.stocktransaction.map((val) => {
+                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
+                    return val;
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request

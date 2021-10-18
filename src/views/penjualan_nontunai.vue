@@ -66,7 +66,7 @@
                     <br>
                     <br>
                     <el-button size="mini" type="warning">
-                        <router-link :to="'/penjualan/detail/' + row.id">Detail</router-link>
+                        <router-link :to="'/pesanan/detail/' + row.id">Detail</router-link>
                     </el-button>
                 </el-popover>
 
@@ -414,7 +414,10 @@ export default {
             this.listLoading = true
             axios.get('/stock/pending/out').then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+                this.list = response.data.stocktransaction.map((val) => {
+                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
+                    return val;
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request

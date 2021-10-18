@@ -57,9 +57,7 @@
      <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="180px" style="width: 100% !important; margin-left:50px;" :inline="true">
             <el-form-item class="k" label="Customer" v-if="dialogStatus == 'create'">
-                <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select" @change="filterProductPrice()">
-                    <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
+                <el-input readonly :value="kontak[0]['name']" required type="text"/>
             </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" placeholder="Jatuh Tempo">
@@ -70,22 +68,20 @@
                 </el-date-picker>
             </el-form-item>
             
-            <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap: wrap; width:100% !important">
-                <el-form-item class="k" :label="index == 0 ? 'Harga Barang' : ''">
-                    <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
-                        <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
-                        </el-option>
-                    </el-select>
+            <div v-if="dialogStatus == 'create'" v-for="(all, index) in product" style="display:flex; flex-wrap: wrap; width:100% !important">
+                <el-form-item class="k" :label="index == 0 ? ' Barang' : ''">
+                    <el-input style="display:none"  v-model="all.product_id" :value="all.id" required/>
+                    <el-input readonly :value="all.product.name" required type="text"/>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.product.selling_price" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.selling_price" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
-                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
+                    <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
                     <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
@@ -94,13 +90,11 @@
                 </el-form-item>
             </div>
 
-            <el-form-item class="k" label="Masuk Ke Kas">
-                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
-                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
+            <el-form-item class="k" :label="trans.cashin == null ? 'Keluar Dari Kas' : 'Masuk Ke Kas'">
+                <el-input readonly :value="cashin" required type="text"/>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-bind="config" v-model="jumlah_bayar" @change="handleChangeText()" type="text"></v-money-spinner>
             </el-form-item>
              <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
                 <v-money-spinner v-model="discount" v-bind="config" @change="handleChangeText()"></v-money-spinner>
@@ -114,9 +108,9 @@
         <!-- multiple input -->
         </el-form>
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
-            <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
+<!--             <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
                 Tambah Produk
-            </el-button>
+            </el-button> -->
             <el-button style="margin:20px 10px" @click="dialogFormVisible = false">
                 Cancel
             </el-button>
@@ -206,7 +200,9 @@ export default {
     },
     data() {
         return {
+            trans : '',
           start: '',
+          payment_due : '',
             end: '',
             dates: '',
             discount : 0,
@@ -217,7 +213,7 @@ export default {
             Pembayaran_sebelum: '',
             jumlah_bayar: 0,
             kurang_bayar: '',
-            sisa_bayar: '',
+            sisa_bayar: 0,
             kembalian: '',
             list: '',
             config: {
@@ -239,6 +235,7 @@ export default {
             contact_id: "",
             cashout_id: "",
             satuan: '',
+            cashin  :'',
             producttype: '',
             hutang: '',
             jenis_barang: '',
@@ -331,17 +328,48 @@ export default {
         ])
     },
     methods: {
+         handleChangeText(i) {
+             if (this.dialogStatus == 'create') {
+
+                if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
+                    this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
+                    this.kurang_bayar = ''
+
+                }
+
+                 else {
+                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount) 
+
+                    this.sisa_bayar = ''
+
+                }
+            } else {
+                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
+            }
+        },
         getList() {
             this.listLoading = true
             axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(response => {
                 console.log(response)
+                this.product = response.data.stocktransaction[0].substocktransaction
+                this.jumlah_bayar = response.data.stocktransaction[0].paid
+                this.discount = response.data.stocktransaction[0].discount
+                this.trans = response.data.stocktransaction[0]
+                console.log(this.product)
+                this.cashin = response.data.stocktransaction[0].cashin != null ? response.data.stocktransaction[0].cashin.name : response.data.stocktransaction[0].cashout.name
+                this.cashout_id = response.data.stocktransaction[0].cashin != null ? response.data.stocktransaction[0].cashin.id : response.data.stocktransaction[0].cashout.id
+
                 this.list = response.data.stocktransaction[0].substocktransaction
                 this.staff = response.data.stocktransaction[0].staff
                 this.total = response.data.stocktransaction[0].substocktransaction.length
-
+                this.kontak = [response.data.stocktransaction[0].contact]
+                this.jatuh_tempo = response.data.stocktransaction[0].payment_due
+                this.dates = response.data.stocktransaction[0].date
+                this.contact_id = response.data.stocktransaction[0].contact_id
+                this.total_kasIn = response.data.stocktransaction[0].total
                 // Just to simulate the time of the request
+                this.listLoading = false
                 setTimeout(() => {
-                    this.listLoading = false
                 }, 1.5 * 1000)
             })
 
@@ -354,19 +382,15 @@ export default {
                 }
             })
 
-            axios.get('/contact/customer').then(response => {
-                console.log(response.data);
-                this.kontak = response.data.contact
-            })
+            // axios.get('/contact/customer').then(response => {
+            //     console.log(response.data);
+            //     this.kontak = response.data.contact
+            // })
 
-            axios.get('/product').then(response => {
+            // axios.get('/product').then(response => {
 
-                this.product = response.data.product.filter((val) => {
-                    if (val.qty > 0) {
-                        return val
-                    }
-                })
-            })
+            //     this.product = response.data.product
+            // })
 
         },
 
@@ -434,9 +458,8 @@ export default {
             }]
             this.kurang_bayar = ''
             this.sisa_bayar = ''
-            this.jumlah_bayar = 0
             this.index_before = ''
-            this.total_kasIn = ''
+    
         },
         createData() {
             // this.$refs['dataForm'].validate((valid) => {
@@ -450,11 +473,12 @@ export default {
             const total = []
             const qty = []
             const product_id = []
-            this.kasIn.all.map((val, index) => {
+            this.product.map((val, index) => {
                 qty.push(val.qty)
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
             })
+
             const data = {
                 contact_id: this.contact_id,
                 cashin_id: this.cashout_id,
@@ -462,6 +486,7 @@ export default {
                 qty,
                 date: this.dates,
                 total,
+                id : this.$route.params.id,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
@@ -472,7 +497,7 @@ export default {
                     allowDots: true
                 }
             )
-
+            console.log(data)
             axios.post('/stock/out/create', encodedValues)
                 .then((response) => {
                     this.getList()
