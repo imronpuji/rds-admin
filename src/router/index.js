@@ -443,6 +443,15 @@ import nestedRouter from './modules/nested'
       title: 'Piutang Beredar',
           roles: ['admin'] // or you can only set roles in sub nav
       }
+  },
+  {
+    path: '/laporan/penjualan',
+    component: () => import('@/views/laporan_penjualan'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Laporan Penjualan',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
   }
   ]
 },

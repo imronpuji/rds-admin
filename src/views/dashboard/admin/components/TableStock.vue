@@ -8,7 +8,7 @@
     </el-table-column>
     <el-table-column label="Jumlah Barang" width="195" align="center">
       <template slot-scope="scope">
-        {{ scope.row.qty }} {{ scope.row.unit }} 
+        {{ scope.row.qty }} {{ scope.row.unit == null ? 'unit tidak ada' : scope.row.unit.name }} 
       </template>
     </el-table-column>
   </el-table>

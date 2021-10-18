@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div :class="className" :style="{height:height,width:width}" />
 </template>
 
@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
+import axios from '@/api/axios'
 
 export default {
   mixins: [resize],
@@ -29,6 +30,10 @@ export default {
     }
   },
   mounted() {
+    axios.get('/stock/out').then(response => {
+      console.log(response)
+      this.list = response
+    })
     this.$nextTick(() => {
       this.initChart()
     })
@@ -62,11 +67,12 @@ export default {
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
+              { value: 500, name: 'Industries' },
               { value: 240, name: 'Technology' },
               { value: 149, name: 'Forex' },
               { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 59, name: 'Forecasts' },
+              { value: 59, name: 'whole' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
@@ -77,4 +83,3 @@ export default {
   }
 }
 </script>
- -->
