@@ -31,7 +31,6 @@
             <template slot-scope="{row}">
                 <span v-if="row.category == 'service'">Jasa</span>
                 <span v-if="row.category == 'product'">Produk</span>
-                <span v-else>Belum Ada Kategori</span>
             </template>
         </el-table-column>
         <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date" v-if="checkPermission(['admin'])">

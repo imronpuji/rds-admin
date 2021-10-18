@@ -2,13 +2,22 @@
 
 <template>
   <div class="app-container">
-    
+   
     
     <GChart
       type="PieChart"
       :options="options"
       :data="data"
-    />    
+    />  
+
+     <div class="block"></div>
+    <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
+    </el-date-picker>
+    <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
+    </el-date-picker>
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="filterReportByDate">
+        Filter
+    </el-button>  
     <el-table
      
       :data="list"
@@ -45,6 +54,7 @@ export default {
   created(){
     axios.get('/stock/out/report').then(response => {
       this.list = response.data.stock
+      console.log(this.list)
       response.data.stock.map((val) => {
         this.data.push([val.name, val.substocktransaction_sum_total])
       })
@@ -54,6 +64,27 @@ export default {
   },
 
   methods : {
+
+    filterReportByDate(){
+      this.listLoading = true
+      let data = {
+          start_date: this.start,
+          end_date: this.end
+      }
+      axios.post(`/stock/out/report`, data).then(response => {
+          console.log(response)
+          this.list = response.data.stock
+          response.data.stock.map((val) => {
+            this.data.push([val.name, val.substocktransaction_sum_total])
+          })
+
+          // Just to simulate the time of the request
+          setTimeout(() => {
+              this.listLoading = false
+          }, 1.5 * 1000)
+      })
+    },
+
     handleCurrency(number) {
             const idr = new Intl.NumberFormat('in-IN', {
                 style: 'currency',
@@ -65,6 +96,8 @@ export default {
 
   data() {
     return {
+      start : '',
+      end : '',
       list : '',
       data: [['laporan', 'penjualan']],
       options: {
