@@ -499,7 +499,7 @@ export default {
             if(this.uri == 'in'){
                 data = {
                 contact_id: this.contact_id,
-                cashin_id: this.cashout_id,
+                cashout_id: this.cashout_id,
                 product_id,
                 qty,
                 date: this.dates,
@@ -513,7 +513,7 @@ export default {
             } else {
                 data = {
                 contact_id: this.contact_id,
-                cashout_id: this.cashout_id,
+                cashin_id: this.cashout_id,
                 product_id,
                 qty,
                 date: this.dates,
