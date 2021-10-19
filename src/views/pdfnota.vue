@@ -125,7 +125,6 @@ methods: {
 
   async print() {
   	await window.print()
-  	await this.$router.push('/penjualan')
   }
 
  }
