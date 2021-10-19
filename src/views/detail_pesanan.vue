@@ -495,8 +495,9 @@ export default {
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
             })
-
-            const data = {
+            let data = ''
+            if(this.uri == 'in'){
+                data = {
                 contact_id: this.contact_id,
                 cashin_id: this.cashout_id,
                 product_id,
@@ -509,6 +510,22 @@ export default {
                 paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
                 staff: this.name
             }
+            } else {
+                data = {
+                contact_id: this.contact_id,
+                cashout_id: this.cashout_id,
+                product_id,
+                qty,
+                date: this.dates,
+                total,
+                id : this.$route.params.id,
+                discount : this.discount,
+                payment_due: this.jatuh_tempo,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
+                staff: this.name
+            }
+            }
+             
             var encodedValues = qs.stringify(
                 data, {
                     allowDots: true
