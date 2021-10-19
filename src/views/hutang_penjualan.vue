@@ -1,7 +1,7 @@
 <template>
 <div class="app-container">
     <div class="filter-container" style="background:yellow; display:flex; align-items:center; justify-content:center" >
-        <h4>TOTAL HUTANG BEREDAR : {{handleCurrency(total_hutang)}}</h4>
+        <h4>TOTAL PIUTANG BEREDAR : {{handleCurrency(total_hutang)}}</h4>
     </div>
     <br>
 
