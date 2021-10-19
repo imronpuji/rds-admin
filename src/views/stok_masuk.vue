@@ -601,7 +601,7 @@ export default {
         },
 
         filterProductPrice(){
-            axios.get(`/product?contact_id=${this.contact_id}`).then(response => {
+            axios.get(`/product/goods?contact_id=${this.contact_id}`).then(response => {
                 console.log(response.data);
                 this.kasIn.all = {}
                 this.kasIn.all = 

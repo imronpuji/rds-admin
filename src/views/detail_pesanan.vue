@@ -48,6 +48,11 @@
                 <span>{{handleCurrency(row.total)}}</span>
             </template>
         </el-table-column>
+        <el-table-column label="Total" width="150px" align="center">
+            <template slot-scope="{row}">
+                <span>{{handleCurrency(row.pending == 1 ? 'Sudah' : 'Belum')}}</span>
+            </template>
+        </el-table-column>
 
         </el-table-column>
     </el-table>
