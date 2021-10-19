@@ -400,7 +400,7 @@ export default {
                 this.kontak = response.data.contact
             })
 
-            axios.get('/product').then(response => {
+            axios.get('/product/goods').then(response => {
                 console.log(response)
                 this.product = response.data.product
             })
