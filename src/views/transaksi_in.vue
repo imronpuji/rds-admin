@@ -9,10 +9,9 @@
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
             Export
         </el-button>
-        <div class="block"></div>
-        <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
+          <el-date-picker style="margin-left:20px; width:100px" width="100px" v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
+        <el-date-picker style="margin-left:8px;width:100px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
@@ -87,7 +86,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total' : ''">
-                    <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
+                    <v-money-spinner placeholder="Rp 0" v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
                 </el-form-item>
             </div>
 
@@ -200,6 +199,7 @@ export default {
                 bootstrap: true,
                 amend: false,
                 masked: false,
+                allowBlank : true
             },
             category: '',
             keterangan: '',
@@ -210,7 +210,7 @@ export default {
             kasIn: {
                 all: [{
                     modal: '',
-                    total: '',
+                    total: [],
                     desc: ''
                 }]
             },
@@ -427,7 +427,7 @@ export default {
                     this.kasIn.all = [{
                         modal: '',
                         desc: '',
-                        total: ''
+                        total: []
                     }]
                 })
                 .catch((err) => {
@@ -567,7 +567,7 @@ export default {
             this.kasIn.all.push({
                 modal: '',
                 desc: '',
-                total: ''
+                total: []
             })
 
             console.log(this.kasIn, this.to_item, this.from)
