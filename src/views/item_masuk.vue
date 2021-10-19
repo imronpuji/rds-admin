@@ -342,7 +342,7 @@ export default {
                 this.kontak = response.data.contact
             })
 
-            axios.get('/product').then(response => {
+            axios.get('/product/goods').then(response => {
                 console.log(response)
                 this.product = response.data.product
             })
@@ -518,7 +518,7 @@ export default {
         },
 
         filterProductPrice(){
-            axios.get(`/product?contact_id=${this.contact_id}`).then(response => {
+            axios.get(`/product/goods?contact_id=${this.contact_id}`).then(response => {
                 console.log(response.data);
                 this.kasIn.all = {}
                 this.kasIn.all = 
