@@ -50,7 +50,7 @@
         </el-table-column>
         <el-table-column label="Status" width="150px" align="center">
             <template slot-scope="{row}">
-                <span>{{row.pending == 1 ? 'Sudah' : 'Belum'}}</span>
+                <span>{{row.pending == 1 ? 'Belum' : 'Sudah'}}</span>
             </template>
         </el-table-column>
 
