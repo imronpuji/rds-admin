@@ -561,7 +561,7 @@ export default {
             //     this.temp.author = 'vue-element-admin'
             //     createArticle(this.temp).then(() => {
             //
-             if(this.jumlah_bayar > 0 && this.cashin_id == ''){
+             if(this.jumlah_bayar > 0 && this.cashout_id == ''){
                  this.$notify({
                     title: 'Gagal',
                     message: 'Anda Harus Memilih Kas',
