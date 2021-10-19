@@ -17,12 +17,12 @@
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Nama Barang" min-width="150px">
+        <el-table-column label="Nama Barang" min-width="150px" sortable prop="name">
             <template slot-scope="{row}">
                 <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="QTY" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="QTY" width="150px" align="center" sortable prop="qty">
             <template slot-scope="{row}">
                 <span>{{ row.qty }}</span>
             </template>

@@ -173,6 +173,21 @@ import nestedRouter from './modules/nested'
 } 
 ]
 },
+
+{
+    path: '/biaya',
+    component: Layout,
+    children: [{
+      path: '/biaya',
+      component: () => import('@/views/biaya'),
+      name: 'biaya',
+      meta: {
+        title: 'Biaya',
+        icon: 'money',
+        roles: ['admin', 'kasir']
+    }
+}]
+},
 {
     path: '/setarakas',
     component: Layout,
@@ -574,21 +589,6 @@ import nestedRouter from './modules/nested'
 ]
 },
 
-
-{
-    path: '/biaya',
-    component: Layout,
-    children: [{
-      path: '/biaya',
-      component: () => import('@/views/biaya'),
-      name: 'biaya',
-      meta: {
-        title: 'Biaya',
-        icon: 'money',
-        roles: ['admin', 'kasir']
-    }
-}]
-},
 
 {
     path: '/penjualan/surat/jalan/:id',  

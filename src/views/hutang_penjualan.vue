@@ -18,8 +18,8 @@
             Export
         </el-button>
 
-         <el-button type="primary" size="mini">
-            <router-link to="/cetak/piutang/beredar/pdf" target="_blank">Cetak PDF</router-link>
+         <el-button class="filter-item" type="primary" size="mini">
+            <router-link to="/cetak/piutang/beredar/pdf" target="_blank">Cetak</router-link>
         </el-button>
         <br>
         <br>
