@@ -49,6 +49,11 @@
                 <span>{{ handleCurrency(row.total - row.paid) }}</span>
             </template>
         </el-table-column>
+        <el-table-column label="Status" width="150px" align="center" sortable prop="cashin">
+            <template slot-scope="{row}">
+                <span>{{ hrow.pending == 1 ? 'Belum' : 'sudah' }}</span>
+            </template>
+        </el-table-column>
         <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
             <template slot-scope="{row,$index}">
 
