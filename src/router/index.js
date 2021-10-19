@@ -62,6 +62,12 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/error-page/404'),
     hidden: true
 },
+ {
+    path: '/cetak/piutang/beredar/pdf',
+    component: () => import('@/views/cetak_hutang_penjualan_pdf'),
+    name: 'PagePermission',
+    hidden : true,
+},
 {
     path: '/401',
     component: () => import('@/views/error-page/401'),
@@ -295,15 +301,7 @@ import nestedRouter from './modules/nested'
         icon: 'shopping',
         roles: ['admin', 'kasir'] // you can set roles in root nav
   },
-  children: [{
-    path: '/kategori',
-    component: () => import('@/views/kategori'),
-    name: 'PagePermission',
-    meta: {
-      title: 'Kategori',
-          roles: ['admin'] // or you can only set roles in sub nav
-      }
-  },
+  children: [
   {
     path: '/produk',
     component: () => import('@/views/produk'),
@@ -314,20 +312,11 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/satuan',
-    component: () => import('@/views/satuan'),
+    path: '/kategori',
+    component: () => import('@/views/kategori'),
     name: 'PagePermission',
     meta: {
-      title: 'Setting Satuan',
-          roles: ['admin'] // or you can only set roles in sub nav
-      }
-  },
-  {
-    path: '/item/keluar',
-    component: () => import('@/views/item_keluar'),
-    name: 'PagePermission',
-    meta: {
-      title: 'Item Keluar',
+      title: 'Jenis',
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },
@@ -338,6 +327,26 @@ import nestedRouter from './modules/nested'
     meta: {
       title: 'Item Masuk',
           roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+      }
+  },
+  
+  {
+    path: '/item/keluar',
+    component: () => import('@/views/item_keluar'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Item Keluar',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  
+  {
+    path: '/satuan',
+    component: () => import('@/views/satuan'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Setting Satuan',
+          roles: ['admin'] // or you can only set roles in sub nav
       }
   },
    {
@@ -446,7 +455,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/hutang/penjualan',
+    path: '/laporan/piutang/beredar',
     component: () => import('@/views/hutang_penjualan'),
     name: 'PagePermission',
     meta: {
@@ -454,6 +463,7 @@ import nestedRouter from './modules/nested'
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },
+
   {
     path: '/laporan/penjualan',
     component: () => import('@/views/laporan_penjualan'),
@@ -484,7 +494,7 @@ import nestedRouter from './modules/nested'
     name: 'PagePermission',
     hidden: true,
     meta: {
-      title: 'Kategori',
+      title: 'jenis',
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },

@@ -129,7 +129,7 @@
             </el-form-item>
             
             <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap: wrap; width:100% !important">
-                <el-form-item class="k" :label="index == 0 ? 'Harga Barang' : ''">
+                <el-form-item class="k" :label="index == 0 ? 'Produk' : ''">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
                         <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
@@ -284,6 +284,7 @@ export default {
                 decimal: ',',
                 thousands: '.',
                 bootstrap: true,
+                allowBlank : true,
                 amend: false,
                 masked: false,
             },

@@ -408,7 +408,11 @@ export default {
 
             axios.get('/product').then(response => {
                 console.log(response)
-                this.product = response.data.product
+                this.product = response.data.product.filter((val) => {
+                    if(val.category != 'service'){
+                        return val
+                    }
+                })
             })
         },
         handleCurrency(number) {
@@ -608,7 +612,11 @@ export default {
                     harga: 0
                 }];
   
-                this.product = response.data.product
+                this.product = response.data.product.filter((val) => {
+                    if(val.category != 'service'){
+                        return val
+                    }
+                })
             })
         },
 

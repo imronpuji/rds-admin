@@ -1,9 +1,28 @@
 <template>
 <div class="app-container">
     <div class="filter-container" style="background:yellow; display:flex; align-items:center; justify-content:center" >
-        <h4>Total Hutang Beredar : {{handleCurrency(total_hutang)}}</h4>
+        <h4>TOTAL HUTANG BEREDAR : {{handleCurrency(total_hutang)}}</h4>
     </div>
     <br>
+
+
+        <div class="block"></div>
+        <el-date-picker v-model="start" class="filter-item" type="date" placeholder="Dari">
+        </el-date-picker>
+        <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" placeholder="Sampai">
+        </el-date-picker>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+            Filter
+        </el-button>
+            <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+            Export
+        </el-button>
+
+         <el-button type="primary" size="mini">
+            <router-link to="/cetak/piutang/beredar/pdf" target="blank">Cetak PDF</router-link>
+        </el-button>
+        <br>
+        <br>
     <el-table :key="tableKey" v-loading="listLoading" :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
         <el-table-column sortable prop="cashin" label="ID" align="center" width="80">
             <template slot-scope="{row}">
@@ -685,13 +704,17 @@ export default {
                 excel.export_json_to_excel({
                     header: tHeader,
                     data,
-                    filename: 'penjualan'
+                    filename: 'Laporan Piutang Beredar'
                 })
                 this.downloadLoading = false
             })
         },
         formatJson(filterVal) {
+            let total_hutang = 0
+            window.print()
             return this.list.map(v => filterVal.map(j => {
+                total_hutang += (v.total - v.paid)
+                v['average'] =total_hutang
                 v['name'] = v.contact.name
                 v['hutang'] = v.total - v.paid
                 return v[j]
@@ -749,13 +772,20 @@ export default {
             }
             axios.post(`/stock/out`, data).then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+                let total_hutang = 0
+                this.list = response.data.stocktransaction.filter((val, i) => {
+                    if(val.total > val.paid){
+                        total_hutang += (val.total - val.paid)
+                        this.total_hutang = total_hutang
+                        return val;
+                    }
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
-                setTimeout(() => {
+
                     this.listLoading = false
-                }, 1.5 * 1000)
+
             })
 
         },

@@ -54,9 +54,6 @@
             <template slot-scope="{row,$index}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
-                        Proses Penjualan
-                    </el-button>
                     <div slot="reference" class="name-wrapper">
                         <el-tag size="medium">Aksi</el-tag>
                     </div>
