@@ -128,11 +128,11 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                     <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
-                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
+                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
                     <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
@@ -147,10 +147,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()" placeholder="Rp 0"></v-money-spinner>
             </el-form-item>
              <el-form-item class="k" label="Potongan"  v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" @change="handleChangeText()" v-bind="config"></v-money-spinner>
+                <v-money-spinner v-model="discount" @change="handleChangeText()" placeholder="Rp 0" v-bind="config"></v-money-spinner>
             </el-form-item>
 
 
@@ -256,12 +256,12 @@ export default {
             start: '',
             end: '',
             dates: '',
-            discount : 0,
+            discount : [],
             jatuh_tempo: '',
             qty_before: '',
             index_before: '',
             Pembayaran_sebelum: '',
-            jumlah_bayar: 0,
+            jumlah_bayar: [],
             kurang_bayar: '',
             sisa_bayar: '',
             kembalian: '',
@@ -275,6 +275,7 @@ export default {
                 bootstrap: true,
                 amend: false,
                 masked: false,
+                allowBlank : true
             },
             category: '',
             kontak: [],
@@ -299,9 +300,9 @@ export default {
             kasIn: {
                 all: [{
                     product_id: '',
-                    total: '',
+                    total: [],
                     qty: '',
-                    harga: 0
+                    harga: []
                 }]
             },
             tableKey: 0,
@@ -505,11 +506,11 @@ export default {
                 product_id: '',
                 total: '',
                 qty: '',
-                harga: 0
+                harga: []
             }]
             this.kurang_bayar = ''
             this.sisa_bayar = ''
-            this.jumlah_bayar = 0
+            this.jumlah_bayar = []
             this.index_before = ''
             this.total_kasIn = ''
         },
@@ -716,7 +717,7 @@ export default {
                 product_id: '',
                 total: '',
                 qty: '',
-                harga: 0
+                harga: []
             })
 
         },
@@ -738,7 +739,7 @@ export default {
                     return val
                 }
             })
-            this.kasIn.all[index]['qty'] = 0
+            this.kasIn.all[index]['qty'] = ''
             this.kasIn.all[index]['harga'] = produk[0]['selling_price']
             this.kasIn.all[index]['total'] = 0
             // parseInt(produk[0]['selling_price'])

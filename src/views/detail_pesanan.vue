@@ -77,8 +77,8 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.product.selling_price" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.selling_price" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.product.selling_price" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.selling_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
@@ -94,10 +94,10 @@
                 <el-input readonly :value="cashin" required type="text"/>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-bind="config" v-model="jumlah_bayar" @change="handleChangeText()" type="text"></v-money-spinner>
+                <v-money-spinner v-bind="config" v-model="jumlah_bayar" @change="handleChangeText()" type="text" placeholder="Rp 0"></v-money-spinner>
             </el-form-item>
              <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-model="discount" v-bind="config" @change="handleChangeText()" placeholder="Rp 0"></v-money-spinner>
             </el-form-item>
 
 
@@ -210,19 +210,19 @@ export default {
         return {
             trans : '',
           start: '',
-          paid : 0,
+          paid : [],
           payment_due : '',
             end: '',
             dates: '',
-            discount : 0,
+            discount : [],
             staff  : '',
             jatuh_tempo: '',
             qty_before: '',
             index_before: '',
             Pembayaran_sebelum: '',
-            jumlah_bayar: 0,
+            jumlah_bayar: [],
             kurang_bayar: '',
-            sisa_bayar: 0,
+            sisa_bayar: [],
             kembalian: '',
             list: '',
             config: {
@@ -235,6 +235,7 @@ export default {
                 bootstrap: true,
                 amend: false,
                 masked: false,
+                allowBlank : true
             },
             category: '',
             kontak: [],
@@ -340,7 +341,7 @@ export default {
          handleChangeText(i) {
              if (this.dialogStatus == 'create') {
 
-                if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
+                if (this.jumlah_bayar +  this.discount + this.paid > this.total_kasIn || this.jumlah_bayar + this.discount + this.paid == this.total_kasIn ) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount + this.paid) - this.total_kasIn 
                     this.kurang_bayar = ''
 
@@ -363,7 +364,7 @@ export default {
                 this.product = response.data.stocktransaction[0].substocktransaction
                 this.paid = response.data.stocktransaction[0].paid
                 // this.jumlah_bayar = response.data.stocktransaction[0].paid
-                this.discount = response.data.stocktransaction[0].discount
+                this.discount = response.data.stocktransaction[0].discount != null ? response.data.stocktransaction[0].discount : []
                 this.trans = response.data.stocktransaction[0]
                 console.log(this.product)
                 this.cashin = response.data.stocktransaction[0].cashin != null ? response.data.stocktransaction[0].cashin.name : response.data.stocktransaction[0].cashout.name
@@ -464,7 +465,7 @@ export default {
                 product_id: '',
                 total: '',
                 qty: '',
-                harga: 0
+                harga: []
             }]
             this.kurang_bayar = ''
             this.sisa_bayar = ''
