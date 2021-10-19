@@ -2,7 +2,7 @@
 <div class="app-container">
     <div class="filter-container">
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-            Tambah
+            {{uri == 'in' ? 'Proses Pembelian' : 'Proses Penjualan'}}
         </el-button>
     </div>
 <!--     <div v-for="data in cashin">
