@@ -19,7 +19,7 @@
         </el-button>
 
          <el-button type="primary" size="mini">
-            <router-link to="/cetak/piutang/beredar/pdf" target="blank">Cetak PDF</router-link>
+            <router-link to="/cetak/piutang/beredar/pdf" target="_blank">Cetak PDF</router-link>
         </el-button>
         <br>
         <br>
