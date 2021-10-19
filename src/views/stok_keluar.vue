@@ -3,7 +3,7 @@
     <div class="filter-container">
         <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
 
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        <el-button :loading='loading' class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
         </el-button>
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
@@ -140,10 +140,10 @@
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
                     <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
-                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
+                    <v-money-spinner v-bind="config" disabled v-model="all.total"  placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
                     <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
@@ -158,10 +158,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-model="jumlah_bayar" v-bind="config" placeholder="Rp 0" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
              <el-form-item class="k" label="Potongan" v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-model="discount"  placeholder="Rp 0" v-bind="config" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
 
 
@@ -418,11 +418,11 @@ export default {
             })
 
         },
-        getList() {
+        async getList() {
             this.listLoading = true
             axios.get('/stock/out').then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction.map((val) => {
+                this.list =  response.data.stocktransaction.map((val) => {
                     val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
                     return val;
                 })
@@ -433,23 +433,23 @@ export default {
                     this.listLoading = false
                 }, 1.5 * 1000)
             })
-            axios.get('/akun/iscash').then(response => {
+            await axios.get('/akun/iscash').then( async response => {
                 if (this.roles == 'kasir') {
-                    this.kas = response.data.akun.filter((val) => val.name == "Kas Besar")
+                    this.kas = await response.data.akun.filter((val) => val.name == "Kas Besar")
                 } else {
-                    this.kas = response.data.akun
+                    this.kas = await response.data.akun
 
                 }
             })
 
-            axios.get('/contact/customer').then(response => {
+            await axios.get('/contact/customer').then(async response => {
                 console.log(response.data);
-                this.kontak = response.data.contact
+                this.kontak = await response.data.contact
             })
 
-            axios.get('/product').then(response => {
+            await axios.get('/product').then( async response => {
 
-                this.product = response.data.product.filter((val) => {
+                this.product = await response.data.product.filter((val) => {
                     if (val.qty > 0) {
                         return val
                     }
@@ -506,22 +506,52 @@ export default {
                 type: ''
             }
         },
-        handleCreate() {
-            this.resetTemp()
-            this.dialogStatus = 'create'
-            this.dialogFormVisible = true
+
+        async resetForm(){
+            this.kas = []
+            this.contact_id = ''
+
+             await axios.get('/akun/iscash').then( async response => {
+                if (this.roles == 'kasir') {
+                    this.kas = await response.data.akun.filter((val) => val.name == "Kas Besar")
+                } else {
+                    this.kas = await response.data.akun
+
+                }
+            })
+            this.kontak = []
+
+            await axios.get('/contact/customer').then(async response => {
+                console.log(response.data);
+                this.kontak = await response.data.contact
+            })
+            this.cashout_id = ''
+            this.product = []
+        },
+        async handleCreate() {
+            let DD = new Date().getDate() 
+            let MM = new Date().getMonth() + 1
+            let YYYY = new Date().getFullYear()
+            this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
+            this.dates = `${YYYY}-${MM}-${DD}`
+            this.loading = true
+            await this.resetForm()
+            this.dialogStatus = await  'create'
+            this.loading = false
+            this.dialogFormVisible = await true
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
             this.kasIn.all = [{
                 product_id: '',
-                total: '',
+                total: [],
                 qty: '',
-                harga: 0
+                harga: []
             }]
             this.kurang_bayar = ''
             this.sisa_bayar = ''
-            this.jumlah_bayar = 0
+            this.discount = []
+            this.jumlah_bayar = []
             this.index_before = ''
             this.total_kasIn = ''
         },
@@ -750,9 +780,9 @@ export default {
                     return val
                 }
             })
-            this.kasIn.all[index]['qty'] = 0
+            this.kasIn.all[index]['qty'] = ''
             this.kasIn.all[index]['harga'] = produk[0]['selling_price']
-            this.kasIn.all[index]['total'] = 0
+            this.kasIn.all[index]['total'] = []
             // parseInt(produk[0]['selling_price'])
         },
 
@@ -787,7 +817,7 @@ export default {
                 [{
                     product_id: '',
                     total: 0,
-                    qty: 0,
+                    qty: '',
                     harga: 0
                 }];
   
