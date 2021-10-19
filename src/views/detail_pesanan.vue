@@ -218,6 +218,7 @@ export default {
           paid : [],
           payment_due : '',
             end: '',
+            uri : '',
             dates: '',
             discount : [],
             staff  : '',
@@ -374,7 +375,7 @@ export default {
                 console.log(this.product)
                 this.cashin = response.data.stocktransaction[0].cashin != null ? response.data.stocktransaction[0].cashin.name : response.data.stocktransaction[0].cashout.name
                 this.cashout_id = response.data.stocktransaction[0].cashin != null ? response.data.stocktransaction[0].cashin.id : response.data.stocktransaction[0].cashout.id
-
+                this.uri = response.data.stocktransaction[0].cashin != null ? 'out' : 'in'
                 this.list = response.data.stocktransaction[0].substocktransaction
                 this.staff = response.data.stocktransaction[0].staff
                 this.total = response.data.stocktransaction[0].substocktransaction.length
@@ -514,7 +515,7 @@ export default {
                 }
             )
             console.log(data)
-            axios.post('/stock/out/create', encodedValues)
+            axios.post(`/stock/${this.uri}/create`, encodedValues)
                 .then((response) => {
                     this.getList()
                     this.dialogFormVisible = false
