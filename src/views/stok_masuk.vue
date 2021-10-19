@@ -487,6 +487,16 @@ export default {
             this.total_kasIn = ''
         },
         createData() {
+            if(this.jumlah_bayar > 0 && this.cashout_id == ''){
+                 this.$notify({
+                    title: 'Gagal',
+                    message: 'Anda Harus Memilih Kas',
+                    type: 'warning',
+                    duration: 2000
+                })
+
+                return false
+            } 
             this.loading = true
             const total = []
             const qty = []
