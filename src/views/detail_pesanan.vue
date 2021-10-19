@@ -84,7 +84,7 @@
                     <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
-                    <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
+                    <el-button  style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
                         X
                     </el-button>
                 </el-form-item>
@@ -102,8 +102,11 @@
 
 
             <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
-            <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
             <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
+            <h3 v-if="paid != ''"> Sudah Dibayar : {{ handleCurrency(paid) }}</h3>
+            <h3 v-if="discount != ''"> Potongan : {{ handleCurrency(discount) }}</h3>
+            <h3 v-if="jumlah_bayar != ''"> Jumlah Pembayaran : {{ handleCurrency(jumlah_bayar) }}</h3>
+            <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
         </el-form>
         <!-- multiple input -->
         </el-form>
@@ -114,9 +117,14 @@
             <el-button style="margin:20px 10px" @click="dialogFormVisible = false">
                 Cancel
             </el-button>
-            <el-button style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+
+            <el-button v-if="jumlah_bayar > 0" style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
                 Simpan
             </el-button>
+            <el-button v-else style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+                Simpan
+            </el-button>
+            
         </div>
     </el-dialog>
 
@@ -202,6 +210,7 @@ export default {
         return {
             trans : '',
           start: '',
+          paid : 0,
           payment_due : '',
             end: '',
             dates: '',
@@ -332,13 +341,13 @@ export default {
              if (this.dialogStatus == 'create') {
 
                 if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
-                    this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
+                    this.sisa_bayar = (this.jumlah_bayar + this.discount + this.paid) - this.total_kasIn 
                     this.kurang_bayar = ''
 
                 }
 
                  else {
-                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount) 
+                    this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount + this.paid) 
 
                     this.sisa_bayar = ''
 
@@ -352,7 +361,8 @@ export default {
             axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(response => {
                 console.log(response)
                 this.product = response.data.stocktransaction[0].substocktransaction
-                this.jumlah_bayar = response.data.stocktransaction[0].paid
+                this.paid = response.data.stocktransaction[0].paid
+                // this.jumlah_bayar = response.data.stocktransaction[0].paid
                 this.discount = response.data.stocktransaction[0].discount
                 this.trans = response.data.stocktransaction[0]
                 console.log(this.product)
@@ -489,7 +499,7 @@ export default {
                 id : this.$route.params.id,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
                 staff: this.name
             }
             var encodedValues = qs.stringify(
