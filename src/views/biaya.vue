@@ -102,7 +102,7 @@
           </el-select>   
         </el-form-item>
         <el-form-item class="k" style=" padding-left:4px" :label="index == 0 ? 'Sub Total' : ''">
-          <v-money-spinner v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
+          <v-money-spinner placeholder="Rp 0" v-model="all.total" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
         </el-form-item>
       </div>
       
@@ -199,6 +199,7 @@ export default {
         bootstrap: true,
         amend: false,
         masked: false,
+        allowBlank : true
       },
       from: '',
       to_item: '',
@@ -206,7 +207,7 @@ export default {
       pengeluaran : '',
       keterangan : '',
       kasIn: {
-        all: [{ biaya: '', total: '', desc: '' }]
+        all: [{ biaya: '', total: [], desc: '' }]
       },
       tableKey: 0,
       iscashout : '',

@@ -482,7 +482,7 @@ export default {
                 product_id: '',
                 total: '',
                 qty: '',
-                harga: ''
+                harga: []
             }]
             this.total_kasIn = ''
         },
