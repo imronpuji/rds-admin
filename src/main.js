@@ -48,7 +48,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
+console.log(window)
 new Vue({
 	el: '#app',
 	router,

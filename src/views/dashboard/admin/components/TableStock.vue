@@ -44,7 +44,7 @@ export default {
     fetchData() {
         axios.get('/product').then(response => {
           console.log(response)
-        this.list = response.data.product.sort(function(a, b) {
+        this.list = response.data.product.filter(val => val.category == 'product').sort(function(a, b) {
     return parseFloat(a.qty) - parseFloat(b.qty);
 });
         this.total = response.data.product.length
