@@ -10,9 +10,9 @@
             Export
         </el-button>
 
-          <el-date-picker style="margin-left:20px; width:100px" width="100px" v-model="start" class="filter-item" type="date" placeholder="Dari">
+          <el-date-picker style="margin-left:20px; width:130px" width="100px" v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px;width:100px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+        <el-date-picker style="margin-left:8px;width:130px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
