@@ -521,6 +521,7 @@ export default {
             console.log(data)
             axios.post(`/stock/${this.uri}/create`, encodedValues)
                 .then((response) => {
+
                     this.getList()
                     this.dialogFormVisible = false
                     this.loading = false
@@ -530,6 +531,12 @@ export default {
                         type: 'success',
                         duration: 2000
                     })
+                    if(this.uri == 'in'){
+                        this.$router.push("/pembelian/non/tunai");
+                    } else {
+                        this.$router.push("/penjualan/non/tunai");
+
+                    }
                 })
                 .catch((err) => {
                     this.listLoading = false
