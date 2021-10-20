@@ -87,11 +87,11 @@
 
             </template>
         </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
+<!--         <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ row.payment_due }}</span>
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column width="150px" align="center" prop="date" label="Date" sortable column-key="date" :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]" :filter-method="filterHandler">
             <template slot-scope="{row}">
                 <span>{{ row.date }}</span>
@@ -113,10 +113,10 @@
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Jatuh Tempo">
+<!--             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
                 <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi">
                 </el-date-picker>

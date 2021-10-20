@@ -329,7 +329,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Pesanan Pembelian'
             },
             dialogPvVisible: false,
             pvData: [],
