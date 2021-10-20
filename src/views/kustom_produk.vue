@@ -347,7 +347,7 @@ export default {
                             message: 'Anda Belum Melengkapi Data',
                             type: 'warning',
                             duration: 2000
-                        })
+                    })
                 })
         },
         handleUpdate(row) {
