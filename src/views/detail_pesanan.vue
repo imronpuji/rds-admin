@@ -65,8 +65,8 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.purchase_price" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.purchase_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
@@ -473,10 +473,12 @@ export default {
             const total = []
             const qty = []
             const product_id = []
+            const purchase_price = []
             this.product.map((val, index) => {
                 qty.push(val.qty)
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
+                purchase_price.push(val.harga)
             })
             let data = ''
             if(this.uri == 'in'){
@@ -488,9 +490,10 @@ export default {
                 date: this.dates,
                 total,
                 id : this.$route.params.id,
+                purchase_price,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
+                paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
                 staff: this.name
             }
             } else {
@@ -501,6 +504,7 @@ export default {
                 qty,
                 date: this.dates,
                 total,
+
                 id : this.$route.params.id,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
