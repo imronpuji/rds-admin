@@ -41,7 +41,7 @@ TGL Transaksi : {{list[0]['created_at']}}
        <td style="padding:10px;text-align: right;">{{index + 1}}</td>
        <td style="text-align: left;">{{test['product']['name']}}</td>
        <td style="text-align: left;">{{test['qty']}}</td>
-       <td style="text-align: right;">{{test['product']['unit']}}</td>
+       <td style="text-align: right;">{{test['product']['unit']['name']}}</td>
        <td style="text-align: right;">{{handleCurrency(test['total'] / test['qty'])}}</td>
        <td style="text-align: right;">{{handleCurrency(test['total'])}}</td>
      </tr>

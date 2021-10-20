@@ -40,7 +40,7 @@ NO Kendaraan  :
        <td style="padding:10px;text-align: right;">{{index + 1}}</td>
        <td style="text-align: left;">{{test['product']['name']}}</td>
        <td style="text-align: left;">{{test['qty']}}</td>
-       <td style="text-align: right;">{{test['product']['unit']}}</td>
+       <td style="text-align: right;">{{test['product']['unit']['name']}}</td>
      </tr>
      <tr>
      	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="2" >TOTAL</td>
