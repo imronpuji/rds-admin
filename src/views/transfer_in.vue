@@ -107,7 +107,7 @@
     </el-form-item>
       </el-form>
       <!-- multiple input -->
-      <div slot="footer" class="dialog-footer">
+      <div slot="footer" class="dialog-footer" style="display:flex; justify-content:center;   ">
         <el-button @click="dialogFormVisible = false">
           Cancel
         </el-button>
