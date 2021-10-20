@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column label="Harga Satuan" width="150px" align="center">
             <template slot-scope="{row}">
-                <span>{{handleCurrency(row.total / row.qty)}}</span>
+                <span>{{handleCurrency(row.purchase_price)}}</span>
             </template>
         </el-table-column>
     </el-table>
@@ -65,8 +65,8 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.total / all.qty" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.purchase_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
@@ -706,7 +706,7 @@ export default {
                 }
             })
             this.kasIn.all[index]['qty'] = 0
-            this.kasIn.all[index]['harga'] = produk[0]['selling_price']
+            this.kasIn.all[index]['harga'] = parseInt(produk[0]['selling_price'])
             this.kasIn.all[index]['total'] = 0
             // parseInt(produk[0]['selling_price'])
         },
@@ -751,9 +751,9 @@ export default {
         },
 
         onChangeQty(index) {
-            if (this.product[index]['qty'] < -2000) {
-                this.product[index]['qty'] = 0
-            } else {
+            // if (this.product[index]['qty'] < -2000) {
+            //     this.product[index]['qty'] = 0
+            // } else {
                 let qty = 0;
                 if(this.product[index]['qty'].length > 3){
 
@@ -767,13 +767,14 @@ export default {
                 this.product[index]['qty'] = qty
                 console.log(this.product)
                 const result = qty * parseInt(this.product[index]['harga'])
+                console.log(result)
                 this.product[index]['total'] = result
 
                 this.total_kasIn = this.product.reduce(function (accumulator, item) {
                     return accumulator + parseInt(item.total)
                 }, 0)
                 console.log(this.total_kasIn)
-            }
+            // }
         }
 
     }
