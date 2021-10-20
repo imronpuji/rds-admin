@@ -502,6 +502,8 @@ export default {
                         })
                         return false
                     }
+
+                    return false
                 })
 
              if(this.contact_id == ''){
