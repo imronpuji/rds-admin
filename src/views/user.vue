@@ -163,7 +163,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'User'
       },
       dialogPvVisible: false,
       pvData: [],

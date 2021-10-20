@@ -255,7 +255,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Kas Keluar'
             },
             dialogPvVisible: false,
             pvData: [],

@@ -330,7 +330,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Pembelian'
             },
             dialogPvVisible: false,
             pvData: [],

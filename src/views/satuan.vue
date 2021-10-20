@@ -169,7 +169,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'Satuan'
       },
       satuan : '',
       dialogPvVisible: false,

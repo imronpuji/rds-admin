@@ -359,7 +359,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Hutang Penjualan'
             },
             dialogPvVisible: false,
             pvData: [],

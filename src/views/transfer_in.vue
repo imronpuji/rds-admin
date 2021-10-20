@@ -236,7 +236,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'Transfer Kas'
       },
       dialogPvVisible: false,
       pvData: [],

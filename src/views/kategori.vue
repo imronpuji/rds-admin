@@ -163,7 +163,7 @@ data() {
     dialogStatus: '',
     textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'Kategori'
     },
     dialogPvVisible: false,
     pvData: [],

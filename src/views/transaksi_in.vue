@@ -253,7 +253,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Kas Masuk'
             },
             dialogPvVisible: false,
             pvData: [],

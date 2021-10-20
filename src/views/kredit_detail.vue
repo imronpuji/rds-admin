@@ -193,7 +193,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Detail Kredit'
             },
             dialogPvVisible: false,
             pvData: [],

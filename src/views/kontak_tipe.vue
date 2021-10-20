@@ -220,7 +220,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Tambah Kontak'
+                create: 'Tambah Tipe Kontak'
             },
             dialogPvVisible: false,
             pvData: [],

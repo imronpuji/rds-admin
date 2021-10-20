@@ -204,7 +204,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Tambah Kontak'
+                create: 'Kustom Produk'
             },
             dialogPvVisible: false,
             pvData: [],
