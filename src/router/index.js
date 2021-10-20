@@ -561,7 +561,7 @@ import nestedRouter from './modules/nested'
 {
     path: '/permission',
     component: Layout,
-    hidden: true, // will always show the root menu
+    hidden: false, // will always show the root menu
     name: 'Permission',
     meta: {
       title: 'Permission',
@@ -572,6 +572,7 @@ import nestedRouter from './modules/nested'
     path: 'role',
     component: () => import('@/views/permission/role'),
     name: 'RolePermission',
+    hidden : true,
     meta: {
       title: 'Role Permission',
       roles: ['admin']
@@ -582,7 +583,7 @@ import nestedRouter from './modules/nested'
     component: () => import('@/views/user'),
     name: 'RolePermission',
     meta: {
-      title: 'User',
+      title: 'User Manager',
       roles: ['admin']
   }
 }
