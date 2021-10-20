@@ -12,8 +12,8 @@
 	<div style="display: inline-block; float:left;">		
 	<h4 style="margin:0">SURAT JALAN</h4>
 	<pre>
-NO transaksi  : T{{trans}}
-TGL Transaksi : {{list[0]['created_at']}}
+NO transaksi  : {{trans}}
+TGL Transaksi : {{list_pay['date']}}
 NO Kendaraan  : 
 	</pre>
 	</div>
@@ -87,6 +87,7 @@ data() {
         	
         	list : [], 
         	total : '',
+          list_pay : '',
         	jumlah_barang : '',
         	 contact : [], 
         	 trans : ''
@@ -103,6 +104,7 @@ methods: {
   	    await axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(async response => {
           console.log(response)
           this.list = await response.data.stocktransaction[0].substocktransaction
+          this.list_pay = await response.data.stocktransaction[0]
           this.contact = await response.data.stocktransaction[0].contact})
   	    const jumlah_barang = await this.list.reduce((acc, val) => {
   	    	return acc + parseInt(val.qty)

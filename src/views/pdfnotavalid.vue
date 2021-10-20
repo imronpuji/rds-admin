@@ -12,8 +12,9 @@
 	<div style="display: inline-block; float:left;">		
 	<h4 style="margin:0">NOTA PENJUALAN</h4>
 	<pre>
-NO transaksi  : T{{trans}}
-TGL Transaksi : {{list[0]['created_at']}}
+NO transaksi  : {{trans}}
+TGL Transaksi : {{list_pay['date']}}
+JATUH TEMPO   : {{list_pay['payment_due']}}
 	</pre>
 	</div>
 <div style="display: inline; float:right;">		
@@ -46,21 +47,24 @@ TGL Transaksi : {{list[0]['created_at']}}
        <td style="text-align: right;">{{handleCurrency(test['total'])}}</td>
      </tr>
      <tr>
-     	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="5" >TOTAL TAGIHAN</td>
-     	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total)}}</td>
+     	<td style="text-align: center; padding: 8px;" colspan="5" >TOTAL TAGIHAN</td>
+     	<td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(total)}}</td>
      </tr>
-     <tr>
+      <tr>
+        <th style="text-align: center; padding: 8px;" colspan="5">POTONGAN</th>
+        <td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
+      </tr>
+      <tr>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">TOTAL AKHIR</th>
+        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total - listCredit['discount'])}}</td>
+      </tr>
       <tr>
         <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">PEMBAYARAN</th>
         <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['paid'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">KEKURANGAN</th>
-        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'])}}</td>
-      </tr>
-      <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">POTONGAN</th>
-        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
+        <th style="text-align: center; padding: 8px;" colspan="5">KEKURANGAN</th>
+        <td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'])}}</td>
       </tr>
   </tbody>
 </table>
@@ -107,6 +111,7 @@ data() {
         	total : '',
         	 contact : [], 
         	 trans : '',
+           list_pay : '',
            listCredit : []
 		}
 },
@@ -121,6 +126,7 @@ methods: {
   	    await axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(async response => {
           console.log(response)
           this.list = await response.data.stocktransaction[0].substocktransaction
+          this.list_pay = await response.data.stocktransaction[0]
           this.listCredit = await response.data.stocktransaction[0]
           this.contact = await response.data.stocktransaction[0].contact})
   	    const total = await this.list.reduce((acc, val) => {
