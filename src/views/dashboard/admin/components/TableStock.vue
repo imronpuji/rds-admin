@@ -17,22 +17,22 @@
   <br>
   <h4>Data Piutang</h4>
   <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
-     <el-table-column label="ID" min-width="200">
+     <el-table-column label="ID" min-width="60">
       <template slot-scope="scope">
         {{ scope.row.id }}
       </template>
     </el-table-column>
-    <el-table-column label="Nama" min-width="200">
+    <el-table-column label="Nama" min-width="100">
       <template slot-scope="scope">
-        {{ scope.row.name }}
+        {{ scope.row.contact.name }}
       </template>
     </el-table-column>
-    <el-table-column label="Jumlah Piutang" min-width="200">
+    <el-table-column label="Jumlah Piutang" min-width="100">
       <template slot-scope="scope">
-        {{ scope.row.debt }}
+        {{ handleCurrency(scope.row.debt) }}
       </template>
     </el-table-column>
-    <el-table-column label="Jatuh Tempo" min-width="200">
+    <el-table-column label="Jatuh Tempo" min-width="100">
       <template slot-scope="scope">
         {{ scope.row.payment_due }}
       </template>
@@ -68,6 +68,10 @@ export default {
     this.fetchData()
   },
   methods: {
+            handleCurrency(number){
+     const idr = new Intl.NumberFormat('in-IN', { style: 'currency', currency: 'IDR' }).format(number)
+     return idr
+   },
     fetchData() {
         axios.get('/product').then(response => {
           console.log(response)
