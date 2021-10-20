@@ -25,14 +25,14 @@
         {{ scope.row.contact.name }}
       </template>
     </el-table-column>
-    <el-table-column label="Customer" min-width="100">
+    <el-table-column label="Barang" min-width="100">
       <template slot-scope="scope">
-        {{ scope.row.product.name }}
+        {{ scope.row.substocktransaction[0].product.name }}
       </template>
     </el-table-column>
     <el-table-column label="Jumlah barang" min-width="100">
       <template slot-scope="scope">
-        {{ scope.row.qty }}
+        {{ scope.row.substocktransaction[0].qty }}
       </template>
     </el-table-column>
     <el-table-column label="Tanggal" min-width="100">

@@ -350,7 +350,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Create'
+                create: 'Pesanan Penjualan'
             },
             dialogPvVisible: false,
             pvData: [],
