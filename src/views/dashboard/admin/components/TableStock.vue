@@ -13,6 +13,8 @@
     </el-table-column>
   </el-table>
   <br>
+  <router-link to="/produk">Lihat Produk Lainya</router-link>
+
   <br>
   <br>
   <h4>Data Piutang</h4>
@@ -37,7 +39,8 @@
         {{ scope.row.payment_due }}
       </template>
     </el-table-column>
-  </el-table>
+  </el-table> <br>
+  <router-link to="/laporan/piutang/beredar">Lihat Piutang Lainya</router-link>
     </div>
 </template>
 
