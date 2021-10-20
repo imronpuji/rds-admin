@@ -28,11 +28,6 @@
                 <span>{{row.qty}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Staff" width="150px" align="center">
-            <template slot-scope="{row}">
-                <span>{{staff}}</span>
-            </template>
-        </el-table-column>
         <el-table-column label="Satuan" width="150px" align="center">
             <template slot-scope="{row}">
                 <span>{{row.product.unit}}</span>
@@ -42,18 +37,6 @@
             <template slot-scope="{row}">
                 <span>{{handleCurrency(row.total / row.qty)}}</span>
             </template>
-        </el-table-column>
-        <el-table-column label="Total" width="150px" align="center">
-            <template slot-scope="{row}">
-                <span>{{handleCurrency(row.total)}}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Status" width="150px" align="center">
-            <template slot-scope="{row}">
-                <span>{{row.pending == 1 ? 'Belum' : 'Sudah'}}</span>
-            </template>
-        </el-table-column>
-
         </el-table-column>
     </el-table>
 
@@ -82,8 +65,8 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.product.selling_price" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
-                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.selling_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.purchase_price" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.purchase_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
                     <v-money-spinner v-bind="config" disabled v-model="all.total" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
@@ -708,7 +691,7 @@ export default {
             this.kasIn.all.pop();
         },
         onChangeTotal() {
-            const total = this.kasIn.all.reduce(function (accumulator, item) {
+            const total = this.product.reduce(function (accumulator, item) {
 
                 return accumulator + parseInt(item.total)
             }, 0)
@@ -768,28 +751,28 @@ export default {
         },
 
         onChangeQty(index) {
-            if (this.kasIn.all[index]['qty'] > this.qty_before) {
-                this.kasIn.all[index]['qty'] = 0
+            if (this.product[index]['qty'] < -2000) {
+                this.product[index]['qty'] = 0
             } else {
                 let qty = 0;
-                if(this.kasIn.all[index]['qty'].length > 3){
+                if(this.product[index]['qty'].length > 3){
 
-                    qty = this.kasIn.all[index]['qty'].replace('.', "")
+                    qty = this.product[index]['qty'].replace('.', "")
                 } else {
-                    qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
-                    this.kasIn.all[index]['qty'] = qty
+                    qty = this.product[index]['qty'].replace(/,/g, ".")
+                    this.product[index]['qty'] = qty
                 }
                 
                 
-                this.kasIn.all[index]['qty'] = qty
-                
-                const result = qty * parseInt(this.kasIn.all[index]['harga'])
-                this.kasIn.all[index]['total'] = result
-                const total = this.kasIn.all.reduce(function (accumulator, item) {
-                    console.log(item.total)
+                this.product[index]['qty'] = qty
+                console.log(this.product)
+                const result = qty * parseInt(this.product[index]['harga'])
+                this.product[index]['total'] = result
+
+                this.total_kasIn = this.product.reduce(function (accumulator, item) {
                     return accumulator + parseInt(item.total)
                 }, 0)
-                this.total_kasIn = total
+                console.log(this.total_kasIn)
             }
         }
 

@@ -385,7 +385,7 @@ export default {
             axios.post('/stock/pending/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
+
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -482,6 +482,37 @@ export default {
             this.total_kasIn = ''
         },
         createData() {
+            if(this.cashout_id == ''){
+                this.$notify({
+                    title: 'Gagal',
+                    message: 'Anda Harus Memilih Kas',
+                    type: 'warning',
+                    duration: 2000
+                })
+                return false
+            }
+            
+                this.kasIn.all.map((val, index) => {
+                    if(val.product_id == ''){
+                        this.$notify({
+                            title: 'Gagal',
+                            message: ' Anda Harus Memilih Produk',
+                            type: 'warning',
+                            duration: 2000
+                        })
+                        return false
+                    }
+                })
+
+             if(this.contact_id == ''){
+                this.$notify({
+                    title: 'Gagal',
+                    message: ' Anda Harus Memilih Supplier',
+                    type: 'warning',
+                    duration: 2000
+                })
+                return false
+            }
             this.loading = true
             const total = []
             const qty = []
@@ -501,7 +532,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 purchase_price,
                 date: this.dates,
                 staff: this.name
@@ -608,6 +639,7 @@ export default {
                 }];
   
                 this.product = response.data.product
+                this.product_id = ''
             })
         },
 

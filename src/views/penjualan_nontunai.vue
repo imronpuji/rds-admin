@@ -541,7 +541,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 staff: this.name
             }
             var encodedValues = qs.stringify(
@@ -726,7 +726,7 @@ export default {
             this.kasIn.all.pop();
         },
         onChangeTotal() {
-            const total = this.kasIn.all.reduce(function (accumulator, item) {
+            const total = this.product.reduce(function (accumulator, item) {
 
                 return accumulator + parseInt(item.total)
             }, 0)
@@ -781,25 +781,25 @@ export default {
         },
 
         onChangeQty(index) {
-            if (this.kasIn.all[index]['qty'] < -1000) {
-                this.kasIn.all[index]['qty'] = 0
+            if (this.product[index]['qty'] < -1000) {
+                this.product[index]['qty'] = 0
             } else {
                 let qty = 0;
-                if(this.kasIn.all[index]['qty'].length > 3){
+                if(this.product[index]['qty'].length > 3){
 
-                    qty = this.kasIn.all[index]['qty'].replace('.', "")
+                    qty = this.product[index]['qty'].replace('.', "")
                 } else {
-                    qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
-                    this.kasIn.all[index]['qty'] = qty
+                    qty = this.product[index]['qty'].replace(/,/g, ".")
+                    this.product[index]['qty'] = qty
                 }
                 
                 
-                // this.kasIn.all[index]['qty'] = 
-                //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
+                // this.product[index]['qty'] = 
+                //     this.product[index]['qty'].replace(/,/g, ".")
                 
-                const result = qty * parseInt(this.kasIn.all[index]['harga'])
-                this.kasIn.all[index]['total'] = result
-                const total = this.kasIn.all.reduce(function (accumulator, item) {
+                const result = qty * parseInt(this.product[index]['harga'])
+                this.product[index]['total'] = result
+                const total = this.product.reduce(function (accumulator, item) {
                     console.log(item.total)
                     return accumulator + parseInt(item.total)
                 }, 0)

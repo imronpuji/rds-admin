@@ -12,6 +12,32 @@
       </template>
     </el-table-column>
   </el-table>
+  <br>
+  <br>
+  <br>
+  <h4>Data Piutang</h4>
+  <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
+     <el-table-column label="ID" min-width="200">
+      <template slot-scope="scope">
+        {{ scope.row.id }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Nama" min-width="200">
+      <template slot-scope="scope">
+        {{ scope.row.name }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Jumlah Piutang" min-width="200">
+      <template slot-scope="scope">
+        {{ scope.row.debt }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Jatuh Tempo" min-width="200">
+      <template slot-scope="scope">
+        {{ scope.row.payment_due }}
+      </template>
+    </el-table-column>
+  </el-table>
     </div>
 </template>
 
@@ -34,7 +60,8 @@ export default {
   },
   data() {
     return {
-      list: null
+      list: null,
+      list_piutang : null
     }
   },
   created() {
@@ -44,9 +71,22 @@ export default {
     fetchData() {
         axios.get('/product').then(response => {
           console.log(response)
-        this.list = response.data.product.filter(val => val.category == 'product').sort(function(a, b) {
-    return parseFloat(a.qty) - parseFloat(b.qty);
-});
+        let data = response.data.product.filter(val => val.category == 'product').sort(function(a, b) {
+            return parseFloat(a.qty) - parseFloat(b.qty)
+        });
+
+        this.list = data.slice(0,4)
+        
+        axios.get('/stock/out/debt/due').then(response => {
+          console.log(response)
+        let data  = response.data.stocktransaction.map(val => {
+          val['debt'] = val.total - val.paid - val.discount
+          return val
+        })
+
+        this.list_piutang = data.slice(0,4)
+        });
+
         this.total = response.data.product.length
 
         // Just to simulate the time of the request
