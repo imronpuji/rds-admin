@@ -430,7 +430,7 @@ export default {
                         this.total_hutang = total_hutang
                         return val;
                     }
-                })
+                }).sort((a, b) => (a.payment_due > b.payment_due) ? 1 : ((b.payment_due > a.payment_due) ? -1 : 0))
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
