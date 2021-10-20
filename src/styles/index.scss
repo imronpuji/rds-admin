@@ -204,3 +204,16 @@ el-form-item__label {
   margin-right:50px !important
 }
 
+.el-icon-close:before {
+    color: white;
+    background: blue;
+    padding: 10px;
+}
+
+.tags-view-wrapper .tags-view-item .el-icon-close:before {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    display: none !important;
+    vertical-align: -3px;
+}
+
