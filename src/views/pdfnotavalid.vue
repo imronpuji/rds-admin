@@ -10,12 +10,18 @@
 </p>
 <b><hr></b>
 	<div style="display: inline-block; float:left;">		
-	<h4 style="margin:0">NOTA PENJUALAN</h4>
-	<pre>
+  <h4 v-if="list_pay['pending'] == null" style="margin:0">NOTA PENJUALAN</h4>
+	<h4 v-if="list_pay['pending'] == 1" style="margin:0">PESANAN PENJUALAN</h4>
+	<pre v-if="list_pay['pending'] == null">
 NO transaksi  : {{trans}}
 TGL Transaksi : {{list_pay['date']}}
 JATUH TEMPO   : {{list_pay['payment_due']}}
 	</pre>
+
+  <pre v-if="list_pay['pending'] == 1">
+NO transaksi  : {{trans}}
+TGL Transaksi : {{list_pay['date']}}
+  </pre>
 	</div>
 <div style="display: inline; float:right;">		
 	<h4 style="margin:0">KEPADA :</h4>
@@ -30,41 +36,41 @@ JATUH TEMPO   : {{list_pay['payment_due']}}
   <thead style="background: rgba(100,100,100, 0.3);width:100%">
     <tr>
       <th style="width:50px; text-align: left; padding:10px">NO</th>
-      <th style="text-align: left">NAMA BARANG</th>
-      <th style="text-align: left">JUMLAH</th>
-      <th style="text-align: left">SATUAN</th>
-      <th style="text-align: left">HARGA SATUAN</th>
-      <th style="text-align: left">SUB TOTAL</th>
+      <th style="text-align: center">NAMA BARANG</th>
+      <th style="text-align: center">JUMLAH</th>
+      <th style="text-align: center">SATUAN</th>
+      <th style="text-align: center">HARGA SATUAN</th>
+      <th style="text-align: center">SUB TOTAL</th>
     </tr>
    </thead>
    <tbody>
      <tr v-for="(test, index) in list">
        <td style="padding:10px;text-align: right;">{{index + 1}}</td>
-       <td style="text-align: left;">{{test['product']['name']}}</td>
-       <td style="text-align: left;">{{test['qty']}}</td>
-       <td style="text-align: right;">{{test['product']['unit']['name']}}</td>
-       <td style="text-align: right;">{{handleCurrency(test['total'] / test['qty'])}}</td>
-       <td style="text-align: right;">{{handleCurrency(test['total'])}}</td>
+       <td style="padding : 8px;text-align: left;">{{test['product']['name']}}</td>
+       <td style="padding : 8px;text-align: right;">{{test['qty']}}</td>
+       <td style="padding : 8px;text-align: center;">{{test['product']['unit']['name']}}</td>
+       <td style="padding : 8px;text-align: right;">{{handleCurrency(test['total'] / test['qty'])}}</td>
+       <td style="padding : 8px;text-align: right;">{{handleCurrency(test['total'])}}</td>
      </tr>
      <tr>
-     	<td style="text-align: center; padding: 8px;" colspan="5" >TOTAL TAGIHAN</td>
-     	<td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(total)}}</td>
+     	<td style="text-align: center; padding: 8px;" colspan="5" >Total</td>
+     	<td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(total)}}</td>
      </tr>
       <tr>
-        <th style="text-align: center; padding: 8px;" colspan="5">POTONGAN</th>
-        <td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
+        <th style="text-align: center; padding: 8px;" colspan="5">Potongan</th>
+        <td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">TOTAL AKHIR</th>
-        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total - listCredit['discount'])}}</td>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">Total Akhir</th>
+        <td style="text-align: right; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total - listCredit['discount'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">PEMBAYARAN</th>
-        <td style="text-align: center; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['paid'])}}</td>
+        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">Pembayaran</th>
+        <td style="text-align: right; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['paid'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px;" colspan="5">KEKURANGAN</th>
-        <td style="text-align: center; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'])}}</td>
+        <th style="text-align: center; padding: 8px;" colspan="5">Kekurangn</th>
+        <td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'] - listCredit['discount'] )}}</td>
       </tr>
   </tbody>
 </table>
