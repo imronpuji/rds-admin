@@ -53,23 +53,23 @@ TGL Transaksi : {{list_pay['date']}}
        <td style="padding : 8px;text-align: right;">{{handleCurrency(test['total'])}}</td>
      </tr>
      <tr>
-     	<td style="text-align: center; padding: 8px;" colspan="5" >Total</td>
+     	<td style="text-align: right; padding: 8px;" colspan="5" >Total</td>
      	<td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(total)}}</td>
      </tr>
       <tr>
-        <th style="text-align: center; padding: 8px;" colspan="5">Potongan</th>
+        <th style="text-align: right; padding: 8px;" colspan="5">Potongan</th>
         <td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['discount'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">Total Akhir</th>
+        <th style="text-align: right; padding: 8px; font-weight: bold" colspan="5">Total Akhir</th>
         <td style="text-align: right; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(total - listCredit['discount'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px; font-weight: bold" colspan="5">Pembayaran</th>
+        <th style="text-align: right; padding: 8px; font-weight: bold" colspan="5">Pembayaran</th>
         <td style="text-align: right; padding: 8px; font-weight: bold" colspan="1" >{{handleCurrency(listCredit['paid'])}}</td>
       </tr>
       <tr>
-        <th style="text-align: center; padding: 8px;" colspan="5">Kekurangn</th>
+        <th style="text-align: right; padding: 8px;" colspan="5">Kekurangan</th>
         <td style="text-align: right; padding: 8px;" colspan="1" >{{handleCurrency(listCredit['total'] - listCredit['paid'] - listCredit['discount'] )}}</td>
       </tr>
   </tbody>
