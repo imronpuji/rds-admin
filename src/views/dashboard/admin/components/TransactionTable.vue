@@ -13,9 +13,9 @@
     </el-table-column>
   </el-table>
   <h4>Total : {{handleCurrency(total)}}</h4>
-  <h4 style="margin-top:30px">Pesanan Penjualan</h4>
+  <h4 style="margin-top:35px">Pesanan Penjualan</h4>
   <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
-     <el-table-column label="ID" min-width="60">
+     <el-table-column label="ID" min-width="40">
       <template slot-scope="scope">
         {{ scope.row.id }}
       </template>
@@ -30,7 +30,7 @@
         {{ scope.row.substocktransaction[0].product.name }}
       </template>
     </el-table-column>
-    <el-table-column label="Jumlah barang" min-width="100">
+    <el-table-column label="qty" min-width="100">
       <template slot-scope="scope">
         {{ scope.row.substocktransaction[0].qty }}
       </template>
