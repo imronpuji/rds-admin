@@ -65,7 +65,7 @@
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
-                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.purchase_price" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga = all.total / all.qty" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                     <v-money-spinner v-else v-bind="config" v-model="all.harga = all.product.purchase_price" readonly required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">

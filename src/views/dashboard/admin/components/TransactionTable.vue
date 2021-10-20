@@ -13,6 +13,35 @@
     </el-table-column>
   </el-table>
   <h4>Total : {{handleCurrency(total)}}</h4>
+  <h4 style="margin-top:30px">Pesanan Penjualan</h4>
+  <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
+     <el-table-column label="ID" min-width="60">
+      <template slot-scope="scope">
+        {{ scope.row.id }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Customer" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.contact.name }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Customer" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.product.name }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Jumlah barang" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.qty }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Tanggal" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.date }}
+      </template>
+    </el-table-column>
+  </el-table> <br>
+  <router-link to="/penjualan/non/tunai/">Lihat Pesanan Penjualan Lainya</router-link>
   </div>
 </template>
 
@@ -35,7 +64,8 @@ export default {
   data() {
     return {
       list: null,
-      total: ""
+      total: "",
+      list_piutang: null,
     }
   },
   created() {
@@ -47,6 +77,15 @@ export default {
      return idr
    },
     fetchData() {
+        axios.get('/stock/pending/out/due').then(response => {
+          console.log(response)
+        let data  = response.data.stocktransaction.map(val => {
+          val['debt'] = val.total - val.paid - val.discount
+          return val
+        })
+
+        this.list_piutang = data.slice(0,4)
+        });
       axios.get('/akun/iscash').then(response => {
         console.log(response)
         this.list = response.data.akun

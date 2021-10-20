@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       list: null,
+      list_piutang : null,
       total: "", 
 
     }
@@ -48,6 +49,17 @@ export default {
      return idr
    },
     fetchData() {
+
+       axios.get('/stock/out/debt/due').then(response => {
+          console.log(response)
+        let data  = response.data.stocktransaction.map(val => {
+          val['debt'] = val.total - val.paid - val.discount
+          return val
+        })
+
+        this.list_piutang = data.slice(0,4)
+        });
+
       axios.get('/akun/iscash').then(response => {
         this.list = response.data.akun.filter((val) => val.name == 'Kas Besar'|| val.name == 'Kas Kecil')
         console.log(response)
