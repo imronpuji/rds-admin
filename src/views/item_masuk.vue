@@ -451,13 +451,12 @@ export default {
                     this.loading = false
 
                     this.listLoading = false
-                    this.$notify({
-                        title: 'Error',
-                        message: 'Server Error',
-                        type: 'warning',
-                        duration: 2000
-                    })
-                })
+                   this.$notify({
+                            title: 'Gagal',
+                            message: 'Anda Belum Melengkapi Data',
+                            type: 'warning',
+                            duration: 2000
+                        })                })
             // }
             // })
         },

@@ -481,7 +481,7 @@ export default {
             }]
             this.total_kasIn = ''
         },
-        createData() {
+        async createData() {
             if(this.cashout_id == ''){
                 this.$notify({
                     title: 'Gagal',
@@ -492,19 +492,6 @@ export default {
                 return false
             }
             
-                this.kasIn.all.map((val, index) => {
-                    if(val.product_id == ''){
-                        this.$notify({
-                            title: 'Gagal',
-                            message: ' Anda Harus Memilih Produk',
-                            type: 'warning',
-                            duration: 2000
-                        })
-                        return false
-                    }
-
-                    return false
-                })
 
              if(this.contact_id == ''){
                 this.$notify({
@@ -563,8 +550,8 @@ export default {
 
                     this.listLoading = false
                     this.$notify({
-                        title: 'Error',
-                        message: 'Server Error',
+                        title: 'Gagal',
+                        message: 'Anda Belum Melengkapi Data',
                         type: 'warning',
                         duration: 2000
                     })

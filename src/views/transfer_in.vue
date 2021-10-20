@@ -404,8 +404,12 @@ export default {
           this.kasIn.all = [{ modal: '', desc: '', total: '' }]
         })
         .catch((err) => {
-      this.loading = false
-
+          this.$notify({
+                            title: 'Gagal',
+                            message: 'Anda Belum Melengkapi Data',
+                            type: 'warning',
+                            duration: 2000
+                        })
         })
       // }
       // })

@@ -545,8 +545,8 @@ export default {
 
                     this.listLoading = false
                     this.$notify({
-                        title: 'Error',
-                        message: 'Server Error',
+                        title: 'Gagal',
+                        message: ' Anda Belum Melengkapi Data',
                         type: 'warning',
                         duration: 2000
                     })

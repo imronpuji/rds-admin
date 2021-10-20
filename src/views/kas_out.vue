@@ -466,11 +466,11 @@ export default {
                     this.loading = false
 
                     this.$notify({
-                        title: 'Error',
-                        message: 'Server Error',
-                        type: 'warning',
-                        duration: 2000
-                    })
+                            title: 'Gagal',
+                            message: 'Anda Belum Melengkapi Data',
+                            type: 'warning',
+                            duration: 2000
+                        })
                 })
             // }
             // })
