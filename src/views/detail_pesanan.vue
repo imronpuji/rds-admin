@@ -367,6 +367,7 @@ export default {
                 this.dates = response.data.stocktransaction[0].date
                 this.contact_id = response.data.stocktransaction[0].contact_id
                 this.total_kasIn = response.data.stocktransaction[0].total
+                this.kurang_bayar = response.data.stocktransaction[0].total - (response.data.stocktransaction[0].paid + response.data.stocktransaction[0].discount) 
                 // Just to simulate the time of the request
                 this.listLoading = false
                 setTimeout(() => {
@@ -456,7 +457,6 @@ export default {
                 qty: '',
                 harga: []
             }]
-            this.kurang_bayar = ''
             this.sisa_bayar = ''
             this.index_before = ''
             this.discount = this.discount > 0 ? this.discount : []
