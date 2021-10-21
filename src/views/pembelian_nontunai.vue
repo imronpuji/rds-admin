@@ -388,7 +388,9 @@ export default {
                     if(val.paid == 0){
                     val['debt'] = 0
 
-                    } else {
+                    }
+
+                     else {
                         val['debt'] = val.total - val.paid - val.discount
                     }
                     return val;
@@ -540,7 +542,11 @@ export default {
             }
 
             if(this.jumlah_bayar < this.total_kasIn && this.discount < this.total_kasIn){
-                paid = this.jumlah_bayar
+                if(this.jumlah_bayar + this.discount > this.total_kasIn){
+                    paid = this.jumlah_bayar - (this.jumlah_bayar + this.discount - this.total_kasIn)
+                } else {
+                   paid = this.jumlah_bayar
+                }
             }
 
              if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
