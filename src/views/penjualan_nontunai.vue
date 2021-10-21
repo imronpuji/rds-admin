@@ -527,8 +527,10 @@ export default {
             const total = []
             const qty = []
             const product_id = []
+            const purchase_price = []
             this.kasIn.all.map((val, index) => {
                 qty.push(val.qty)
+                purchase_price.push(val.harga)
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
             })
@@ -539,6 +541,7 @@ export default {
                 qty,
                 date: this.dates,
                 total,
+                purchase_price,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
