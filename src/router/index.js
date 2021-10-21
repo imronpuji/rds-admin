@@ -131,7 +131,7 @@ import nestedRouter from './modules/nested'
     }
 }, 
     {
-      path: '/penjualan/non/tunai',
+      path: '/pesanan/penjualan',
       component: () => import('@/views/penjualan_nontunai'),
       name: 'PagePermission',
       meta: {
@@ -162,7 +162,7 @@ import nestedRouter from './modules/nested'
         roles: ['admin'] // or you can only set roles in sub nav
     }
 }, {
-      path: '/pembelian/non/tunai',
+      path: '/pesanan/pembelian',
       component: () => import('@/views/pembelian_nontunai'),
       name: 'PagePermission',
       meta: {

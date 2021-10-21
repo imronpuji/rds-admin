@@ -483,6 +483,8 @@ export default {
                 selling_price.push(val.harga)
             })
             let data = ''
+
+ 
             if(this.uri == 'in'){
                 data = {
                 contact_id: this.contact_id,
@@ -495,7 +497,7 @@ export default {
                 purchase_price,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 staff: this.name
             }
             } else {
@@ -510,7 +512,7 @@ export default {
                 id : this.$route.params.id,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar + this.paid - this.sisa_bayar,
+                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
                 staff: this.name
             }
             }
@@ -534,9 +536,9 @@ export default {
                         duration: 2000
                     })
                     if(this.uri == 'in'){
-                        this.$router.push("/pembelian/non/tunai");
+                        this.$router.push("/pesanan/pembelian");
                     } else {
-                        this.$router.push("/penjualan/non/tunai");
+                        this.$router.push("/pesanan/penjualan");
 
                     }
                 })

@@ -41,7 +41,7 @@
       </template>
     </el-table-column>
   </el-table> <br>
-  <router-link to="/penjualan/non/tunai/">Lihat Pesanan Penjualan Lainya</router-link>
+  <router-link to="/pesanan/penjualan">Lihat Pesanan Penjualan Lainya</router-link>
   </div>
 </template>
 
