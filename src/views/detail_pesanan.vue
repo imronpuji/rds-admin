@@ -90,11 +90,11 @@
 
 
             <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
-            <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
             <h3 v-if="paid != ''"> Sudah Dibayar : {{ handleCurrency(paid) }}</h3>
             <h3 v-if="discount != ''"> Potongan : {{ handleCurrency(discount) }}</h3>
             <h3 v-if="jumlah_bayar != ''"> Jumlah Pembayaran : {{ handleCurrency(jumlah_bayar) }}</h3>
             <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
+            <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
         </el-form>
         <!-- multiple input -->
         </el-form>
