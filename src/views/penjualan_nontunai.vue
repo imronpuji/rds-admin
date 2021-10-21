@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column label="Kekurangan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.total - row.paid - row.discount) }}</span>
+                <span>{{ handleCurrency(row.debt) }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Status" width="150px" align="center" sortable prop="cashin">
