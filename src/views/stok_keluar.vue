@@ -576,21 +576,54 @@ export default {
             const total = []
             const qty = []
             const product_id = []
+            const selling_price = []
             this.kasIn.all.map((val, index) => {
                 qty.push(val.qty)
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
+                selling_price.push(val.harga)
             })
+
+            let paid = ''
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
+            if(this.jumlah_bayar > this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.total_kasIn - this.discount
+            }
+
+            if(this.jumlah_bayar == this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar - this.discount
+            }
+
+             if(this.jumlah_bayar == this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar > this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar
+            }
+
+             if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
+
             const data = {
                 contact_id: this.contact_id,
                 cashin_id: this.cashout_id,
                 product_id,
                 qty,
+                selling_price,
                 date: this.dates,
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid,
                 staff: this.name
             }
             var encodedValues = qs.stringify(

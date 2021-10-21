@@ -30,7 +30,7 @@
                 <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : 'kontak kosong'  }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Pembayaran" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Total Tagihan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
@@ -57,7 +57,7 @@
         </el-table-column>
         <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.total - row.paid) }}</span>
+                <span>{{ handleCurrency(row.debt) }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
@@ -385,7 +385,12 @@ export default {
             axios.post('/stock/pending/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
+                    if(val.paid == 0){
+                    val['debt'] = 0
 
+                    } else {
+                        val['debt'] = val.total - val.paid - val.discount
+                    }
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -513,6 +518,35 @@ export default {
                 purchase_price.push(parseInt(val.harga))
                 product_id.push(val.product_id)
             })
+            let paid = ''
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
+            if(this.jumlah_bayar > this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.total_kasIn - this.discount
+            }
+
+            if(this.jumlah_bayar == this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar - this.discount
+            }
+
+             if(this.jumlah_bayar == this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar > this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar
+            }
+
+             if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
+            
             const data = {
                 contact_id: this.contact_id,
                 cashout_id: this.cashout_id,
@@ -521,7 +555,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar + this.discount > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid,
                 purchase_price,
                 date: this.dates,
                 staff: this.name

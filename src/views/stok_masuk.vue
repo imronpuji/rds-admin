@@ -508,6 +508,34 @@ export default {
                 purchase_price.push(parseInt(val.harga))
                 product_id.push(val.product_id)
             })
+            let paid = ''
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
+            if(this.jumlah_bayar > this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.total_kasIn - this.discount
+            }
+
+            if(this.jumlah_bayar == this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar - this.discount
+            }
+
+             if(this.jumlah_bayar == this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar > this.total_kasIn && this.discount == this.total_kasIn){
+                paid = 0
+            }
+
+            if(this.jumlah_bayar < this.total_kasIn && this.discount < this.total_kasIn){
+                paid = this.jumlah_bayar
+            }
+
+             if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
+                paid = 0
+            }
             const data = {
                 contact_id: this.contact_id,
                 cashout_id: this.cashout_id,
@@ -516,7 +544,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid: this.jumlah_bayar > this.total_kasIn ? this.total_kasIn : this.jumlah_bayar - this.sisa_bayar,
+                paid,
                 purchase_price,
                 date: this.dates,
                 staff: this.name
