@@ -52,6 +52,13 @@
                 <span>{{row.created_at}}</span>
             </template>
         </el-table-column>
+         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+            <template slot-scope="{row,$index}">
+                <el-button size="mini" type="danger" @click="handleDelete(row)">
+                    delete
+                </el-button>
+            </template>
+        </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -334,7 +341,7 @@ export default {
         },
         handleDelete(row, index) {
             this.listLoading = true
-            axios.delete(`/cash/transaction/delete/${row.id}`)
+            axios.delete(`/stock/paid/delete/${row.id}`)
                 .then((response) => {
                     this.listLoading = false
                     console.log(response)
