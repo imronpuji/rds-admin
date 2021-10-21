@@ -29,18 +29,18 @@ NO Kendaraan  :
 <table border="1" width="100%" style="border-collapse: collapse;">
   <thead style="background: rgba(100,100,100, 0.3);width:100%">
     <tr>
-      <th style="width:50px; text-align: left; padding:10px">NO</th>
-      <th style="text-align: left">NAMA BARANG</th>
-      <th style="text-align: left">JUMLAH</th>
-      <th style="text-align: left">SATUAN</th>
+      <th style="width:50px; text-align: center; padding:10px">NO</th>
+      <th style="text-align: center">NAMA BARANG</th>
+      <th style="text-align: center">JUMLAH</th>
+      <th style="text-align: center">SATUAN</th>
     </tr>
    </thead>
    <tbody>
      <tr v-for="(test, index) in list">
        <td style="padding:10px;text-align: right;">{{index + 1}}</td>
        <td style="text-align: left;">{{test['product']['name']}}</td>
-       <td style="text-align: left;">{{test['qty']}}</td>
-       <td style="text-align: right;">{{test['product']['unit']['name']}}</td>
+       <td style="text-align: center;">{{test['qty']}}</td>
+       <td style="text-align: center;">{{test['product']['unit']['name']}}</td>
      </tr>
      <tr>
      	<td style="text-align: center; padding: 8px; font-weight: bold" colspan="2" >TOTAL</td>
