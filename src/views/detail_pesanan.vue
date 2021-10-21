@@ -374,8 +374,8 @@ export default {
             })
 
              axios.get('/akun/iscash').then(response => {
-                if (this.roles == 'kasir') {
-                    this.kas = response.data.akun.filter((val) => val.name == "Kas Besar")
+                if (this.uri == 'in') {
+                    this.kas = response.data.akun
                 } else {
                     this.kas = response.data.akun
 
@@ -474,11 +474,13 @@ export default {
             const qty = []
             const product_id = []
             const purchase_price = []
+            const selling_price = []
             this.product.map((val, index) => {
                 qty.push(val.qty)
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
                 purchase_price.push(val.harga)
+                selling_price.push(val.harga)
             })
             let data = ''
             if(this.uri == 'in'){
@@ -504,7 +506,7 @@ export default {
                 qty,
                 date: this.dates,
                 total,
-
+                selling_price,
                 id : this.$route.params.id,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
