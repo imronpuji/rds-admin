@@ -62,6 +62,7 @@
                     <el-option label="supplier" value="supplier" />
                     <el-option label="customer" value="customer" />
                     <el-option label="karyawan" value="karyawan" />
+                    <el-option label="lain-lain" value="lain-lain" />
                 </el-select>
             </el-form-item>
             <el-form-item v-if="category == '' || category == 'customer'" class="k" label="Jatuh Tempo">
