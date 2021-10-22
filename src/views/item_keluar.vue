@@ -666,6 +666,7 @@ export default {
 
               if(this.qty_before < this.kasIn.all[index]['qty'] ){
                     this.kasIn.all[index]['qty'] = this.qty_before
+                    this.kasIn.all[index]['total'] = this.qty_before * this.kasIn.all[index]['harga']
                     return false
                 }   
                 let qty = 0;    
