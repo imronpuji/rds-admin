@@ -60,7 +60,7 @@
                 <el-form-item class="k" :label="index == 0 ? ' Produk' : ''">
                     <el-input style="display:none"  v-model="all.product_id" :value="all.id" required/>
                     <el-input readonly :value="all.product.name" required type="text"/>
-                    <p style="color:red; margin:0">{{all.product.qty  < 1 ? 'Produk Ini Belum Tersedia' : ''}}</p>
+                    <p style="color:red; margin:0">{{all.product.qty  < 1 && uri == 'out'? 'Produk Ini Belum Tersedia' : ''}}</p>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
@@ -357,7 +357,7 @@ export default {
                 console.log(response)
                 let qty_before = ''
                 this.product = response.data.stocktransaction[0].substocktransaction.map(val => {
-                    if(val.product.qty < 1){
+                    if(val.product.qty < 1 && this.uri == 'out'){
                         qty_before = true
                         this.disabled = true
                     }
@@ -787,7 +787,7 @@ export default {
             //     this.product[index]['qty'] = 0
             // } else {
 
-                if(this.product[index]['product']['qty'] < this.product[index]['qty'] ){
+                if(this.product[index]['product']['qty'] < this.product[index]['qty'] && this.uri == 'out'){
                     this.product[index]['qty'] = this.product[index]['product']['qty']
                     return false
                 }   
