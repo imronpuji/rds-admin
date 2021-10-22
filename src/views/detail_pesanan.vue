@@ -57,9 +57,10 @@
             </el-form-item>
             
             <div v-if="dialogStatus == 'create'" v-for="(all, index) in product" style="display:flex; flex-wrap: wrap; width:100% !important">
-                <el-form-item class="k" :label="index == 0 ? ' Barang' : ''">
+                <el-form-item class="k" :label="index == 0 ? ' Produk' : ''">
                     <el-input style="display:none"  v-model="all.product_id" :value="all.id" required/>
                     <el-input readonly :value="all.product.name" required type="text"/>
+                    <p style="color:red; margin:0">{{all.product.qty  < 1 ? 'Produk Ini Belum Tersedia' : ''}}</p>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
@@ -78,8 +79,11 @@
                 </el-form-item>
             </div>
 
+ 
             <el-form-item class="k" :label="trans.cashin == null ? 'Keluar Dari Kas' : 'Masuk Ke Kas'">
-                <el-input readonly :value="cashin" required type="text"/>
+                <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
+                    <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
+                </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
                 <v-money-spinner v-bind="config" v-model="jumlah_bayar" @change="handleChangeText()" type="text" placeholder="Rp 0"></v-money-spinner>
@@ -106,10 +110,10 @@
                 Cancel
             </el-button>
 
-            <el-button v-if="jumlah_bayar > 0" style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+            <el-button :disabled="disabled" v-if="jumlah_bayar > 0" style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
                 Simpan
             </el-button>
-            <el-button v-else style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
+            <el-button :disabled="disabled" v-else style="margin:20px 10px" :loading="loading" type="primary" @click="dialogStatus==='create'?createData():updateData()">
                 Simpan
             </el-button>
             
@@ -196,7 +200,8 @@ export default {
     },
     data() {
         return {
-            trans : '',
+        disabled : false,
+        trans : '',
           start: '',
           paid : [],
           payment_due : '',
@@ -350,7 +355,19 @@ export default {
             this.listLoading = true
             axios.get(`/stock/transaction/detail/${this.$route.params.id}`).then(response => {
                 console.log(response)
-                this.product = response.data.stocktransaction[0].substocktransaction
+                let qty_before = ''
+                this.product = response.data.stocktransaction[0].substocktransaction.map(val => {
+                    if(val.product.qty < 1){
+                        qty_before = true
+                        this.disabled = true
+                    }
+
+
+
+                    return val
+
+
+                })
                 this.paid = response.data.stocktransaction[0].paid
                 // this.jumlah_bayar = response.data.stocktransaction[0].paid
                 this.discount = response.data.stocktransaction[0].discount != null ? response.data.stocktransaction[0].discount : []
