@@ -788,7 +788,7 @@ export default {
             // } else {
 
                 if(this.product[index]['product']['qty'] < this.product[index]['qty'] ){
-                    this.product[index]['qty'] = 0
+                    this.product[index]['qty'] = this.product[index]['product']['qty']
                     return false
                 }   
                 let qty = 0;    
