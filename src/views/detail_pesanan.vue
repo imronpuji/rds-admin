@@ -786,7 +786,12 @@ export default {
             // if (this.product[index]['qty'] < -2000) {
             //     this.product[index]['qty'] = 0
             // } else {
-                let qty = 0;
+
+                if(this.product[index]['product']['qty'] < this.product[index]['qty'] ){
+                    this.product[index]['qty'] = 0
+                    return false
+                }   
+                let qty = 0;    
                 if(this.product[index]['qty'].length > 3){
 
                     qty = this.product[index]['qty'].replace('.', "")
