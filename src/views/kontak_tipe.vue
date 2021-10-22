@@ -58,7 +58,7 @@
                 <el-input v-model="name" placeholder="Nama" />
             </el-form-item>
             <el-form-item class="k" label="Jatuh Tempo">
-                <el-input v-model="max_paydue" placeholder="10/hari" />
+                <el-input v-model="max_paydue" placeholder="10 hari" />
             </el-form-item>
             <el-form-item class="k" label="Maximal Hutang">
                 <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>

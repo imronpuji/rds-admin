@@ -45,7 +45,7 @@
                 <span>{{ handleCurrency(row.discount) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Kekurangan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.debt) }}</span>
             </template>
