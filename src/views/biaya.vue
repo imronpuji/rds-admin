@@ -287,7 +287,9 @@ export default {
       axios.get('/cash/out').then(response => {
         console.log(response)
         this.list = response.data.cashtransaction.filter((val) => {
-          if(val.from.name == 'Kas Kecil'){
+          if(val.from.name == 'Kas Kecil' && this.roles == 'kasir'){
+            return val
+          } else {
             return val
           }
         })
