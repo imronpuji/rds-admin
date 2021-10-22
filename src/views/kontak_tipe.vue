@@ -57,18 +57,18 @@
             <el-form-item class="k" label="Nama">
                 <el-input v-model="name" placeholder="Nama" />
             </el-form-item>
-            <el-form-item class="k" label="Jatuh Tempo">
-                <el-input v-model="max_paydue" placeholder="10 hari" />
-            </el-form-item>
-            <el-form-item class="k" label="Maximal Hutang">
-                <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>
-            </el-form-item>
             <el-form-item class="k" label="Tipe Kontak">
                 <el-select v-model="category">
                     <el-option label="supplier" value="supplier" />
                     <el-option label="customer" value="customer" />
                     <el-option label="karyawan" value="karyawan" />
                 </el-select>
+            </el-form-item>
+            <el-form-item v-if="category == '' || category == 'customer'" class="k" label="Jatuh Tempo">
+                <el-input type="number" v-model="max_paydue" placeholder="hari" />
+            </el-form-item>
+            <el-form-item v-if="category == '' || category == 'customer'" class="k" label="Maximal Hutang">
+                <v-money-spinner v-model="maxdebt" v-bind="config"></v-money-spinner>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
