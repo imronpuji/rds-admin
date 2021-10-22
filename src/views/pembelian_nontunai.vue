@@ -35,16 +35,6 @@
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.staff }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.payment_due }}</span>
-            </template>
-        </el-table-column>
         <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.paid) }}</span>
@@ -58,16 +48,6 @@
         <el-table-column label="Hutang" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.debt) }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.date }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Status" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.pending == 1 ? 'Belum' : "sudah" }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
@@ -87,6 +67,21 @@
                     <br>
                     <br>
                 </el-popover>
+            </template>
+        </el-table-column>
+        <el-table-column label="Status" width="150px" align="center" sortable prop="cashin">
+            <template slot-scope="{row}">
+                <span>{{ row.pending == 1 ? 'Belum' : "sudah" }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Date" width="150px" align="center" sortable prop="cashin">
+            <template slot-scope="{row}">
+                <span>{{ row.date }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
+            <template slot-scope="{row}">
+                <span>{{ row.staff }}</span>
             </template>
         </el-table-column>
     </el-table>
