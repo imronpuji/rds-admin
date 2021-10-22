@@ -91,7 +91,7 @@
             <el-form-item class="k" label="Harga Jual">
                 <v-money-spinner v-model="selling_price" v-bind="config" @change="onChangeTotal(value)"></v-money-spinner>
             </el-form-item>
-            <el-form-item class="k" label="UNIT">
+            <el-form-item class="k" label="Satuan">
                 <el-select v-model="unit">
                     <el-option v-for="item in units" :label="item.name" :value="item.id" />
                 </el-select>
