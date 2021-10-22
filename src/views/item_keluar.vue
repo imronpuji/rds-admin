@@ -664,8 +664,8 @@ export default {
         },
         onChangeQty(index) {
 
-              if(this.kasIn.all[index]['product']['qty'] < this.kasIn.all[index]['qty'] ){
-                    this.kasIn.all[index]['qty'] = this.kasIn.all[index]['product']['qty']
+              if(this.qty_before < this.kasIn.all[index]['qty'] ){
+                    this.kasIn.all[index]['qty'] = this.qty_before
                     return false
                 }   
                 let qty = 0;    
