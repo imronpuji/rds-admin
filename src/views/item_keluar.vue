@@ -345,7 +345,7 @@ export default {
             axios.get('/product').then(response => {
                 console.log(response)
                 this.product = response.data.product.filter((val) => {
-                    if(val.category != 'service'){
+                    if(val.category != 'service' && val.qty > 0){
                         return val
                     }
                 })
