@@ -13,13 +13,15 @@
     </el-table-column>
   </el-table>
   <br>
-  <router-link to="/produk">Lihat Produk Lainya</router-link>
+  <el-button type="primary">
+    <router-link to="/produk">Lihat Produk Lainya</router-link>
+  </el-button>
 
   <br>
   <br>
   <h4>Data Piutang</h4>
   <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
-     <el-table-column label="ID" min-width="60">
+     <el-table-column label="ID" min-width="36">
       <template slot-scope="scope">
         {{ scope.row.id }}
       </template>
@@ -40,7 +42,9 @@
       </template>
     </el-table-column>
   </el-table> <br>
-  <router-link to="/laporan/piutang/beredar">Lihat Piutang Lainya</router-link>
+  <el-button type="primary">
+    <router-link to="/laporan/piutang/beredar">Lihat Piutang Lainya</router-link>
+  </el-button>
     </div>
 </template>
 
