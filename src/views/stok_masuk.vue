@@ -50,21 +50,6 @@
                 <span>{{ handleCurrency(row.debt) }}</span>
             </template>
         </el-table-column>
-          <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
-            <template slot-scope="{row}">
-                <span>{{ row.staff }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
-            <template slot-scope="{row}">
-                <span>{{ row.payment_due }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
-            <template slot-scope="{row}">
-                <span>{{ row.date }}</span>
-            </template>
-        </el-table-column>
         <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
             <template slot-scope="{row,$index}">
 
@@ -88,6 +73,21 @@
                         <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
                     </el-button>
                 </el-popover>
+            </template>
+        </el-table-column>
+          <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
+            <template slot-scope="{row}">
+                <span>{{ row.staff }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
+            <template slot-scope="{row}">
+                <span>{{ row.payment_due }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+            <template slot-scope="{row}">
+                <span>{{ row.date }}</span>
             </template>
         </el-table-column>
     </el-table>

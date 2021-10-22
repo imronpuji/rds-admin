@@ -664,19 +664,30 @@ export default {
         },
         onChangeQty(index) {
 
-            let qty = parseFloat(
-                this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            ).toFixed(2);
-            this.kasIn.all[index]['qty'] = parseFloat(
-                this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            ).toFixed(2)
-            const result = qty * parseInt(this.kasIn.all[index]['harga'])
-            this.kasIn.all[index]['total'] = result
-            const total = this.kasIn.all.reduce(function (accumulator, item) {
-                console.log(item.total)
-                return accumulator + parseInt(item.total)
-            }, 0)
-            this.total_kasIn = total
+              if(this.total_kasIn.all[index]['product']['qty'] < this.total_kasIn.all[index]['qty'] ){
+                    this.total_kasIn.all[index]['qty'] = this.total_kasIn.all[index]['product']['qty']
+                    return false
+                }   
+                let qty = 0;    
+                if(this.total_kasIn.all[index]['qty'].length > 3){
+
+                    qty = this.total_kasIn.all[index]['qty'].replace('.', "")
+                } else {
+                    qty = this.total_kasIn.all[index]['qty'].replace(/,/g, ".")
+                    this.total_kasIn.all[index]['qty'] = qty
+                }
+                
+                
+                this.total_kasIn.all[index]['qty'] = qty
+                console.log(this.total_kasIn.all)
+                const result = qty * parseInt(this.total_kasIn.all[index]['harga'])
+                console.log(result)
+                this.total_kasIn.all[index]['total'] = result
+
+                this.total_kasIn = this.total_kasIn.all.reduce(function (accumulator, item) {
+                    return accumulator + parseInt(item.total)
+                }, 0)
+                console.log(this.total_kasIn)
         }
 
     }
