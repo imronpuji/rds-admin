@@ -13,6 +13,38 @@
     </el-table-column>
   </el-table>
   <h4>Total : {{handleCurrency(total)}}</h4>
+  
+  <h4 style="margin-top:55px">Pesanan Penjualan</h4>
+  <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
+     <el-table-column label="ID" min-width="36">
+      <template slot-scope="scope">
+        {{ scope.row.id }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Customer" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.contact.name }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Barang" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.substocktransaction[0].product.name }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Qty" min-width="36">
+      <template slot-scope="scope">
+        {{ scope.row.substocktransaction[0].qty }}
+      </template>
+    </el-table-column>
+    <el-table-column label="Tanggal" min-width="100">
+      <template slot-scope="scope">
+        {{ scope.row.date }}
+      </template>
+    </el-table-column>
+  </el-table> <br>
+  <el-button type="primary">
+    <router-link to="/pesanan/penjualan">Lihat Pesanan Penjualan Lainya</router-link>
+  </el-button>
   </div>
 </template>
 

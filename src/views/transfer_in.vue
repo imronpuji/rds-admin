@@ -4,10 +4,10 @@
      <div class="filter-container">
         <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
 
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+      <el-button v-if="roles == 'admin'" class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Tambah
       </el-button>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button v-waves style="margin-left:8px" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
         <el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
@@ -67,7 +67,7 @@
       </el-table-column>
 
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column v-if="roles == 'admin'" label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button :loading="loading" type="danger" size="mini" @click="handleDelete(row, $index)">
             Delete
@@ -283,7 +283,10 @@ export default {
           if(val.from.name == 'Kas Kecil' || val.from.name == 'Kas Besar' || val.to.name == 'Kas Kecil' || val.to.name == 'Kas Besar' && this.roles == 'kasir'){
             return val
           } else {
-            return val
+            if(this.roles == 'admin'){
+
+              return val
+            }
           }
         }).sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
         this.total = response.data.cashtransaction.length
