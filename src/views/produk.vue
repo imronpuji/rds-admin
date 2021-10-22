@@ -79,7 +79,13 @@
             <el-form-item class="k" label="Nama Barang">
                 <el-input v-model="name" placeholder="Nama Barang" />
             </el-form-item>
-            <el-form-item class="k" label="Harga Beli">
+             <el-form-item class="k" label="Kategori">
+                <el-select v-model="category">
+                    <el-option label="Jasa" value="service" />
+                    <el-option label="Produk" value="product" />
+                </el-select>
+            </el-form-item>
+            <el-form-item v-if="category == 'product' || category != 'service'" class="k" label="Harga Beli">
                 <v-money-spinner v-model="purchase_price" v-bind="config"></v-money-spinner>
             </el-form-item>
             <el-form-item class="k" label="Harga Jual">
@@ -90,15 +96,9 @@
                     <el-option v-for="item in units" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Jenis Barang">
+            <el-form-item  v-if="category == 'product' || category != 'service'" class="k" label="Jenis Barang">
                 <el-select v-model="producttype" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
                     <el-option v-for="item in jenis_barang" :key="item.id" :label="item.name" :value="item.id" />
-                </el-select>
-            </el-form-item>
-             <el-form-item class="k" label="Kategori">
-                <el-select v-model="category">
-                    <el-option label="Jasa" value="service" />
-                    <el-option label="Produk" value="product" />
                 </el-select>
             </el-form-item>
         </el-form>
