@@ -12,6 +12,7 @@
       </template>
     </el-table-column>
   </el-table>
+  <br>
   <el-button type="primary">
     <router-link to="/produk">Lihat Produk Lainya</router-link>
   </el-button>

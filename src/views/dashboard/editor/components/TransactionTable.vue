@@ -13,7 +13,7 @@
     </el-table-column>
   </el-table>
   <h4>Total : {{handleCurrency(total)}}</h4>
-  
+
   <h4 style="margin-top:55px">Pesanan Penjualan</h4>
   <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
      <el-table-column label="ID" min-width="36">
@@ -82,7 +82,7 @@ export default {
    },
     fetchData() {
 
-       axios.get('/stock/out/debt/due').then(response => {
+       axios.get('/stock/pending/debt/due').then(response => {
           console.log(response)
         let data  = response.data.stocktransaction.map(val => {
           val['debt'] = val.total - val.paid - val.discount
