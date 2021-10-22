@@ -680,7 +680,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 type: 'warning'
             }).then(() => {
-                axios.delete(`/stock/transaction/delete/${row.id}`)
+                axios.delete(`/stock/pending/delete/${row.id}`)
                     .then((response) => {
                         this.listLoading = false
 
