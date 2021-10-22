@@ -279,7 +279,11 @@ export default {
       this.listLoading = true
       axios.get('/cash/transfer').then(response => {
         console.log(response)
-        this.list = response.data.cashtransaction.sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
+        this.list = response.data.cashtransaction.filter(val=> {
+          if(val.from.name == 'Kas Kecil' || val.from.name == 'Kas Besar' || val.to.name == 'Kas Kecil' || val.to.name == 'Kas Besar'){
+            return val
+          }
+        }).sort((a,b) => (a.id < b.id) ? 1 : ((b.id < a.id) ? -1 : 0))
         this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request

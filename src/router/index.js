@@ -268,7 +268,7 @@ import nestedRouter from './modules/nested'
     name: 'RolePermission',
     meta: {
       title: 'Transfer Kas',
-      roles: ['admin']
+      roles: ['admin', 'kasir']
   }
 }
 ]
@@ -332,7 +332,7 @@ import nestedRouter from './modules/nested'
     name: 'PagePermission',
     meta: {
       title: 'Item Masuk',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
       }
   },
   
@@ -371,7 +371,7 @@ import nestedRouter from './modules/nested'
     hidden:true,
     meta: {
       title: 'Item Masuk',
-          roles: ['admin', 'kasir'] // or you can only set roles in sub nav
+          roles: ['admin'] // or you can only set roles in sub nav
       }
   },
   {

@@ -286,7 +286,11 @@ export default {
       this.listLoading = true
       axios.get('/cash/out').then(response => {
         console.log(response)
-        this.list = response.data.cashtransaction
+        this.list = response.data.cashtransaction.filter((val) => {
+          if(val.from.name == 'Kas Kecil'){
+            return val
+          }
+        })
         this.total = response.data.cashtransaction.length
 
         // Just to simulate the time of the request

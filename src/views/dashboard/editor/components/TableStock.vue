@@ -8,7 +8,7 @@
     </el-table-column>
     <el-table-column label="Jumlah Barang" width="195" align="center">
       <template slot-scope="scope">
-        {{ scope.row.qty }} {{ scope.row.unit }} 
+        {{ scope.row.qty }} {{ scope.row.unit.name }} 
       </template>
     </el-table-column>
   </el-table>
@@ -44,9 +44,10 @@ export default {
     fetchData() {
         axios.get('/product').then(response => {
           console.log(response)
-        this.list = response.data.product.sort(function(a, b) {
+       let data = response.data.product.sort(function(a, b) {
     return parseFloat(a.qty) - parseFloat(b.qty);
 });
+this.list = data.slice(0,4)
         this.total = response.data.product.length
 
         // Just to simulate the time of the request
