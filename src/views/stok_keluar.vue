@@ -874,7 +874,7 @@ export default {
 
         onChangeQty(index) {
             if (this.kasIn.all[index]['qty'] > this.qty_before) {
-                this.kasIn.all[index]['qty'] = 0
+                this.kasIn.all[index]['qty'] = this.qty_before
             } else {
                 let qty = 0;
                 if(this.kasIn.all[index]['qty'].length > 3){
