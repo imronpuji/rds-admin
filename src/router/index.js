@@ -327,15 +327,6 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/kategori',
-    component: () => import('@/views/kategori'),
-    name: 'PagePermission',
-    meta: {
-      title: 'Jenis',
-          roles: ['admin'] // or you can only set roles in sub nav
-      }
-  },
-  {
     path: '/item/masuk',
     component: () => import('@/views/item_masuk'),
     name: 'PagePermission',
@@ -351,6 +342,15 @@ import nestedRouter from './modules/nested'
     name: 'PagePermission',
     meta: {
       title: 'Item Keluar',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
+    path: '/kategori',
+    component: () => import('@/views/kategori'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Jenis Produk',
           roles: ['admin'] // or you can only set roles in sub nav
       }
   },
