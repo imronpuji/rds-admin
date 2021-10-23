@@ -7,52 +7,66 @@
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
     </el-button>
-    <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
-        </span>
-    </el-tree>
 
-    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Total Pendapatan</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
-    </div>
+    <el-button type="primary" v-print="'#printMe'">Print</el-button>
+    <div id="printMe">
+        <b><hr></b>
+        <h3 style="text-align: center;">
+          CV.PUTRA QIRANA
+        </h3>
+        <h4 style="text-align:center">
+          LAPORAN LABA RUGI
+        </h4>
+        <p style="text-align:center">
+          Periode {{mulai}} s/d {{akhir}}
+        </p>
+        <b><hr></b>
+        <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
+            </span>
+        </el-tree>
 
-    <el-tree :data="listModal" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
-        </span>
-    </el-tree>
-    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Total HPP</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
-    </div>
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+            <h4 style="padding:0; margin:0">Total Pendapatan</h4>
+            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
+        </div>
 
-    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Laba Kotor</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal )}}</p>
-    </div>
-    <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
-        </span>
-    </el-tree>
-    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Total Biaya</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal)}}</p>
-    </div>
+        <el-tree :data="listModal" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
+            </span>
+        </el-tree>
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+            <h4 style="padding:0; margin:0">Total HPP</h4>
+            <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
+        </div>
 
-    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-        <h4 style="padding:0; margin:0">Laba/Rugi</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal - kewajiban.valueTotal )}}</p>
-    </div>
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+            <h4 style="padding:0; margin:0">Laba Kotor</h4>
+            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal )}}</p>
+        </div>
+        <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{data.name}}</span>
+                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+                <span v-else>{{ handleCurrency(data.total)  }}</span>
+            </span>
+        </el-tree>
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+            <h4 style="padding:0; margin:0">Total Biaya</h4>
+            <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal)}}</p>
+        </div>
 
+        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+            <h4 style="padding:0; margin:0">Laba/Rugi</h4>
+            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal - kewajiban.valueTotal )}}</p>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -110,6 +124,8 @@ export default {
     },
     data() {
         return {
+            mulai : '',
+            akhir : '',
             defaultProps: {
                 children: 'children',
                 label: 'name',
@@ -195,6 +211,16 @@ export default {
         }
     },
     created() {
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        this.mulai = firstDay.toLocaleDateString('id-ID',options)
+        this.akhir = lastDay.toLocaleDateString('id-ID',options)
+
         this.getList()
 
     },
@@ -427,6 +453,11 @@ export default {
         },
 
          handleFilterByDate(){
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            this.mulai = new Date(this.start).toLocaleDateString('id-ID', options)
+            this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
+
             let data = {
                 start_date : this.start,
                 end_date : this.end,

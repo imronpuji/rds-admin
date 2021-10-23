@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="app-container">
+  <div class="app-container" id="printMe">
    
     <div style="width:100px">
     <GChart
@@ -21,13 +21,13 @@
     </el-button>  
      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
             Export
-        </el-button>
+      </el-button>
     <el-table
      
       :data="list"
       
     >
-     <el-table-column label="ID" prop="id"  align="center" width="80" >
+     <el-table-column label="ID" prop="id"  align="center" width="80"  >
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
