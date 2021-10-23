@@ -211,7 +211,7 @@ export default {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-        var firstDay = new Date(y, m, 1);
+        var firstDay = new Date(y, 0, 1);
         var lastDay = new Date(y, m + 1, 0);
 
         this.mulai = firstDay.toLocaleDateString('id-ID',options)
