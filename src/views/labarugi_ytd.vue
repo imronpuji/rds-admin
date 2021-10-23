@@ -5,6 +5,19 @@
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
     </el-button>
+    <el-button type="primary" v-print="'#printMe'">Print</el-button>
+    <div id="printMe">
+        <b><hr></b>
+        <h3 style="text-align: center;">
+          CV.PUTRA QIRANA
+        </h3>
+        <h4 style="text-align:center">
+          LAPORAN LABA RUGI "YEAR TO DATE"
+        </h4>
+        <p style="text-align:center">
+          Periode {{mulai}} s/d {{akhir}}
+        </p>
+        <b><hr></b>
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
@@ -50,7 +63,7 @@
         <h4 style="padding:0; margin:0">Laba/Rugi</h4>
         <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal - kewajiban.valueTotal )}}</p>
     </div>
-
+</div>
 </div>
 </template>
 
@@ -113,6 +126,8 @@ export default {
                 label: 'name',
                 total: 'total'
             },
+            mulai : '',
+            akhir : '',
             start : '',
             end : '',
             modal: '',
@@ -193,6 +208,15 @@ export default {
         }
     },
     created() {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        this.mulai = firstDay.toLocaleDateString('id-ID',options)
+        this.akhir = lastDay.toLocaleDateString('id-ID',options)
+
         this.getList()
 
     },
@@ -435,6 +459,11 @@ export default {
             var dateStr = '01' + "/" + '01' + "/" + year;
 
             let start_date =  new Date(dateStr)
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            this.mulai = new Date(start_date
+                ).toLocaleDateString('id-ID', options)
+            this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
 
             console.log(this.end)
             let data = {
