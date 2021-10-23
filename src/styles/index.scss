@@ -224,9 +224,10 @@ el-form-item__label {
   justify-content: center;
 }
 
-.dialog-footer .el-button--primary span {
+.dialog-footer .el-button--default + .el-button--primary span {
   display: none
 }
-.dialog-footer .el-button--primary:after {
-  content: 'Simpan';
+
+.dialog-footer .el-button--default + .el-button--primary:after {
+  content: 'Simpan'
 }
