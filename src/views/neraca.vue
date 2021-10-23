@@ -247,6 +247,61 @@ export default {
             this.labaTahunBerjalan = setLaba
             console.log(setLaba)
         },
+
+        async getLabaWhenFilter() {
+            this.listLoading = true
+            const data = {
+                start_date : this.start,
+                end_date : this.end
+            }
+            await axios.post('/report/neraca/Pendapatan', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listPendapatan = [names]
+                this.pendapatan = names
+            });
+
+            await axios.post('/report/neraca/HPP', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listHPP = [names]
+                this.HPP = names
+            });
+
+            await axios.post('/report/neraca/Biaya', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listBiaya = [names]
+                this.biaya = names
+            });
+            const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
+            this.labaTahunBerjalan = setLaba
+            console.log(setLaba)
+        },
         async getList() {
             this.listLoading = true
 
@@ -514,9 +569,9 @@ export default {
             }
             
             this.listLoading = true
-            await this.getLaba();
+            await this.getLabaWhenFilter();
 
-             await axios.post('/report/neraca/Harta', data).then((response) => {
+            await axios.post('/report/neraca/Harta', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
