@@ -425,10 +425,23 @@ export default {
         },
 
          handleFilterByDate(){
+
+            var d = new Date();
+    
+            var date = d.getDate();
+            var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+            let year = new Date(this.end).getFullYear()
+                
+            var dateStr = '01' + "/" + '01' + "/" + year;
+
+            let start_date =  new Date(dateStr)
+
+            console.log(this.end)
             let data = {
-                start_date : this.start,
+                start_date,
                 end_date : this.end,
             }
+            console.log(data)
             axios.post('/report/Pendapatan', data).then((response) => {
                 console.log(response)
 
