@@ -1,6 +1,12 @@
 <template>
 <div class="app-container" style="width:100%; box-shadow:2">
-
+<el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
+        </el-date-picker>
+    <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+    </el-date-picker>
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        Filter
+    </el-button>
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
@@ -109,6 +115,8 @@ export default {
                 label: 'name',
                 total: 'total'
             },
+            start : '',
+            end : '',
             modal: '',
             biaya: '',
             kewajiban: '',
@@ -194,7 +202,7 @@ export default {
         getList() {
             this.listLoading = true
 
-            axios.get('/report/Pendapatan').then((response) => {
+            axios.post('/report/Pendapatan').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -209,7 +217,7 @@ export default {
                 this.harta = names
             });
 
-            axios.get('/report/HPP').then((response) => {
+            axios.post('/report/HPP').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -224,13 +232,14 @@ export default {
                 this.modal = names
             });
 
-            axios.get('/report/Biaya').then((response) => {
+            axios.post('/report/Biaya').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
                         calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
+                        console.log(a.total)
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
                     }, 0);
                 }
                 let names = response.data.akun[0]
@@ -416,6 +425,58 @@ export default {
                 this.downloadLoading = false
             })
         },
+
+         handleFilterByDate(){
+            let data = {
+                start_date : this.start,
+                end_date : this.end,
+            }
+            axios.post('/report/Pendapatan', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listHarta = [names]
+                this.harta = names
+            });
+
+            axios.post('/report/HPP', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listModal = [names]
+                this.modal = names
+            });
+
+            axios.post('/report/Biaya', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listKewajiban = [names]
+                this.kewajiban = names
+            });
+        },
+
         formatJson(filterVal) {
             return this.list.map(v => filterVal.map(j => {
                 if (j === 'timestamp') {
