@@ -3,13 +3,14 @@
 <template>
   <div class="app-container">
    
-    
+    <div style="width:100px">
     <GChart
       type="PieChart"
+      style="position:relative; left:-240px"
       :options="options"
       :data="data"
     />  
-
+</div>
      <div class="block"></div>
     <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
     </el-date-picker>
