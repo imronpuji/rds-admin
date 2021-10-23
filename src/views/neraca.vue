@@ -1,6 +1,14 @@
 <template>
 <div class="app-container" style="width:100%; box-shadow:2">
 
+    <el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
+        </el-date-picker>
+    <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+    </el-date-picker>
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        Filter
+    </el-button>
+
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
@@ -97,6 +105,8 @@ export default {
                 label: 'name',
                 total: 'total'
             },
+            start : '',
+            end: '',
             biaya: '',
             listBiaya: '',
             HPP: '',
@@ -188,7 +198,7 @@ export default {
         async getLaba() {
             this.listLoading = true
 
-            await axios.get('/report/Pendapatan').then((response) => {
+            await axios.post('/report/Pendapatan').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -203,7 +213,7 @@ export default {
                 this.pendapatan = names
             });
 
-            await axios.get('/report/HPP').then((response) => {
+            await axios.post('/report/HPP').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -218,13 +228,13 @@ export default {
                 this.HPP = names
             });
 
-            await axios.get('/report/Biaya').then((response) => {
+            await axios.post('/report/Biaya').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
                         calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
                     }, 0);
                 }
                 let names = response.data.akun[0]
@@ -494,6 +504,70 @@ export default {
 
             console.log(this.kasIn, this.to_item, this.from)
         },
+
+
+
+        async handleFilterByDate(){
+            let data = {
+                start_date : this.start,
+                end_date : this.end,
+            }
+            
+            this.listLoading = true
+
+            await axios.post('/report/Pendapatan', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listPendapatan = [names]
+                this.pendapatan = names
+            });
+
+            await axios.post('/report/HPP', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listHPP = [names]
+                this.HPP = names
+            });
+
+            await axios.post('/report/Biaya', data).then((response) => {
+                console.log(response)
+
+                function calculateValues(o) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a);
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
+                    }, 0);
+                }
+                let names = response.data.akun[0]
+                calculateValues(names)
+                this.listBiaya = [names]
+                this.biaya = names
+            });
+            const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
+            console.log(setLaba)
+            await axios.post('/akun/setlaba', {
+                    total: setLaba
+                })
+                .then((response) => response)
+                .catch((err) => err)
+        },
+
         onChangeTotal() {
             const total = this.kasIn.all.reduce(function (accumulator, item) {
                 console.log(item.total)
