@@ -105,6 +105,7 @@ export default {
                 label: 'name',
                 total: 'total'
             },
+            labaTahunBerjalan : '',
             start : '',
             end: '',
             biaya: '',
@@ -198,7 +199,7 @@ export default {
         async getLaba() {
             this.listLoading = true
 
-            await axios.post('/report/Pendapatan').then((response) => {
+            await axios.post('/report/neraca/Pendapatan').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -213,7 +214,7 @@ export default {
                 this.pendapatan = names
             });
 
-            await axios.post('/report/HPP').then((response) => {
+            await axios.post('/report/neraca/HPP').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -228,7 +229,7 @@ export default {
                 this.HPP = names
             });
 
-            await axios.post('/report/Biaya').then((response) => {
+            await axios.post('/report/neraca/Biaya').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -243,18 +244,13 @@ export default {
                 this.biaya = names
             });
             const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
+            this.labaTahunBerjalan = setLaba
             console.log(setLaba)
-            await axios.post('/akun/setlaba', {
-                    total: setLaba
-                })
-                .then((response) => response)
-                .catch((err) => err)
-
         },
-        getList() {
+        async getList() {
             this.listLoading = true
 
-            axios.get('/report/Harta').then((response) => {
+            await axios.get('/report/neraca/Harta').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -269,22 +265,26 @@ export default {
                 this.harta = names
             });
 
-            axios.get('/report/Modal').then((response) => {
-                console.log(response)
+            await axios.get('/report/neraca/Modal').then((response) => {
 
-                function calculateValues(o) {
+                function calculateValues(o, lbt) {
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
+                        calculateValues(a, lbt);
+                        
                         return r + (a.total || 0) + (a.valueTotal || 0);
                     }, 0);
+
+                    if(o.name == 'Laba Tahun Berjalan'){
+                        o.total = lbt
+                    }
                 }
                 let names = response.data.akun[0]
-                calculateValues(names)
+                calculateValues(names, this.labaTahunBerjalan)
                 this.listModal = [names]
                 this.modal = names
             });
 
-            axios.get('/report/Kewajiban').then((response) => {
+            await axios.get('/report/neraca/Kewajiban').then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -514,8 +514,9 @@ export default {
             }
             
             this.listLoading = true
+            await this.getLaba();
 
-            await axios.post('/report/Pendapatan', data).then((response) => {
+             await axios.post('/report/neraca/Harta', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -526,11 +527,30 @@ export default {
                 }
                 let names = response.data.akun[0]
                 calculateValues(names)
-                this.listPendapatan = [names]
-                this.pendapatan = names
+                this.listHarta = [names]
+                this.harta = names
             });
 
-            await axios.post('/report/HPP', data).then((response) => {
+            await axios.post('/report/neraca/Modal', data).then((response) => {
+
+                function calculateValues(o, lbt) {
+                    o.valueTotal = (o.children || []).reduce(function (r, a) {
+                        calculateValues(a, lbt);
+                        
+                        return r + (a.total || 0) + (a.valueTotal || 0);
+                    }, 0);
+
+                    if(o.name == 'Laba Tahun Berjalan'){
+                        o.total = lbt
+                    }
+                }
+                let names = response.data.akun[0]
+                calculateValues(names, this.labaTahunBerjalan)
+                this.listModal = [names]
+                this.modal = names
+            });
+
+            await axios.post('/report/neraca/Kewajiban', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -541,31 +561,10 @@ export default {
                 }
                 let names = response.data.akun[0]
                 calculateValues(names)
-                this.listHPP = [names]
-                this.HPP = names
+                this.listKewajiban = [names]
+                this.kewajiban = names
             });
-
-            await axios.post('/report/Biaya', data).then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listBiaya = [names]
-                this.biaya = names
-            });
-            const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
-            console.log(setLaba)
-            await axios.post('/akun/setlaba', {
-                    total: setLaba
-                })
-                .then((response) => response)
-                .catch((err) => err)
+            
         },
 
         onChangeTotal() {
