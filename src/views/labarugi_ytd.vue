@@ -208,7 +208,7 @@ export default {
         }
     },
     created() {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);
@@ -459,8 +459,8 @@ export default {
             var dateStr = '01' + "/" + '01' + "/" + year;
 
             let start_date =  new Date(dateStr)
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
             this.mulai = new Date(start_date
                 ).toLocaleDateString('id-ID', options)
             this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
