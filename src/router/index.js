@@ -263,7 +263,7 @@ import nestedRouter from './modules/nested'
   }
 },
 {
-    path: '/transfer-transaksi',
+    path: '/transfer/kas',
     component: () => import('@/views/transfer_in'),
     name: 'RolePermission',
     meta: {
@@ -346,7 +346,7 @@ import nestedRouter from './modules/nested'
       }
   },
   {
-    path: '/kategori',
+    path: '/produk/jenis',
     component: () => import('@/views/kategori'),
     name: 'PagePermission',
     meta: {
@@ -356,7 +356,7 @@ import nestedRouter from './modules/nested'
   },
   
   {
-    path: '/satuan',
+    path: '/produk/satuan',
     component: () => import('@/views/satuan'),
     name: 'PagePermission',
     meta: {

@@ -80,7 +80,7 @@
                 </el-select>
             </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer" style="display:flex; justify-content:center; width:100%">
             <el-button @click="dialogFormVisible = false">
                 Cancel
             </el-button>
