@@ -470,6 +470,15 @@ import nestedRouter from './modules/nested'
       }
   },
   {
+    path: '/laba/rugi/ytd',
+    component: () => import('@/views/labarugi_ytd'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Laba Rugi YTD',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  {
     path: '/laporan/piutang/beredar',
     component: () => import('@/views/hutang_penjualan'),
     name: 'PagePermission',
