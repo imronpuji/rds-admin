@@ -28,7 +28,7 @@
           <span>{{ row.email}}</span>
         </template>
       </el-table-column>
-       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+       <el-table-column label="Role" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
           <span v-for="item in row.roles">{{ item.name }}</span>
         </template>
@@ -77,7 +77,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button :loading="downloadLoading" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -297,7 +297,7 @@ export default {
         role : this.roles,
       }
       console.log(data)
-      axios.post(`/user/delete/${this.id}`, data)
+      axios.post(`/user/role/create/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
