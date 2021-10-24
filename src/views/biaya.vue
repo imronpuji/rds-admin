@@ -546,7 +546,7 @@ export default {
       console.log(event)
     },
     addFind() {
-      this.kasIn.all.push({ biaya: '', desc: '', total: '' })
+      this.kasIn.all.push({ biaya: '', desc: '', total: [] })
     },
     deleteFind() {
       this.kasIn.all.pop();

@@ -8,7 +8,19 @@
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
     </el-button>
-
+<el-button type="primary" v-print="'#printMe'">Print</el-button>
+    <div id="printMe">
+        <b><hr></b>
+        <h3 style="text-align: center;">
+          CV.PUTRA QIRANA
+        </h3>
+        <h4 style="text-align:center">
+          LAPORAN NERACA
+        </h4>
+        <p style="text-align:center">
+          Periode {{mulai}} s/d {{akhir}}
+        </p>
+        <b><hr></b>
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
@@ -42,7 +54,7 @@
         <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>
         <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal + kewajiban.valueTotal)}}</p>
     </div>
-
+</div>
 </div>
 </template>
 
@@ -100,6 +112,8 @@ export default {
     },
     data() {
         return {
+            mulai : '',
+            akhir : '',
             defaultProps: {
                 children: 'children',
                 label: 'name',
@@ -192,6 +206,14 @@ export default {
         }
     },
     async created() {
+         const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        this.mulai = firstDay.toLocaleDateString('id-ID',options)
+        this.akhir = lastDay.toLocaleDateString('id-ID',options)
         await this.getLaba()
         await this.getList()
     },
