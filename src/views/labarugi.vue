@@ -23,6 +23,7 @@
         <b><hr></b>
         <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
             <span class="custom-tree-node" slot-scope="{ node, data }">
+                
                 <span>{{data.name}}</span>
                 <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
                 <span v-else>{{ handleCurrency(data.total)  }}</span>
@@ -232,10 +233,18 @@ export default {
                 console.log(response)
 
                 function calculateValues(o) {
+
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
                         calculateValues(a);
+
                         return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
+                    }
+
+                    , 0);
+                    if(o.total <1 && o.isheader != 1){
+                        return o;
+                    }
+
                 }
                 let names = response.data.akun[0]
                 calculateValues(names)

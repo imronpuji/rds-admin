@@ -223,8 +223,20 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
+            
+           const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-            axios.post('/report/Pendapatan').then((response) => {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var firstDay = new Date(y, 0, 1);
+            var lastDay = new Date(y, m + 1, 0);
+
+    
+            let data = {
+                start_date : firstDay,
+                end_date : lastDay,
+            }
+            console.log(data)
+            axios.post('/report/Pendapatan', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -239,7 +251,7 @@ export default {
                 this.harta = names
             });
 
-            axios.post('/report/HPP').then((response) => {
+            axios.post('/report/HPP', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -254,7 +266,7 @@ export default {
                 this.modal = names
             });
 
-            axios.post('/report/Biaya').then((response) => {
+            axios.post('/report/Biaya', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {

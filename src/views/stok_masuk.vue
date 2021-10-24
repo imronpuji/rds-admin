@@ -1,7 +1,7 @@
 <template>
 <div class="app-container">
     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+    <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
 
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
