@@ -36,7 +36,7 @@
   </el-table-column>
   <el-table-column label="Keluar Dari Kas" min-width="150px">
     <template slot-scope="{row}">
-      <span class="link-type" @click="handleUpdate(row)">{{ row.from.name }}</span>
+      <span>{{ row.from.name }}</span>
     </template>
   </el-table-column>
   <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">

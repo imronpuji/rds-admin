@@ -28,7 +28,7 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Nama Barang" min-width="150px">
     <template slot-scope="{row}">
-      <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+      <span>{{ row.name }}</span>
   </template>
 </el-table-column>
 <el-table-column label="Date" width="150px" align="center" sortable prop="date">

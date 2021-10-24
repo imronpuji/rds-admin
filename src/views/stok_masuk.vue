@@ -27,7 +27,7 @@
         </el-table-column>
         <el-table-column label="Supplier" min-width="150px" sortable prop="name">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.contact != null ? row.contact.name : ''  }}</span>
+                <span >{{ row.contact != null ? row.contact.name : ''  }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Tagihan" width="150px" align="center" sortable prop="total">

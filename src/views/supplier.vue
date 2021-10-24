@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column prop="cashin" sortable label="Nama" min-width="150px">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+                <span>{{ row.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="No. Telepon" width="150px" align="center" sortable prop="cashin">

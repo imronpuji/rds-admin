@@ -45,7 +45,7 @@
       </el-table-column>
       <el-table-column label="Name" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Description" width="150px" align="center">

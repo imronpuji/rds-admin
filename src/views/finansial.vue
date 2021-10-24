@@ -38,7 +38,7 @@
         </el-table-column>
         <el-table-column label="To" min-width="150px">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.to }}</span>
+                <span>{{ row.to }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Total" width="150px" align="center">

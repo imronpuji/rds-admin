@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column label="Masuk Ke Kas" min-width="150px">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.to.name }}</span>
+                <span>{{ row.to.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Total" width="150px" align="center" sortable prop="cashin">

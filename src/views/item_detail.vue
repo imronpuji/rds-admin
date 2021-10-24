@@ -19,7 +19,7 @@
         </el-table-column>
         <el-table-column label="Nama Barang" min-width="150px">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">{{ row.product.name }}</span>
+                <span>{{ row.product.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="QTY" width="150px" align="center" sortable prop="cashin">

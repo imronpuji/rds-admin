@@ -18,7 +18,7 @@
         </el-table-column>
         <el-table-column label="Nama" min-width="150px">
             <template slot-scope="{row}">
-                <span class="link-type" @click="handleUpdate(row)">
+                <span >
                     <span>{{row.product.name}}</span>
                 </span>
             </template>

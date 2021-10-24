@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column label="Customer" min-width="150px">
             <template slot-scope="{row}">
-                <span v-if="row.contact != null" class="link-type" @click="handleUpdate(row)">{{ row.contact.name }}</span>
+                <span v-if="row.contact != null">{{ row.contact.name }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Total Tagihan" width="150px" align="center" sortable prop="cashin">
