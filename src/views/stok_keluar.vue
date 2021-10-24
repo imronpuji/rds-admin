@@ -118,12 +118,12 @@
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Jatuh Tempo">
-                <el-date-picker v-model="jatuh_tempo" type="date" placeholder="Jatuh Tempo">
-                </el-date-picker>
-            </el-form-item>
             <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
                 <el-date-picker v-model="dates" type="date" placeholder="Tanggal Transaksi">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item class="k" label="Jatuh Tempo">
+                <el-date-picker v-model="jatuh_tempo" type="date" placeholder="Jatuh Tempo">
                 </el-date-picker>
             </el-form-item>
             

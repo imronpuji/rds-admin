@@ -1,7 +1,7 @@
 <template>
 <div class="app-container">
     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+        <el-input v-model="search" placeholder="Cari" style="width: 200px; position:absolute" class="filter-item" />
 
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
@@ -101,12 +101,12 @@
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Jatuh Tempo">
-                <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
-                </el-date-picker>
-            </el-form-item>
             <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
                 <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi" >
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item class="k" label="Jatuh Tempo">
+                <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
             </el-form-item>
 
