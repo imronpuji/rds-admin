@@ -38,10 +38,10 @@
             <el-form-item v-if="header != true && isCashOut != true && isCashIn != true">
                 <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
             </el-form-item>
-            <el-form-item v-if="kas != true && header != true && isCashIn != true">
+            <el-form-item v-if="kas != true && header != true">
                 <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
             </el-form-item>
-            <el-form-item v-if="kas != true && header != true && isCashOut != true">
+            <el-form-item v-if="kas != true && header != true">
                 <el-checkbox v-model="isCashIn">Kas Masuk</el-checkbox>
             </el-form-item>
         </el-form>
