@@ -220,7 +220,7 @@ export default {
                 function calculateValues(o) {
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
                         calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
+                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
                     }, 0);
                 }
                 let names = response.data.akun[0]
