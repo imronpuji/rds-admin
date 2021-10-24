@@ -1,17 +1,8 @@
 
 
 <template>
-  <div class="app-container" id="printMe">
+  <div class="app-container">
    
-    <div style="width:100px">
-    <GChart
-      type="PieChart"
-      style="position:relative; left:-240px"
-      :options="options"
-      :data="data"
-    />  
-</div>
-     <div class="block"></div>
     <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
     </el-date-picker>
     <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
@@ -22,6 +13,19 @@
      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
             Export
       </el-button>
+
+       <el-button v-print="'#printMe'" class="filter-item" type="primary" icon="el-icon-print">
+            Print
+      </el-button>
+
+      
+    <div id="printMe">
+    <GChart
+      type="PieChart"
+      style="position:relative; left:-240px"
+      :options="options"
+      :data="data"
+    />  
     <el-table
      
       :data="list"
@@ -48,6 +52,9 @@
         </template>
       </el-table-column>     
     </el-table>
+    </div>
+
+
   </div>
 </template>
 <script>
