@@ -24,35 +24,32 @@
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
+            <span>{{ handleCurrency(data.total)  }}</span>
         </span>
     </el-tree>
 
     <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
         <h4 style="padding:0; margin:0">Total Harta</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
+        <p style="padding:0; margin:0">{{handleCurrency(harta.total)}}</p>
     </div>
 
     <el-tree :data="listModal" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
+            <span>{{ handleCurrency(data.total)  }}</span>
         </span>
     </el-tree>
 
     <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{data.name}}</span>
-            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-            <span v-else>{{ handleCurrency(data.total)  }}</span>
+            <span>{{ handleCurrency(data.total)  }}</span>
         </span>
     </el-tree>
 
     <div style="display:flex; justify-content:space-between; background:yellow">
         <h4 style="padding:0; margin:0">Modal & Kewajiban</h4>
-        <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal + kewajiban.valueTotal)}}</p>
+        <p style="padding:0; margin:0">{{handleCurrency(modal.total + kewajiban.total)}}</p>
     </div>
 </div>
 </div>
@@ -214,165 +211,58 @@ export default {
 
         this.mulai = firstDay.toLocaleDateString('id-ID',options)
         this.akhir = lastDay.toLocaleDateString('id-ID',options)
-        await this.getLaba()
         await this.getList()
     },
     methods: {
-        async getLaba() {
-            this.listLoading = true
-
-            await axios.post('/report/neraca/Pendapatan').then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listPendapatan = [names]
-                this.pendapatan = names
-            });
-
-            await axios.post('/report/neraca/HPP').then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listHPP = [names]
-                this.HPP = names
-            });
-
-            await axios.post('/report/neraca/Biaya').then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listBiaya = [names]
-                this.biaya = names
-            });
-            const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
-            this.labaTahunBerjalan = setLaba
-            console.log(setLaba)
-        },
-
-        async getLabaWhenFilter() {
-            this.listLoading = true
-            const data = {
-                start_date : this.start,
-                end_date : this.end
-            }
-            await axios.post('/report/neraca/Pendapatan', data).then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listPendapatan = [names]
-                this.pendapatan = names
-            });
-
-            await axios.post('/report/neraca/HPP', data).then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listHPP = [names]
-                this.HPP = names
-            });
-
-            await axios.post('/report/neraca/Biaya', data).then((response) => {
-                console.log(response)
-
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (parseInt(a.total) || 0) + (parseInt(a.valueTotal) || 0);
-                    }, 0);
-                }
-                let names = response.data.akun[0]
-                calculateValues(names)
-                this.listBiaya = [names]
-                this.biaya = names
-            });
-            const setLaba = await this.pendapatan.valueTotal - this.HPP.valueTotal - this.biaya.valueTotal
-            this.labaTahunBerjalan = setLaba
-            console.log(setLaba)
-        },
         async getList() {
             this.listLoading = true
 
             await axios.get('/report/neraca/Harta').then((response) => {
                 console.log(response)
 
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
+                // function calculateValues(o) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names)
-                this.listHarta = [names]
+                // calculateValues(names)
+                this.listHarta = response.data.akun
                 this.harta = names
             });
 
             await axios.get('/report/neraca/Modal').then((response) => {
 
-                function calculateValues(o, lbt) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a, lbt);
+                // function calculateValues(o, lbt) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a, lbt);
                         
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
 
-                    if(o.name == 'Laba Tahun Berjalan'){
-                        o.total = lbt
-                    }
-                }
+                //     if(o.name == 'Laba Tahun Berjalan'){
+                //         o.total = lbt
+                //     }
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names, this.labaTahunBerjalan)
-                this.listModal = [names]
+                // calculateValues(names, this.labaTahunBerjalan)
+                this.listModal = response.data.akun
                 this.modal = names
             });
 
             await axios.get('/report/neraca/Kewajiban').then((response) => {
                 console.log(response)
 
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
+                // function calculateValues(o) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names)
-                this.listKewajiban = [names]
+                // calculateValues(names)
+                this.listKewajiban = response.data.akun
                 this.kewajiban = names
             });
 
@@ -591,54 +481,53 @@ export default {
             }
             
             this.listLoading = true
-            await this.getLabaWhenFilter();
 
             await axios.post('/report/neraca/Harta', data).then((response) => {
                 console.log(response)
 
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
+                // function calculateValues(o) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names)
-                this.listHarta = [names]
+                // calculateValues(names)
+                this.listHarta = response.data.akun
                 this.harta = names
             });
 
             await axios.post('/report/neraca/Modal', data).then((response) => {
 
-                function calculateValues(o, lbt) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a, lbt);
+                // function calculateValues(o, lbt) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a, lbt);
                         
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
 
-                    if(o.name == 'Laba Tahun Berjalan'){
-                        o.total = lbt
-                    }
-                }
+                //     if(o.name == 'Laba Tahun Berjalan'){
+                //         o.total = lbt
+                //     }
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names, this.labaTahunBerjalan)
-                this.listModal = [names]
+                // calculateValues(names, this.labaTahunBerjalan)
+                this.listModal = response.data.akun
                 this.modal = names
             });
 
             await axios.post('/report/neraca/Kewajiban', data).then((response) => {
                 console.log(response)
 
-                function calculateValues(o) {
-                    o.valueTotal = (o.children || []).reduce(function (r, a) {
-                        calculateValues(a);
-                        return r + (a.total || 0) + (a.valueTotal || 0);
-                    }, 0);
-                }
+                // function calculateValues(o) {
+                //     o.valueTotal = (o.children || []).reduce(function (r, a) {
+                //         calculateValues(a);
+                //         return r + (a.total || 0) + (a.valueTotal || 0);
+                //     }, 0);
+                // }
                 let names = response.data.akun[0]
-                calculateValues(names)
-                this.listKewajiban = [names]
+                // calculateValues(names)
+                this.listKewajiban = response.data.akun
                 this.kewajiban = names
             });
             
