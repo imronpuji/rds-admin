@@ -265,10 +265,13 @@ export default {
           data.then((res) => {
             Message('Berhasil Silahkan Login!!')
             this.$router.push({ path: '/login', query: this.otherQuery })
+            this.showDialog = false
             this.loading = false
           }).catch((err) => {
             Message('Failed!!')
             this.loading = false
+            this.showDialog = false
+            
           })
         } else {
           console.log('error submit!!')
