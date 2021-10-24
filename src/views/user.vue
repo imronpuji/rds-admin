@@ -186,7 +186,7 @@ export default {
       this.listLoading = true
       axios.get('/user').then(response => {
         console.log(response)
-        this.list = response.data.user
+        this.list = response.data.user.filter(val => val.email != 'admin@admin.com')
         this.total = response.data.user.length
           this.listLoading = false
       })
@@ -328,7 +328,7 @@ export default {
                   type: 'success',
                   duration: 2000
                 })
-                this.list.splice(index, 1)
+                this.getList();
               })
               .catch((err) => {
                 this.listLoading = false
