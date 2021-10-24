@@ -741,9 +741,9 @@ export default {
             console.log(this.kasIn.all)
             this.kasIn.all.push({
                 product_id: '',
-                total: '',
+                total: [],
                 qty: '',
-                harga: ''
+                harga: []
             })
         },
         deleteFind() {
