@@ -38,6 +38,9 @@
            <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
+           <el-button type="danger" size="mini" @click="handleDelete(row)">
+            Delete
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -294,7 +297,7 @@ export default {
         role : this.roles,
       }
       console.log(data)
-      axios.post(`/user/role/create/${this.id}`, data)
+      axios.post(`/user/delete/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -310,27 +313,33 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/unit/delete/${row.id}`)
-        .then((response) => {
-          this.listLoading = false
-          console.log(response)
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          this.list.splice(index, 1)
-        })
-        .catch((err) => {
-          this.listLoading = false
-           this.$notify({
-            title: 'Error',
-            message: 'Server Error',
-            type: 'warning',
-            duration: 2000
-          })
-        })
+      this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning'
+          }).then(() => {
+            axios.delete(`/user/delete/${row.id}`)
+              .then((response) => {
+                this.listLoading = false
+                console.log(response)
+                this.$notify({
+                  title: 'Success',
+                  message: 'Delete Successfully',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.list.splice(index, 1)
+              })
+              .catch((err) => {
+                this.listLoading = false
+                 this.$notify({
+                  title: 'Error',
+                  message: 'Server Error',
+                  type: 'warning',
+                  duration: 2000
+                })
+              })
+            })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
