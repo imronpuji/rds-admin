@@ -376,6 +376,9 @@ export default {
                 }
 
                  else {
+                    this.total_kasIn = this.total_kasIn < 1 ? 0 : this.total_kasIn
+                    this.jumlah_bayar = this.jumlah_bayar < 1 ? 0 : this.jumlah_bayar
+                    this.discount = this.discount < 1 ? 0 : this.discount
                     this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount) 
 
                     this.sisa_bayar = ''
