@@ -83,6 +83,11 @@
                 <span>{{ row.staff }}</span>
             </template>
         </el-table-column>
+         <el-table-column label="Kas" width="150px" align="center">
+            <template slot-scope="{row}">
+                <span>{{ row.cashout.name }}</span>
+            </template>
+        </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
