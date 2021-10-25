@@ -596,6 +596,22 @@ export default {
         },
         handleUpdate(row) {
             console.log(row.id)
+            this.id = row.id
+            // this.unit = row.unit
+            // this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
+            // this.qty = row.qty
+
+            this.total_kasIn = row.total
+            this.cashin_id = row.cashin_id
+            this.jatuh_tempo = row.payment_due
+            this.total_kasIn = row.total
+            this.kurang_bayar = row.total - row.paid
+            this.dialogStatus = 'update'
+            this.Pembayaran_sebelum = row.paid
+            this.dialogFormVisible = true
+            this.$nextTick(() => {
+                this.$refs['dataForm'].clearValidate()
+            })
             this.ids = row.id
             this.names = row.cashout.name
             this.selling_price = row.selling_price
