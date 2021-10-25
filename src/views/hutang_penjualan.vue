@@ -7,11 +7,11 @@
 
 
         <div class="block"></div>
-        <el-date-picker v-model="start" class="filter-item" type="date" placeholder="Dari">
+        <el-date-picker v-model="start" style="margin-right: 10px;margin-bottom:10px" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" placeholder="Sampai">
+        <el-date-picker style="margin-bottom:10px" v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        <el-button class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
         </el-button>
             <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">

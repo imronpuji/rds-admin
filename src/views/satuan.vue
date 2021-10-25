@@ -3,9 +3,9 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+        <el-input v-model="search" placeholder="Cari" style="width: 200px; margin-right:10px" class="filter-item" />
 
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
         </el-button>
         <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
@@ -53,7 +53,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="150px" style="width: 520px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="150px" >
         <el-form-item label="Nama">
           <el-input v-model="unit" placeholder="satuan" />
         </el-form-item>

@@ -3,11 +3,11 @@
 <template>
   <div class="app-container">
    
-    <el-date-picker v-model="start" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Dari">
+    <el-date-picker v-model="start" class="filter-item" style="margin-right:8px; margin-bottom:10px" type="date" format="dd-MM-yyyy" placeholder="Dari">
     </el-date-picker>
-    <el-date-picker style="margin-left:8px" v-model="end" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
+    <el-date-picker v-model="end" style="margin-bottom:10px; margin-right:10px" class="filter-item" type="date" format="dd-MM-yyyy" placeholder="Sampai">
     </el-date-picker>
-    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="filterReportByDate">
+    <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="filterReportByDate">
         Filter
     </el-button>  
      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
