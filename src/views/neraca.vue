@@ -1,13 +1,13 @@
 <template>
 <div class="app-container" style="width:100%; box-shadow:2">
 
-    <el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
+<!--     <el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
     <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
     </el-date-picker>
     <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
-    </el-button>
+    </el-button> -->
 <el-button type="primary" v-print="'#printMe'">Print</el-button>
     <div id="printMe">
         <b><hr></b>
