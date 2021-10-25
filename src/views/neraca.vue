@@ -1,11 +1,9 @@
 <template>
 <div class="app-container" style="width:100%; box-shadow:2">
 
-    <el-date-picker style="margin-left:20px; margin-bottom:10px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
-        </el-date-picker>
-    <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+   <el-date-picker style="margin-left:8px;width:140px; margin-bottom:10px"  v-model="end" class="filter-item" type="date" placeholder="ytd">
     </el-date-picker>
-    <el-button class="filter-item" style="margin-left: 20px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
     </el-button>
     <el-button type="primary" v-print="'#printMe'">Print</el-button>
@@ -475,11 +473,26 @@ export default {
 
 
         async handleFilterByDate(){
+           var d = new Date();
+    
+            var date = d.getDate();
+            var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+            let year = new Date(this.end).getFullYear()
+                
+            var dateStr = '01' + "/" + '01' + "/" + year;
+
+            let start_date =  new Date(dateStr)
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            this.mulai = new Date(start_date
+                ).toLocaleDateString('id-ID', options)
+            this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
+
+            console.log(this.end)
             let data = {
-                start_date : this.start,
+                start_date,
                 end_date : this.end,
             }
-            
             this.listLoading = true
 
             await axios.post('/report/neraca/Harta', data).then((response) => {
