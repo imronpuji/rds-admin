@@ -4,7 +4,7 @@
      <div class="filter-container">
       <el-input v-model="search" placeholder="Cari" style="width: 200px;margin-right: 10px;" class="filter-item" />
 
-        <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleCreate">
+        <el-button v-if="roles == 'admin'" class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
         </el-button>
         <el-button v-waves style="margin-right:20px; " :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
