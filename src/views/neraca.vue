@@ -16,7 +16,7 @@
           LAPORAN NERACA
         </h4>
         <p style="text-align:center">
-          Periode {{mulai}} s/d {{akhir}}
+            {{akhir}}
         </p>
         <b><hr></b>
     <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
