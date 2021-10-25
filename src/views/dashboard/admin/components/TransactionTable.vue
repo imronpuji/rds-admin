@@ -90,9 +90,9 @@ export default {
 
         this.list_piutang = data.slice(0,4)
         });
-      axios.get('/akun/iscash').then(response => {
+      axios.get('/report/neraca/kas dan bank').then(response => {
         console.log(response)
-        this.list = response.data.akun
+        this.list = response.data.akun[0]['children']
 
         // Just to simulate the time of the request
         const total = response.data.akun.reduce(function(accumulator, currentValue) {

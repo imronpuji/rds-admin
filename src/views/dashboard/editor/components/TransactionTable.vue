@@ -92,8 +92,8 @@ export default {
         this.list_piutang = data.slice(0,4)
         });
 
-      axios.get('/akun/iscash').then(response => {
-        this.list = response.data.akun.filter((val) => val.name == 'Kas Besar'|| val.name == 'Kas Kecil')
+      axios.get('/report/neraca/kas dan bank').then(response => {
+        this.list = response.data.akun[0]['children'].filter((val) => val.name == 'Kas Besar'|| val.name == 'Kas Kecil')
         console.log(response)
 
         // Just to simulate the time of the request
