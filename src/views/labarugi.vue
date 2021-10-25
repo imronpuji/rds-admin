@@ -465,15 +465,7 @@ export default {
 
             const options = {year: 'numeric', month: 'long', day: 'numeric' };
             this.mulai = new Date(this.start).toLocaleDateString('id-ID', options)
-            d = new Date(this.end)
-            
-             date = d.getDate() + 1;
-             month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
-             year = d.getFullYear()
-
             this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
-            this.end = new Date(date,month,year).toLocaleDateString('id-ID', options)
-
 
             let data = {
                 start_date : this.start,
