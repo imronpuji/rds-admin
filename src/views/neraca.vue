@@ -479,7 +479,7 @@ export default {
             var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
             let year = new Date(this.end).getFullYear()
                 
-            var dateStr = '01' + "/" + '01' + "/" + year;
+            var dateStr = '01' + "/" + '01' + "/" + 1000;
 
             let start_date =  new Date(dateStr)
 
