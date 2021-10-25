@@ -23,35 +23,35 @@
         </el-button>
         <br>
         <br>
-    <el-table :key="tableKey" v-loading="listLoading" :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
-        <el-table-column sortable prop="cashin" label="ID" align="center" width="80">
+    <el-table :key="tableKey" v-loading="listLoading" :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))" :default-sort="{prop:'id'}" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
+        <el-table-column sortable label="ID" prop="cashin" align="center" width="80">
             <template slot-scope="{row}">
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Customer" min-width="150px">
+        <el-table-column label="Supplier" min-width="150px" sortable prop="name">
             <template slot-scope="{row}">
-                <span v-if="row.contact != null">{{ row.contact.name }}</span>
+                <span >{{ row.contact != null ? row.contact.name : ''  }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Total Tagihan" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Tagihan" width="150px" align="center" sortable prop="total">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jumlah Bayar" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="paid">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.paid) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Potongan" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Potongan" width="150px" align="center" sortable prop="discount">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.discount) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Piutang" width="150px" align="center" sortable prop="cashin">
+        <el-table-column label="Hutang" width="150px" align="center" sortable prop="debt">
             <template slot-scope="{row}">
-                <span>{{ handleCurrency(row.total - row.paid) }}</span>
+                <span>{{ handleCurrency(row.debt) }}</span>
             </template>
         </el-table-column>
         <el-table-column label="Actions" align="left" width="80" class-name="small-padding fixed-width">
@@ -70,49 +70,37 @@
                     <br>
                     <br>
                     <el-button size="mini" type="warning">
-                        <router-link :to="'penjualan/detail/' + row.id">Detail</router-link>
+                        <router-link :to="'/pembelian/detail/' + row.id">Detail</router-link>
                     </el-button>
 
                     <el-button size="mini" type="warning">
                         <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
                     </el-button>
                 </el-popover>
-
             </template>
         </el-table-column>
-        <el-table-column label="Cetak" width="80px" align="center">
-            <template slot-scope="{row}">
-
-                <el-popover trigger="hover" placement="top">
-                    <el-button type="primary" size="mini">
-                        <router-link :to="'/penjualan/surat/jalan/' + row.id"> Surat Jalan</router-link>
-                    </el-button>
-                    <el-button type="warning" size="mini">
-                        <router-link :to="'/penjualan/nota/' + row.id"> Nota</router-link>
-                    </el-button>
-                    <div slot="reference" class="name-wrapper">
-                        <el-tag size="medium">Cetak</el-tag>
-                    </div>
-                </el-popover>
-
-            </template>
-        </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
-            <template slot-scope="{row}">
-                <span>{{ row.payment_due }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column width="150px" align="center" prop="date" label="Date" sortable column-key="date" :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]" :filter-method="filterHandler">
-            <template slot-scope="{row}">
-                <span>{{ row.date }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="Staff" width="150px" align="center">
+          <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
             <template slot-scope="{row}">
                 <span>{{ row.staff }}</span>
             </template>
         </el-table-column>
+        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
+            <template slot-scope="{row}">
+                <span>{{ row.payment_due }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+            <template slot-scope="{row}">
+                <span>{{ row.date }}</span>
+            </template>
+        </el-table-column>
+         <el-table-column label="Kas" width="150px" align="center">
+            <template slot-scope="{row}">
+                <span>{{ row.cashout.name }}</span>
+            </template>
+        </el-table-column>
     </el-table>
+
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
@@ -439,23 +427,18 @@ export default {
                 }, 1.5 * 1000)
             })
             axios.get('/akun/iscash').then(response => {
-                if (this.roles == 'kasir') {
-                    this.kas = response.data.akun.filter((val) => val.name == "Kas Besar")
-                } else {
-                    this.kas = response.data.akun
-
-                }
+                 this.kas = response.data.akun
             })
 
-            axios.get('/contact/customer').then(response => {
+            axios.get('/contact/supplier').then(response => {
                 console.log(response.data);
                 this.kontak = response.data.contact
             })
 
-            axios.get('/product').then(response => {
+            axios.get('/product/goods').then(response => {
 
                 this.product = response.data.product.filter((val) => {
-                    if (val.qty > 0) {
+                    if(val.category != 'service'){
                         return val
                     }
                 })
