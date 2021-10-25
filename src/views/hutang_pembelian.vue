@@ -416,6 +416,7 @@ export default {
                     if(val.total > val.paid){
                         total_hutang += (val.total - val.paid)
                         this.total_hutang = total_hutang
+                        val['debt'] = val.total - (val.paid + val.discount)
                         return val;
                     }
                 }).sort((a, b) => (a.payment_due > b.payment_due) ? 1 : ((b.payment_due > a.payment_due) ? -1 : 0))
