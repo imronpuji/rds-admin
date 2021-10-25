@@ -489,6 +489,16 @@ import nestedRouter from './modules/nested'
   },
 
   {
+    path: '/laporan/hutang/beredar',
+    component: () => import('@/views/hutang_pembelian'),
+    name: 'PagePermission',
+    meta: {
+      title: 'Hutang Beredar',
+          roles: ['admin'] // or you can only set roles in sub nav
+      }
+  },
+  
+  {
     path: '/laporan/penjualan',
     component: () => import('@/views/laporan_penjualan'),
     name: 'PagePermission',
@@ -496,7 +506,7 @@ import nestedRouter from './modules/nested'
       title: 'Laporan Penjualan',
           roles: ['admin'] // or you can only set roles in sub nav
       }
-  }
+  },
   ]
 },
 
