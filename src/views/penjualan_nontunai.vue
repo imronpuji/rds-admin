@@ -1,19 +1,19 @@
 <template>
 <div class="app-container">
     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px;" class="filter-item" />
+        <el-input v-model="search" placeholder="Cari" style="width: 200px;margin-right: 10px;" class="filter-item" />
 
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+        <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
         </el-button>
-        <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+        <el-button v-waves style="margin-right:20px; " :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
             Export
         </el-button>
-         <el-date-picker style="margin-left:20px; width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
+          <el-date-picker style="width:140px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+        <el-date-picker style="margin-left:8px;width:140px;margin-right: 10px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
-        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+        <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
         </el-button>
     </div>
