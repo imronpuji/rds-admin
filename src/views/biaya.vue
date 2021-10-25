@@ -11,7 +11,7 @@
     </el-button>
       <el-date-picker style="margin-left:20px; width:140px" width="100px" v-model="start" class="filter-item" type="date" placeholder="Dari">
         </el-date-picker>
-        <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+        <el-date-picker style="margin-left:8px;width:140px;" format="yyyy-mm-dd"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
         </el-date-picker>
         <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
             Filter
@@ -88,7 +88,6 @@
       <el-date-picker
         v-model="dates"
         type="date"
-        format="dd-MM-yyyy"
         placeholder="Tanggal Transaksi">
       </el-date-picker>
     </el-form-item>
@@ -186,6 +185,7 @@ export default {
   data() {
     return {
       start : '',
+      dates : '',
       end : '',
       search : '',
       loading : false,
