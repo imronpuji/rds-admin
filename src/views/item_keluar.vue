@@ -75,12 +75,6 @@
                 <el-form-item class="k" :label="index == 0 ? 'Deskripsi' :''">
                     <el-input v-model="all.desc" :value="all.desc" required type="text" placeholder="Deskripsi" />
                 </el-form-item>
-                <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' :''">
-                    <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
-                </el-form-item>
-                <el-form-item class="k" :label="index == 0 ? 'Sub Total' :''">
-                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Please input" @change="onChangeTotal()"></v-money-spinner>
-                </el-form-item>
                 </el-form-item>
             </div>
 
@@ -639,7 +633,7 @@ export default {
                     return val
                 }
             })
-            this.kasIn.all[index]['qty'] = 0;
+            this.kasIn.all[index]['qty'] = [];
             this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
             this.kasIn.all[index]['total'] = 0;
             // parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0

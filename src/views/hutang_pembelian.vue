@@ -378,8 +378,7 @@ export default {
     methods: {
         checkPermission,
         handleChangeText(i) {
-            this.onChangeQty(this.index_before)
-            this.onChangeQty
+
             if (this.dialogStatus == 'create') {
 
                 if (this.jumlah_bayar > this.total_kasIn) {
@@ -586,7 +585,7 @@ export default {
             // })
         },
         handleUpdate(row) {
-            // this.name = row.contact.name
+            console.log(row.id)
             this.id = row.id
             // this.unit = row.unit
             // this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
@@ -603,27 +602,29 @@ export default {
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
+            this.ids = row.id
+            this.names = row.cashout.name
+            this.selling_price = row.selling_price
+            this.purchase_price = row.purchase_price
+            this.unit = row.unit
+            this.qty = row.qty
+            this.dialogStatus = 'update'
+            this.dialogFormVisible = true
+
         },
         updateData() {
-            if (this.kurang_bayar < this.jumlah_bayar) {
-                this.$notify({
-                    title: 'Gagal',
-                    message: 'Jumlah Pembayaran Melebihi Jumlah Hutang',
-                    type: 'warning',
-                    duration: 2000
-                })
-                return false
-            }
             this.listLoading = true
             this.loading = true
             const data = {
-                payment_due: this.jatuh_tempo,
-                cashin_id: this.cashin_id,
+                cashout_id: this.cashout_id,
                 total: this.jumlah_bayar,
+                payment_due: this.jatuh_tempo,
             }
-            console.log(data)
-            axios.put(`/stock/out/paid/${this.id}`, data)
+
+            axios.put(`/stock/in/paid/${this.ids}`, data)
                 .then((response) => {
+                    this.loading = false
+
                     this.getList()
                     this.dialogFormVisible = false
                     this.$notify({
@@ -634,7 +635,25 @@ export default {
                     })
                     throw new Error('Something went badly wrong!')
                 })
-                .catch((err) => err)
+                .catch((err) => {
+                    this.loading = false
+                    if(err.response.status == 400){
+                        this.$notify({
+                            title: 'Gagal',
+                            message: err.response.data.error,
+                            type: 'warning',
+                            duration: 2000
+                        })
+                    } else {
+                        this.$notify({
+                            title: 'Gagal',
+                            message: 'Server Error',
+                            type: 'warning',
+                            duration: 2000
+                        })
+                    }
+
+                })
         },
         handleDelete(row, index) {
             this.listLoading = true
@@ -742,7 +761,7 @@ export default {
                     return val
                 }
             })
-            this.kasIn.all[index]['qty'] = 0
+            this.kasIn.all[index]['qty'] = []
             this.kasIn.all[index]['harga'] = produk[0]['selling_price']
             this.kasIn.all[index]['total'] = 0
             // parseInt(produk[0]['selling_price'])
