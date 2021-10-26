@@ -78,7 +78,6 @@
                 </el-form-item>
             </div>
 
-            <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
         </el-form>
 
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
