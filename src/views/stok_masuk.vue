@@ -291,7 +291,7 @@ export default {
                 all: [{
                     product_id: '',
                     total: [],
-                    qty: '',
+                    qty: [],
                     harga: []
                 }]
             },

@@ -128,7 +128,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
-                    <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
+                    <el-input v-model="all.qty" :value="all.qty"  required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
                     <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
@@ -150,7 +150,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner placeholder="Jumlah Pembayaran" v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
             </el-form-item>
              <el-form-item class="k" label="Potongan" @change="handleChangeText()" v-if="dialogStatus == 'create'">
                 <v-money-spinner v-model="discount" v-bind="config"></v-money-spinner>
@@ -264,7 +264,7 @@ export default {
             qty_before: '',
             index_before: '',
             Pembayaran_sebelum: '',
-            jumlah_bayar: 0,
+            jumlah_bayar: [],
             kurang_bayar: '',
             sisa_bayar: '',
             kembalian: '',
@@ -278,6 +278,7 @@ export default {
                 bootstrap: true,
                 amend: false,
                 masked: false,
+                allowBlank : true,
             },
             category: '',
             kontak: [],
@@ -303,7 +304,7 @@ export default {
                 all: [{
                     product_id: '',
                     total: '',
-                    qty: '',
+                    qty: [],
                     harga: 0
                 }]
             },
@@ -599,9 +600,7 @@ export default {
             this.dialogStatus = 'update'
             this.Pembayaran_sebelum = row.paid
             this.dialogFormVisible = true
-            this.$nextTick(() => {
-                this.$refs['dataForm'].clearValidate()
-            })
+
             this.ids = row.id
             this.names = row.cashout.name
             this.selling_price = row.selling_price
