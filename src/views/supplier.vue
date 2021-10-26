@@ -65,6 +65,11 @@
             <el-form-item class="k" label="Nama">
                 <el-input v-model="name" placeholder="Nama" />
             </el-form-item>
+            <el-form-item class="k" label="Tipe Kontak">
+                <el-select v-model="tipe">
+                    <el-option v-for="item in kontak" :label="item.name" :value="item.id" />
+                </el-select>
+            </el-form-item>
             <el-form-item class="k" label="Alamat">
                 <el-input v-model="address" placeholder="Alamat" />
             </el-form-item>
@@ -73,11 +78,6 @@
             </el-form-item>
             <el-form-item class="k" label="Deskripsi">
                 <el-input v-model="desc" placeholder="desc" />
-            </el-form-item>
-            <el-form-item class="k" label="Tipe Kontak">
-                <el-select v-model="tipe">
-                    <el-option v-for="item in kontak" :label="item.name" :value="item.id" />
-                </el-select>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer" style="display:flex; justify-content:center; width:100%">
