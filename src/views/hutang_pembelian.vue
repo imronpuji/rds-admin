@@ -607,7 +607,7 @@ export default {
             this.selling_price = row.selling_price
             this.purchase_price = row.purchase_price
             this.unit = row.unit
-            this.qty = row.qty
+            this.qty = []
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
 
