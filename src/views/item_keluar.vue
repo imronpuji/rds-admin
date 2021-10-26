@@ -26,11 +26,11 @@
             </template>
         </el-table-column>
 
-        <el-table-column label="Total" min-width="150px" align="center" sortable prop="cashin">
+<!--         <el-table-column label="Total" min-width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="Staff" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ row.staff }}</span>
