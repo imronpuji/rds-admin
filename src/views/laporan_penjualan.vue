@@ -118,9 +118,15 @@ export default {
       axios.post(`/stock/out/report`, data).then(response => {
           console.log(response)
           this.data = [['laporan', 'penjualan']]
+          let total = 0
+          let total_produk = 0
           response.data.stocktransaction.map((val) => {
-             this.data.push([val.name, val.substocktransaction_sum_total])
+            this.data.push([val.name, val.substocktransaction_sum_total])
+            total += val.substocktransaction_sum_total
+            total_produk += val.substocktransaction_sum_qty
           })
+          this.total_penjualan = total
+          this.total_produk = total_produk
           console.log(this.data)
           this.list = response.data.stocktransaction
 
