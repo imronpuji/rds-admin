@@ -1,21 +1,18 @@
 <template>
-    <div class="app-container">
-        <div class="filter-container">
-            <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-                Add
-            </el-button>
-        </div>
-        <el-tree :data="list" :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{ node.label }}</span>
-                <span style="margin-left:20px">
-                    <el-popconfirm
-                    title="Are you sure to delete this?"
-                    >
-                        <el-button slot="reference" type="text" size="mini" @click="() => handleDelete(data, data)">
-                            Delete
-                        </el-button>
-                    </el-popconfirm>
+<div class="app-container" v-loading="loading">
+    <div class="filter-container">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
+            Add
+        </el-button>
+    </div>
+    <el-tree :data="list" :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span style="margin-left:20px">
+
+                <el-button slot="reference" type="text" size="mini" @click="() => handleDelete(data, data)">
+                    Delete
+                </el-button>
 
                 <el-button type="text" size="mini" @click="() => handleUpdate(data, data)">
                     Edit
@@ -41,10 +38,10 @@
             <el-form-item v-if="header != true && isCashOut != true && isCashIn != true">
                 <el-checkbox v-model="kas">Bank / Kas</el-checkbox>
             </el-form-item>
-            <el-form-item v-if="kas != true && header != true && isCashIn != true">
+            <el-form-item v-if="kas != true && header != true">
                 <el-checkbox v-model="isCashOut">Kas Keluar</el-checkbox>
             </el-form-item>
-            <el-form-item v-if="kas != true && header != true && isCashOut != true">
+            <el-form-item v-if="kas != true && header != true">
                 <el-checkbox v-model="isCashIn">Kas Masuk</el-checkbox>
             </el-form-item>
         </el-form>
@@ -71,154 +68,134 @@
 </template>
 
 <script>
-import 
-{
+import {
     fetchList,
     fetchPv,
     createArticle,
     updateArticle
-}   from '@/api/article'
+} from '@/api/article'
 
-    import waves from '@/directive/waves' // waves directive
-    import 
-    {
-        parseTime
-    } from '@/utils'
-    import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-    import axios from '@/api/axios'
-    import qs from 'qs'
+import waves from '@/directive/waves' // waves directive
+import {
+    parseTime
+} from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import axios from '@/api/axios'
+import qs from 'qs'
 
-    const calendarTypeOptions = []
+const calendarTypeOptions = []
 
-    const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
-        acc[cur.key] = cur.display_name
-        return acc
-    }, {})
+const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+    acc[cur.key] = cur.display_name
+    return acc
+}, {})
 
-    export default {
-        name: 'ComplexTable',
-        components: 
-        {
-            Pagination
-        },
-        
-        directives: 
-        {
-            waves
-        },
-        
-        filters: 
-        {
-            statusFilter(status) 
-            {
-                const statusMap = 
-                {
-                    published: 'success',
-                    draft: 'info',
-                    deleted: 'danger'
-                }
-                return statusMap[status]
-            },
-            typeFilter(type) 
-            {
-                return calendarTypeKeyValue[type]
+export default {
+    name: 'ComplexTable',
+    components: {
+        Pagination
+    },
+
+    directives: {
+        waves
+    },
+
+    filters: {
+        statusFilter(status) {
+            const statusMap = {
+                published: 'success',
+                draft: 'info',
+                deleted: 'danger'
             }
+            return statusMap[status]
         },
-        
-        data() {
-            return {
-                defaultProps: 
-                {
-                    children: 'children',
-                    label: 'name'
-                },
-                
-                id: '',
-                category: '',
-                isCashOut : '',
-                isCashIn : '',
-                header: '',
-                fullscreenLoading: false,
-                name: '',
-                desc: '',
-                tableKey: 0,
-                list: null,
-                total: 0,
-                kas: '',
-                listLoading: true,
-                
-                listQuery: 
-                {
-                    page: 1,
-                    limit: 20,
-                    importance: undefined,
-                    title: undefined,
-                    type: undefined,
-                    sort: '+id'
-                },
-                importanceOptions: [1, 2, 3],
-                calendarTypeOptions,
-                categories: [],
-                modal: [],
+        typeFilter(type) {
+            return calendarTypeKeyValue[type]
+        }
+    },
 
-                sortOptions: 
-                [
-                {
+    data() {
+        return {
+            defaultProps: {
+                children: 'children',
+                label: 'name'
+            },
+
+            id: '',
+            category: '',
+            isCashOut: '',
+            isCashIn: '',
+            header: '',
+            fullscreenLoading: false,
+            name: '',
+            desc: '',
+            tableKey: 0,
+            list: null,
+            total: 0,
+            kas: '',
+            listLoading: true,
+
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id'
+            },
+            importanceOptions: [1, 2, 3],
+            calendarTypeOptions,
+            categories: [],
+            modal: [],
+
+            sortOptions: [{
                     label: 'ID Ascending',
                     key: '+id'
-                }, 
+                },
                 {
                     label: 'ID Descending',
                     key: '-id'
                 }
-                ],
-                
-                statusOptions: ['published', 'draft', 'deleted'],
-                showReviewer: false,
-                temp: 
-                {
-                    id: undefined,
-                    code: '',
-                    date: '',
-                    timestamp: new Date(),
-                    title: '',
-                    to: '',
-                    chasin: '',
-                    total: ''
-                },
-                dialogFormVisible: false,
-                dialogStatus: '',
-                
-                textMap: 
-                {
-                    update: 'Edit',
-                    create: 'Create'
-                },
+            ],
 
-                dialogPvVisible: false,
-                pvData: [],
-                
-                rules: 
-                {
-                    type: 
-                    [
-                    {
-                        required: true,
-                        message: 'type is required',
-                        trigger: 'change'
-                    }
-                    ],
+            statusOptions: ['published', 'draft', 'deleted'],
+            showReviewer: false,
+            temp: {
+                id: undefined,
+                code: '',
+                date: '',
+                timestamp: new Date(),
+                title: '',
+                to: '',
+                chasin: '',
+                total: ''
+            },
+            dialogFormVisible: false,
+            dialogStatus: '',
+
+            textMap: {
+                update: 'Edit',
+                create: 'Create'
+            },
+
+            dialogPvVisible: false,
+            pvData: [],
+
+            rules: {
+                type: [{
+                    required: true,
+                    message: 'type is required',
+                    trigger: 'change'
+                }],
                 // timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-                title: 
-                [
-                {
+                title: [{
                     required: true,
                     message: 'title is required',
                     trigger: 'blur'
-                }
-                ]
+                }]
             },
-            downloadLoading: false
+            downloadLoading: false,
+            loading: false
         }
     },
 
@@ -237,16 +214,14 @@ import
         getList() {
 
             this.listLoading = true
-            axios.get('/akun').then(response => 
-            {
+            axios.get('/akun').then(response => {
                 console.log(response)
                 this.list = response.data.akun
                 this.total = response.data.akun.length
                 this.listLoading = false
             })
 
-            axios.get('/akun/isheader').then(response => 
-            {
+            axios.get('/akun/isheader').then(response => {
                 this.categories = response.data.akun
                 this.listLoading = false
             })
@@ -315,18 +290,17 @@ import
             this.dialogFormVisible = false
 
             axios.post('/akun/create', data)
-            .then((response) => 
-            {
-                this.getList()
-                this.dialogFormVisible = false
-                this.$notify({
-                    title: 'Success',
-                    message: 'Created Successfully',
-                    type: 'success',
-                    duration: 2000
+                .then((response) => {
+                    this.getList()
+                    this.dialogFormVisible = false
+                    this.$notify({
+                        title: 'Success',
+                        message: 'Created Successfully',
+                        type: 'success',
+                        duration: 2000
+                    })
                 })
-            })
-            .catch((err) => err)
+                .catch((err) => err)
 
         },
         handleUpdate(row) {
@@ -358,41 +332,43 @@ import
             }
             console.log(data)
             axios.put(`/akun/edit/${this.id}`, data)
-            .then((response) => {
-                this.getList()
-                this.dialogFormVisible = false
-                this.$notify({
-                    title: 'Success',
-                    message: 'Update Successfully',
-                    type: 'success',
-                    duration: 2000
+                .then((response) => {
+                    this.getList()
+                    this.dialogFormVisible = false
+                    this.$notify({
+                        title: 'Success',
+                        message: 'Update Successfully',
+                        type: 'success',
+                        duration: 2000
+                    })
+                    throw new Error('Something went badly wrong!')
                 })
-                throw new Error('Something went badly wrong!')
-            })
-            .catch((err) => err)
+                .catch((err) => err)
         },
         handleDelete(row, index) {
-            const loading = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
+            this.loading = true
+            this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                type: 'warning'
+            }).then(() => {
 
-            axios.delete(`/akun/delete/${row.id}`)
-            .then((response) => {
-                this.getList()
-                loading.close();
-                console.log(response)
-                this.$notify({
-                    title: 'Success',
-                    message: 'Delete Successfully',
-                    type: 'success',
-                    duration: 2000
-                })
+                axios.delete(`/akun/delete/${row.id}`)
+                    .then((response) => {
+                        this.loading = false
+                        this.getList()
+                        loading.close();
+                        console.log(response)
+                        this.$notify({
+                            title: 'Success',
+                            message: 'Delete Successfully',
+                            type: 'success',
+                            duration: 2000
+                        })
 
+                    })
+                    .catch((err) => err)
             })
-            .catch((err) => err)
         },
         handleFetchPv(pv) {
             fetchPv(pv).then(response => {

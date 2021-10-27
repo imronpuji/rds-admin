@@ -1,13 +1,10 @@
 <template>
 <div class="app-container" style="width:100%; box-shadow:2">
-<el-date-picker style="margin-left:20px; width:140px; margin-bottom:10px" width="140px" v-model="start" class="filter-item" type="date" placeholder="Dari">
-        </el-date-picker>
-    <el-date-picker style="margin-left:8px;width:140px;"  v-model="end" class="filter-item" type="date" placeholder="Sampai">
+    <el-date-picker style="margin-left:8px;width:140px; margin-bottom:10px"  v-model="end" class="filter-item" type="date" placeholder="ytd">
     </el-date-picker>
-    <el-button class="filter-item" style="margin-left: 20px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
+    <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleFilterByDate">
         Filter
     </el-button>
-
     <el-button type="primary" v-print="'#printMe'">Print</el-button>
     <div id="printMe">
         <b><hr></b>
@@ -15,65 +12,64 @@
           CV.PUTRA QIRANA
         </h3>
         <h4 style="text-align:center">
-          LAPORAN LABA RUGI
+          LAPORAN LABA RUGI "YEAR TO DATE"
         </h4>
         <p style="text-align:center">
           Periode {{mulai}} s/d {{akhir}}
         </p>
         <b><hr></b>
-        <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-                
-                <span>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-                <span v-else>{{ handleCurrency(data.total)  }}</span>
-            </span>
-        </el-tree>
+    <el-tree :data="listHarta" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{data.name}}</span>
+            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+            <span v-else>{{ handleCurrency(data.total)  }}</span>
+        </span>
+    </el-tree>
 
-        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Total Pendapatan</h4>
-            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
-        </div>
-
-        <el-tree :data="listModal" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-                <span>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-                <span v-else>{{ handleCurrency(data.total)  }}</span>
-            </span>
-        </el-tree>
-        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Total HPP</h4>
-            <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Laba Kotor</h4>
-            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal )}}</p>
-        </div>
-        <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-                <el-popover v-if="data.name.length > 22" trigger="hover" placement="top">
-                     <div slot="reference" class="name-wrapper">
-                            <span>{{data.name.length > 22 ? `${data.name.substring(0,25)}...` : data.name}}</span>
-                    </div>
-                    <span>{{data.name}}</span>
-                </el-popover>
-                <span v-else>{{data.name}}</span>
-                <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
-                <span v-else>{{ handleCurrency(data.total)  }}</span>
-            </span>
-        </el-tree>
-        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Total Biaya</h4>
-            <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal)}}</p>
-        </div>
-
-        <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
-            <h4 style="padding:0; margin:0">Laba/Rugi</h4>
-            <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal - kewajiban.valueTotal )}}</p>
-        </div>
+    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Total Pendapatan</h4>
+        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal)}}</p>
     </div>
+
+    <el-tree :data="listModal" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{data.name}}</span>
+            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+            <span v-else>{{ handleCurrency(data.total)  }}</span>
+        </span>
+    </el-tree>
+    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Total HPP</h4>
+        <p style="padding:0; margin:0">{{handleCurrency(modal.valueTotal )}}</p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Laba Kotor</h4>
+        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal )}}</p>
+    </div>
+    <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <el-popover v-if="data.name.length > 22" trigger="hover" placement="top">
+                <div slot="reference" class="name-wrapper">
+                    <span>{{data.name.length > 22 ? `${data.name.substring(0,25)}...` : data.name}}</span>
+                </div>
+                <span>{{data.name}}</span>
+            </el-popover>
+            <span v-else>{{data.name}}</span>
+            <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
+            <span v-else>{{ handleCurrency(data.total)  }}</span>
+        </span>
+    </el-tree>
+    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Total Biaya</h4>
+        <p style="padding:0; margin:0">{{handleCurrency(kewajiban.valueTotal)}}</p>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; background:yellow; margin-bottom:12px">
+        <h4 style="padding:0; margin:0">Laba/Rugi</h4>
+        <p style="padding:0; margin:0">{{handleCurrency(harta.valueTotal - modal.valueTotal - kewajiban.valueTotal )}}</p>
+    </div>
+</div>
 </div>
 </template>
 
@@ -131,13 +127,13 @@ export default {
     },
     data() {
         return {
-            mulai : '',
-            akhir : '',
             defaultProps: {
                 children: 'children',
                 label: 'name',
                 total: 'total'
             },
+            mulai : '',
+            akhir : '',
             start : '',
             end : '',
             modal: '',
@@ -218,11 +214,10 @@ export default {
         }
     },
     created() {
-
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-        var firstDay = new Date(y, m, 1);
+        var firstDay = new Date(y, 0, 1);
         var lastDay = new Date(y, m + 1, 0);
 
         this.mulai = firstDay.toLocaleDateString('id-ID',options)
@@ -234,23 +229,27 @@ export default {
     methods: {
         getList() {
             this.listLoading = true
+            
+           const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-            axios.post('/report/Pendapatan').then((response) => {
+            var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+            var firstDay = new Date(y, 0, 1);
+            var lastDay = new Date(y, m + 1, 0);
+
+    
+            let data = {
+                start_date : firstDay,
+                end_date : lastDay,
+            }
+            console.log(data)
+            axios.post('/report/Pendapatan', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
-
                     o.valueTotal = (o.children || []).reduce(function (r, a) {
                         calculateValues(a);
-
                         return r + (a.total || 0) + (a.valueTotal || 0);
-                    }
-
-                    , 0);
-                    if(o.total <1 && o.isheader != 1){
-                        return o;
-                    }
-
+                    }, 0);
                 }
                 let names = response.data.akun[0]
                 calculateValues(names)
@@ -258,7 +257,7 @@ export default {
                 this.harta = names
             });
 
-            axios.post('/report/HPP').then((response) => {
+            axios.post('/report/HPP', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -273,7 +272,7 @@ export default {
                 this.modal = names
             });
 
-            axios.post('/report/Biaya').then((response) => {
+            axios.post('/report/Biaya', data).then((response) => {
                 console.log(response)
 
                 function calculateValues(o) {
@@ -469,14 +468,27 @@ export default {
 
          handleFilterByDate(){
 
-            const options = {year: 'numeric', month: 'long', day: 'numeric' };
-            this.mulai = new Date(this.start).toLocaleDateString('id-ID', options)
+            var d = new Date();
+    
+            var date = d.getDate();
+            var month = d.getMonth() + 1; // Since getMonth() returns month from 0-11 not 1-12
+            let year = new Date(this.end).getFullYear()
+                
+            var dateStr = '01' + "/" + '01' + "/" + year;
+
+            let start_date =  new Date(dateStr)
+
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            this.mulai = new Date(start_date
+                ).toLocaleDateString('id-ID', options)
             this.akhir = new Date(this.end).toLocaleDateString('id-ID', options)
 
+            console.log(this.end)
             let data = {
-                start_date : this.start,
+                start_date,
                 end_date : this.end,
             }
+            console.log(data)
             axios.post('/report/Pendapatan', data).then((response) => {
                 console.log(response)
 

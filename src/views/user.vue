@@ -1,6 +1,6 @@
 
 
- <template>
+<template>
   <div class="app-container">
     <el-table
       :key="tableKey"
@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="Nama" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Email" width="150px" align="center" sortable prop="cashin">
@@ -28,7 +28,7 @@
           <span>{{ row.email}}</span>
         </template>
       </el-table-column>
-       <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+       <el-table-column label="Role" width="150px" align="center" sortable prop="date">
         <template slot-scope="{row}" >
           <span v-for="item in row.roles">{{ item.name }}</span>
         </template>
@@ -37,6 +37,9 @@
         <template slot-scope="{row,$index}">
            <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
+          </el-button>
+           <el-button type="danger" size="mini" @click="handleDelete(row)">
+            Delete
           </el-button>
         </template>
       </el-table-column>
@@ -74,7 +77,7 @@
         <el-table-column prop="pv" label="Pv" />
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">Confirm</el-button>
+        <el-button :loading="downloadLoading" type="primary" @click="dialogPvVisible = false">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -163,7 +166,7 @@ export default {
       dialogStatus: '',
       textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'User'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -183,7 +186,7 @@ export default {
       this.listLoading = true
       axios.get('/user').then(response => {
         console.log(response)
-        this.list = response.data.user
+        this.list = response.data.user.filter(val => val.email != 'admin@admin.com')
         this.total = response.data.user.length
           this.listLoading = false
       })
@@ -310,27 +313,33 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/role/delete/${row.id}`)
-        .then((response) => {
-          this.listLoading = false
-          console.log(response)
-          this.$notify({
-            title: 'Success',
-            message: 'Delete Successfully',
-            type: 'success',
-            duration: 2000
-          })
-          this.list.splice(index, 1)
-        })
-        .catch((err) => {
-          this.listLoading = false
-           this.$notify({
-            title: 'Error',
-            message: 'Server Error',
-            type: 'warning',
-            duration: 2000
-          })
-        })
+      this.$confirm('Apakah anda serius mau menghapus ?', 'Warning', {
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancel',
+              type: 'warning'
+          }).then(() => {
+            axios.delete(`/user/delete/${row.id}`)
+              .then((response) => {
+                this.listLoading = false
+                console.log(response)
+                this.$notify({
+                  title: 'Success',
+                  message: 'Delete Successfully',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.getList();
+              })
+              .catch((err) => {
+                this.listLoading = false
+                 this.$notify({
+                  title: 'Error',
+                  message: 'Server Error',
+                  type: 'warning',
+                  duration: 2000
+                })
+              })
+            })
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {

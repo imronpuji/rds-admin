@@ -1,0 +1,57 @@
+[Mon, 25 Oct 2021 15:40:06 GMT] [info] [<0.000.0>] pouchdb-server has started on http://127.0.0.1:3000/
+[Mon, 25 Oct 2021 15:40:06 GMT] [info] [<0.000.0>] navigate to http://127.0.0.1:3000/_utils for the Fauxton UI.
+[Mon, 25 Oct 2021 15:40:15 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils 301
+[Mon, 25 Oct 2021 15:40:16 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/ 200
+[Mon, 25 Oct 2021 15:40:16 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/css/styles-a9623008fc27e79da2388441deeacfab.css 200
+[Mon, 25 Oct 2021 15:40:19 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/js/bundle-34997e32896293a1fa5d71f79eb1b4f7.js 200
+[Mon, 25 Oct 2021 15:40:20 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_session 200
+[Mon, 25 Oct 2021 15:40:21 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET / 200
+[Mon, 25 Oct 2021 15:40:21 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_session 304
+[Mon, 25 Oct 2021 15:40:21 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/pouchdb-site.png 200
+[Mon, 25 Oct 2021 15:40:22 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/fonts/fauxtonicon5.woff 200
+[Mon, 25 Oct 2021 15:40:22 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_all_dbs?_=1635176419872 200
+[Mon, 25 Oct 2021 15:40:23 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_all_dbs?startkey=%22%22&endkey=%22%E9%A6%99%22&limit=30&_=1635176419873 200
+[Mon, 25 Oct 2021 15:40:24 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_replicator?_=1635176419874 200
+[Mon, 25 Oct 2021 15:40:24 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_users?_=1635176419875 200
+[Mon, 25 Oct 2021 15:40:24 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/pouchdb-favicon.png 200
+[Mon, 25 Oct 2021 15:40:24 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/fonts/fontawesome-webfont.woff 200
+[Mon, 25 Oct 2021 15:40:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_all_dbs?_=1635176419876 200
+[Mon, 25 Oct 2021 15:40:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_replicator?_=1635176419877 200
+[Mon, 25 Oct 2021 15:40:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_users?_=1635176419878 200
+[Mon, 25 Oct 2021 15:40:44 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_membership 200
+[Mon, 25 Oct 2021 15:40:44 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_membership 304
+[Mon, 25 Oct 2021 15:40:46 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_all_dbs?_=1635176419879 200
+[Mon, 25 Oct 2021 15:40:46 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_replicator?_=1635176419880 200
+[Mon, 25 Oct 2021 15:40:46 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_users?_=1635176419881 200
+[Mon, 25 Oct 2021 15:41:00 GMT] [info] [<0.000.0>] 127.0.0.1 - - PUT /gentuman 201
+[Mon, 25 Oct 2021 15:41:00 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22_design%2F%22&endkey=%22_design0%22&include_docs=true&limit=501 200
+[Mon, 25 Oct 2021 15:41:00 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 200
+[Mon, 25 Oct 2021 15:41:01 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22%22&endkey=%22%E9%A6%99%22&limit=30&_=1635176419882 200
+[Mon, 25 Oct 2021 15:41:01 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/couch-watermark.png 200
+[Mon, 25 Oct 2021 15:41:03 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 304
+[Mon, 25 Oct 2021 15:42:04 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 304
+[Mon, 25 Oct 2021 15:42:07 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 304
+[Mon, 25 Oct 2021 15:42:18 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_active_tasks 200
+[Mon, 25 Oct 2021 15:42:18 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_all_dbs?_=1635176419883 200
+[Mon, 25 Oct 2021 15:42:18 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_replicator?_=1635176419884 200
+[Mon, 25 Oct 2021 15:42:18 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_users?_=1635176419885 200
+[Mon, 25 Oct 2021 15:42:18 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman?_=1635176419886 200
+[Mon, 25 Oct 2021 15:42:20 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22_design%2F%22&endkey=%22_design0%22&include_docs=true&limit=501 304
+[Mon, 25 Oct 2021 15:42:20 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 304
+[Mon, 25 Oct 2021 15:42:20 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22%22&endkey=%22%E9%A6%99%22&limit=30&_=1635176419887 200
+[Mon, 25 Oct 2021 15:42:33 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/ 304
+[Mon, 25 Oct 2021 15:42:34 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/css/styles-a9623008fc27e79da2388441deeacfab.css 304
+[Mon, 25 Oct 2021 15:42:34 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/js/bundle-34997e32896293a1fa5d71f79eb1b4f7.js 304
+[Mon, 25 Oct 2021 15:42:35 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_session 304
+[Mon, 25 Oct 2021 15:42:35 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_session 304
+[Mon, 25 Oct 2021 15:42:35 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET / 304
+[Mon, 25 Oct 2021 15:42:36 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/pouchdb-site.png 304
+[Mon, 25 Oct 2021 15:42:36 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/fonts/fauxtonicon5.woff 304
+[Mon, 25 Oct 2021 15:42:36 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22_design%2F%22&endkey=%22_design0%22&include_docs=true&limit=501 304
+[Mon, 25 Oct 2021 15:42:36 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?limit=21 304
+[Mon, 25 Oct 2021 15:42:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/fonts/fontawesome-webfont.woff 304
+[Mon, 25 Oct 2021 15:42:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /gentuman/_all_docs?startkey=%22%22&endkey=%22%E9%A6%99%22&limit=30&_=1635176555125 200
+[Mon, 25 Oct 2021 15:42:37 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/couch-watermark.png 304
+[Mon, 25 Oct 2021 15:42:38 GMT] [info] [<0.000.0>] 127.0.0.1 - - GET /_utils/dashboard.assets/img/pouchdb-favicon.png 200
+[Mon, 25 Oct 2021 15:43:22 GMT] [info] [<0.000.0>] pouchdb-server has started on http://127.0.0.1:3000/
+[Mon, 25 Oct 2021 15:43:22 GMT] [info] [<0.000.0>] navigate to http://127.0.0.1:3000/_utils for the Fauxton UI.

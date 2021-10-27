@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="Title" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>
+          <span>{{ row.title }}</span>
           <el-tag>{{ row.type | typeFilter }}</el-tag>
         </template>
       </el-table-column>

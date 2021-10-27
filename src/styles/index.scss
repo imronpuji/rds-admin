@@ -189,3 +189,58 @@ aside {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+.el-dialog {
+  width:100% !important;
+  height:100% !important;
+  margin:0px !important;
+  padding : 0 !important;
+  overflow : auto !important;
+}
+
+el-form-item__label {
+  width:0px !important
+}
+.k {
+  margin-right:50px !important
+}
+
+.el-icon-close:before {
+    color: white;
+    background: blue;
+    padding: 10px;
+}
+
+.tags-view-wrapper .tags-view-item .el-icon-close:before {
+    -webkit-transform: scale(0.6);
+    transform: scale(0.6);
+    display: none !important;
+    vertical-align: -3px;
+}
+
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-footer .el-button--default + .el-button--primary span {
+  display: none
+}
+
+.dialog-footer .el-button--default + .el-button--primary:after {
+  content: 'Simpan'
+}
+
+.rightPanel .handle-button {
+  display:none !important;
+}
+
+#v-money-spinner {
+  height:36px;
+  border : 1px solid rgba(0,0,0,0.6) !important;
+}
+
+errLog-container {
+  display:none !important
+}

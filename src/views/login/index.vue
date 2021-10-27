@@ -48,16 +48,15 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div style="position:relative">
-        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
-        </el-button>
-      </div>
+
+      <el-button style="width:100%;margin:0"  type="primary" @click="showDialog=true">
+        Daftar
+      </el-button>
     </el-form>
     <!-- end Login form -->
 
     <!-- dialog register form -->
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
+    <el-dialog title="Daftar" :visible.sync="showDialog">
       <el-form ref="registerForm" style="background:rgba(0,0,0,0.8)" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on" label-position="left">
 
         <div class="title-container">
@@ -266,10 +265,13 @@ export default {
           data.then((res) => {
             Message('Berhasil Silahkan Login!!')
             this.$router.push({ path: '/login', query: this.otherQuery })
+            this.showDialog = false
             this.loading = false
           }).catch((err) => {
             Message('Failed!!')
             this.loading = false
+            this.showDialog = false
+            
           })
         } else {
           console.log('error submit!!')

@@ -1,7 +1,7 @@
 <template>
 <div class="app-container">
     <div class="filter-container">
-    <el-input v-model="search" placeholder="Cari" style="width: 200px;margin-right: 10px;" class="filter-item" />
+        <el-input v-model="search" placeholder="Cari" style="width: 200px;margin-right: 10px;" class="filter-item" />
 
         <el-button class="filter-item" style="" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
@@ -18,33 +18,33 @@
         </el-button>
     </div>
 
-    <el-table :key="tableKey" v-loading="listLoading" :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))" :default-sort="{prop:'id'}" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
-        <el-table-column sortable label="ID" prop="cashin" align="center" width="80">
+    <el-table :key="tableKey" v-loading="listLoading" :data="list.filter(({contact}) => !search || contact.name.toLowerCase().includes(search.toLowerCase()))" border fit highlight-current-row style="width: 100%;" @sort-change="sortChange">
+        <el-table-column sortable prop="cashin" label="ID" align="center" width="80">
             <template slot-scope="{row}">
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Supplier" min-width="150px" sortable prop="name">
+        <el-table-column label="Customer" min-width="150px">
             <template slot-scope="{row}">
-                <span >{{ row.contact != null ? row.contact.name : ''  }}</span>
+                <span v-if="row.contact != null">{{ row.contact.name }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Tagihan" width="150px" align="center" sortable prop="total">
+        <el-table-column label="Total Tagihan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.total) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jumlah dibayar" width="150px" align="center" sortable prop="paid">
+        <el-table-column label="Jumlah Bayar" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.paid) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Potongan" width="150px" align="center" sortable prop="discount">
+        <el-table-column label="Potongan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.discount) }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Hutang" width="150px" align="center" sortable prop="debt">
+        <el-table-column label="Kekurangan" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ handleCurrency(row.debt) }}</span>
             </template>
@@ -53,9 +53,6 @@
             <template slot-scope="{row,$index}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.debt > 0" type="primary" size="mini" @click="handleUpdate(row)">
-                        Bayar
-                    </el-button>
                     <div slot="reference" class="name-wrapper">
                         <el-tag size="medium">Aksi</el-tag>
                     </div>
@@ -65,33 +62,49 @@
                     <br>
                     <br>
                     <el-button size="mini" type="warning">
-                        <router-link :to="'/pembelian/detail/' + row.id">Detail</router-link>
-                    </el-button>
-
-                    <el-button size="mini" type="warning">
-                        <router-link :to="'/kredit/detail/' + row.id">Detail Kredit</router-link>
+                        <router-link :to="'/pesanan/detail/' + row.id">Detail</router-link>
                     </el-button>
                 </el-popover>
+
             </template>
         </el-table-column>
-          <el-table-column label="Staff" width="150px" align="center" sortable prop="staff">
+        <el-table-column label="Cetak" width="80px" align="center">
             <template slot-scope="{row}">
-                <span>{{ row.staff }}</span>
+
+                <el-popover trigger="hover" placement="top">
+                    <el-button type="warning" size="mini">
+                        <router-link target="_blank" :to="'/penjualan/nota/' + row.id"> Nota</router-link>
+                    </el-button>
+                    <div slot="reference" class="name-wrapper">
+                        <el-tag size="medium">Cetak</el-tag>
+                    </div>
+                </el-popover>
+
             </template>
         </el-table-column>
-        <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="payment_due">
+        <el-table-column label="Status" width="150px" align="center" sortable prop="cashin">
+            <template slot-scope="{row}">
+                <span>{{ row.pending == 1 ? 'Belum' : 'sudah' }}</span>
+            </template>
+        </el-table-column>
+<!--         <el-table-column label="Jatuh Tempo" width="150px" align="center" sortable prop="cashin">
             <template slot-scope="{row}">
                 <span>{{ row.payment_due }}</span>
             </template>
-        </el-table-column>
-        <el-table-column label="Date" width="150px" align="center" sortable prop="date">
+        </el-table-column> -->
+        <el-table-column width="150px" align="center" prop="date" label="Date" sortable column-key="date" :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]" :filter-method="filterHandler">
             <template slot-scope="{row}">
                 <span>{{ row.date }}</span>
             </template>
         </el-table-column>
-         <el-table-column label="Kas" width="150px" align="center">
+        <el-table-column label="Staff" width="150px" align="center">
             <template slot-scope="{row}">
-                <span>{{ row.cashout.name }}</span>
+                <span>{{ row.staff }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="Kas" width="150px" align="center">
+            <template slot-scope="{row}">
+                <span>{{ row.cashin.name }}</span>
             </template>
         </el-table-column>
     </el-table>
@@ -99,23 +112,23 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-        <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
-            <el-form-item class="k" label="Supplier" v-if="dialogStatus == 'create'">
+        <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="180px" style="width: 100% !important; margin-left:50px;" :inline="true">
+            <el-form-item class="k" label="Customer" v-if="dialogStatus == 'create'">
                 <el-select filterable v-model="contact_id" required class="filter-item" placeholder="Please select" @change="filterProductPrice()">
                     <el-option v-for="item in kontak" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
-                <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi" >
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item class="k" label="Jatuh Tempo">
+<!--             <el-form-item class="k" label="Jatuh Tempo">
                 <el-date-picker v-model="jatuh_tempo" type="date" format="dd-MM-yyyy" placeholder="Jatuh Tempo">
                 </el-date-picker>
+            </el-form-item> -->
+            <el-form-item class="k" label="Tgl Transaksi" v-if="dialogStatus == 'create'">
+                <el-date-picker v-model="dates" type="date" format="dd-MM-yyyy" placeholder="Tanggal Transaksi">
+                </el-date-picker>
             </el-form-item>
-
-            <div v-for="(all, index) in kasIn.all" style="width:100%; padding-left:4px; display:flex; flex-wrap:wrap" v-if="dialogStatus == 'create'">
-                <el-form-item class="k" :label="index == 0 ? 'Barang' : ''">
+            
+            <div v-if="dialogStatus == 'create'" v-for="(all, index) in kasIn.all" style="display:flex; flex-wrap: wrap; width:100% !important">
+                <el-form-item class="k" :label="index == 0 ? 'Harga Barang' : ''">
                     <el-select v-model="all.product_id" filterable placeholder="Select" @change="onChangeProduct(index)">
                         <el-option v-for="item in product" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
@@ -124,36 +137,39 @@
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
                     <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
-                <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''">
-                    <v-money-spinner v-bind="config" v-model="all.harga" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
+                    <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text" placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
+                    <v-money-spinner v-else v-bind="config" v-model="all.harga" readonly required type="text" placeholder="Harga Satuan" @change="onChangeQty(index)"></v-money-spinner>
                 </el-form-item>
-                <el-form-item class="k" :label="index == 0 ? 'Sub Total' : ''">
-                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
+                <el-form-item class="k" :label="index == 0 ? 'Sub Total':''">
+                    <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
-                    <el-button v-if="index != 0" style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
+                    <el-button  v-if="index != 0" style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
                         Hapus
                     </el-button>
                 </el-form-item>
             </div>
 
-            <el-form-item class="k" label="Bayar Dengan">
+            <el-form-item class="k" label="Masuk Ke Kas">
                 <el-select v-model="cashout_id" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
                     <el-option v-for="item in kas" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
             <el-form-item class="k" label="Jumlah Pembayaran">
-                <v-money-spinner placeholder="Rp 0" v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+                <v-money-spinner v-model="jumlah_bayar" v-bind="config" @change="handleChangeText()" placeholder="Rp 0"></v-money-spinner>
             </el-form-item>
-            <el-form-item class="k" label="Potongan"  v-if="dialogStatus == 'create'">
-                <v-money-spinner v-model="discount"placeholder="Rp 0" v-bind="config" @change="handleChangeText()"></v-money-spinner>
+             <el-form-item class="k" label="Potongan"  v-if="dialogStatus == 'create'">
+                <v-money-spinner v-model="discount" @change="handleChangeText()" placeholder="Rp 0" v-bind="config"></v-money-spinner>
             </el-form-item>
 
-            <h3 v-if="total_kasIn != ''"> Total : {{ handleCurrency(total_kasIn) }}</h3>
+
+            <h3 v-if="total_kasIn != ''"> Total Tagihan : {{ handleCurrency(total_kasIn) }}</h3>
             <h3 v-if="kurang_bayar != ''"> Kekurangan : {{ handleCurrency(kurang_bayar) }}</h3>
             <h3 v-if="sisa_bayar != ''"> Kembalian : {{ handleCurrency(sisa_bayar) }}</h3>
         </el-form>
-
+        <!-- multiple input -->
+        </el-form>
         <div slot="footer" class="dialog-footer" style="display:flex; flex-wrap:wrap; justify-content:center">
             <el-button style="margin:20px 10px" type="primary" @click="addFind" v-if="dialogStatus == 'create'">
                 Tambah Produk
@@ -193,10 +209,10 @@ import {
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
+import checkPermission from '@/utils/permission' // 权限判断函数
 import {
     mapGetters
 } from 'vuex'
-import checkPermission from '@/utils/permission' // 权限判断函数
 
 const calendarTypeOptions = [{
         key: 'cash',
@@ -240,41 +256,25 @@ export default {
             'name',
             'avatar',
             'roles'
-        ])
+        ]),
+
     },
 
     data() {
         return {
-            discount : [],
-            id : '',
+
             start: '',
-            index_before: '',
             end: '',
-            sisa_bayar : [],
-            kurang_bayar : [],
-            names : '',
-            jatuh_tempo: '',
-            jumlah_bayar: [],
             dates: '',
-            category: '',
-            kontak: [],
-            kas: [],
-            search: '',
-            product: [],
-            contact_id: "",
-            cashout_id: "",
-            satuan: '',
-            producttype: '',
-            jenis_barang: '',
-            keterangan: '',
-            selling_price: '',
-            purchase_price: '',
-            qty: '',
-            unit: '',
-            from: '',
-            to_item: '',
-            total_kasIn: '',
-            pemasukan: '',
+            discount : [],
+            jatuh_tempo: '',
+            qty_before: '',
+            index_before: '',
+            Pembayaran_sebelum: '',
+            jumlah_bayar: [],
+            kurang_bayar: '',
+            sisa_bayar: '',
+            kembalian: '',
             config: {
                 spinner: false,
                 step: 10,
@@ -287,11 +287,31 @@ export default {
                 masked: false,
                 allowBlank : true
             },
+            category: '',
+            kontak: [],
+            kas: [],
+            search: '',
+            product: [],
+            contact_id: "",
+            cashout_id: "",
+            satuan: '',
+            producttype: '',
+            hutang: '',
+            jenis_barang: '',
+            keterangan: '',
+            selling_price: '',
+            purchase_price: '',
+            qty: '',
+            unit: '',
+            from: '',
+            to_item: '',
+            total_kasIn: '',
+            pemasukan: '',
             kasIn: {
                 all: [{
                     product_id: '',
                     total: [],
-                    qty: [],
+                    qty: '',
                     harga: []
                 }]
             },
@@ -299,6 +319,7 @@ export default {
             list: null,
             total: 0,
             listLoading: true,
+            loading: false,
             listQuery: {
                 page: 1,
                 limit: 20,
@@ -334,7 +355,7 @@ export default {
             dialogStatus: '',
             textMap: {
                 update: 'Edit',
-                create: 'Pembelian'
+                create: 'Pesanan Penjualan'
             },
             dialogPvVisible: false,
             pvData: [],
@@ -352,7 +373,6 @@ export default {
                 }]
             },
             downloadLoading: false,
-            loading: false,
         }
     },
     created() {
@@ -360,14 +380,14 @@ export default {
         let DD = new Date().getDate()
         let MM = new Date().getMonth() + 1
         let YYYY = new Date().getFullYear()
-
-        this.dates = `${YYYY}-${MM}-${DD}`
         this.jatuh_tempo = `${YYYY}-${MM}-${DD}`
+        this.dates = `${YYYY}-${MM}-${DD}`
     },
     methods: {
         checkPermission,
         handleChangeText(i) {
-             if (this.dialogStatus == 'create') {
+
+            if (this.dialogStatus == 'create') {
 
                 if (this.jumlah_bayar +  this.discount > this.total_kasIn || this.jumlah_bayar + this.discount == this.total_kasIn ) {
                     this.sisa_bayar = (this.jumlah_bayar + this.discount) - this.total_kasIn 
@@ -376,24 +396,39 @@ export default {
                 }
 
                  else {
-                    this.total_kasIn = this.total_kasIn < 1 ? 0 : this.total_kasIn
-                    this.jumlah_bayar = this.jumlah_bayar < 1 ? 0 : this.jumlah_bayar
-                    this.discount = this.discount < 1 ? 0 : this.discount
                     this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.discount) 
 
                     this.sisa_bayar = ''
 
                 }
             } else {
-                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum + this.discount)
+                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
             }
+        },
+        filterHandler(value, row, column) {
+            const property = column['property'];
+            return row[property] === value;
+        },
+        deleteFormProdukByIndex(i){
+            this.kasIn.all = this.kasIn.all.filter((val, index) => {
+                if(i != index){
+                    return val;
+                }
+            })
+
         },
         getList() {
             this.listLoading = true
-            axios.post('/stock/in').then(response => {
+            axios.get('/stock/pending/out').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    val['debt'] = val.total - (val.paid + val.discount)
+                    if(val.paid == 0 && val.discount == 0){
+                        val['debt'] = val.total
+                    }
+
+                    else {
+                        val['debt'] = val.total - val.paid - val.discount
+                    }
                     return val;
                 })
                 this.total = response.data.stocktransaction.length
@@ -404,24 +439,25 @@ export default {
                 }, 1.5 * 1000)
             })
             axios.get('/akun/iscash').then(response => {
-                console.log(response)
-                this.kas = response.data.akun
+                if (this.roles == 'kasir') {
+                    this.kas = response.data.akun.filter((val) => val.name == "Kas Besar")
+                } else {
+                    this.kas = response.data.akun
+
+                }
             })
 
-            axios.get('/contact/supplier').then(response => {
-                console.log(response)
+            axios.get('/contact/customer').then(response => {
+                console.log(response.data);
                 this.kontak = response.data.contact
             })
 
-            axios.get('/product/goods').then(response => {
-                console.log(response)
-                this.product = response.data.product.filter((val) => {
-                    if(val.category != 'service'){
-                        return val
-                    }
-                })
+            axios.get('/product').then(response => {
+
+                this.product = response.data.product
             })
         },
+
         handleCurrency(number) {
             const idr = new Intl.NumberFormat('in-IN', {
                 style: 'currency',
@@ -429,16 +465,6 @@ export default {
             }).format(number)
             return idr
         },
-
-         deleteFormProdukByIndex(i){
-            this.kasIn.all = this.kasIn.all.filter((val, index) => {
-                if(i != index){
-                    return val;
-                }
-            })
-
-        },
-
         handleFilter() {
             this.listQuery.page = 1
             this.getList()
@@ -458,6 +484,9 @@ export default {
             if (prop === 'id') {
                 this.sortByID(order)
             }
+        },
+        confirm() {
+            alert('kkj')
         },
         sortByID(order) {
             if (order === 'ascending') {
@@ -491,43 +520,32 @@ export default {
                 qty: '',
                 harga: []
             }]
+            this.kurang_bayar = ''
+            this.sisa_bayar = ''
+            this.jumlah_bayar = []
+            this.index_before = ''
             this.total_kasIn = ''
         },
         createData() {
-            if(this.jumlah_bayar > 0 && this.cashout_id == ''){
-                 this.$notify({
-                    title: 'Gagal',
-                    message: 'Anda Harus Memilih Kas',
-                    type: 'warning',
-                    duration: 2000
-                })
-
-                return false
-            } 
-
+            // this.$refs['dataForm'].validate((valid) => {
+            //   if (valid) {
+            //     this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+            //     this.temp.author = 'vue-element-admin'
+            //     createArticle(this.temp).then(() => {
+            //
             this.loading = true
+
             const total = []
             const qty = []
             const product_id = []
-            const purchase_price = []
+            const selling_price = []
             this.kasIn.all.map((val, index) => {
                 qty.push(val.qty)
+                selling_price.push(val.harga)
                 total.push(parseInt(val.total))
-                purchase_price.push(parseInt(val.harga))
                 product_id.push(val.product_id)
             })
-                console.log(product_id)
-            if(product_id == []){
-                 this.$notify({
-                    title: 'Gagal',
-                    message: 'Anda Harus Menambahkan Barang',
-                    type: 'warning',
-                    duration: 2000
-                })
-
-                return false
-            } 
-            let paid = ''
+            let paid = 0
 
             if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
                 paid = 0
@@ -560,27 +578,17 @@ export default {
              if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
                 paid = 0
             }
-            if(this.jumlah_bayar > 0 && this.cashout_id == ''){
-                 this.$notify({
-                    title: 'Gagal',
-                    message: 'Anda Harus Memilih Kas',
-                    type: 'warning',
-                    duration: 2000
-                })
-
-                return false
-            }
             const data = {
                 contact_id: this.contact_id,
-                cashout_id: this.cashout_id == ''  ? '10' : this.cashout_id,
+                cashin_id: this.cashout_id,
                 product_id,
                 qty,
+                date: this.dates,
                 total,
+                selling_price,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
                 paid : paid.length == 0 ? 0 : paid,
-                purchase_price,
-                date: this.dates,
                 staff: this.name
             }
             console.log(data)
@@ -589,12 +597,12 @@ export default {
                     allowDots: true
                 }
             )
-            axios.post('/stock/in/create', encodedValues)
-                .then((response) => {
-                    this.loading = false
 
+            axios.post('/stock/out/pending/create', encodedValues)
+                .then((response) => {
                     this.getList()
                     this.dialogFormVisible = false
+                    this.loading = false
                     this.$notify({
                         title: 'Success',
                         message: 'Created Successfully',
@@ -603,61 +611,69 @@ export default {
                     })
                 })
                 .catch((err) => {
-                    this.loading = false
-
                     this.listLoading = false
-                    this.$notify({
-                        title: 'Gagal',
-                        message: ' Anda Belum Melengkapi Data',
-                        type: 'warning',
-                        duration: 2000
-                    })
+                    this.loading = false
+                    if(err.response.status == 400){
+                         this.$notify({
+                            title: 'Gagal',
+                            message: err.response.data.error,
+                            type: 'warning',
+                            duration: 2000
+                        })   
+                    } else {
+                        
+                        this.$notify({
+                            title: 'Gagal',
+                            message: 'Anda Belum Melengkapi Data',
+                            type: 'warning',
+                            duration: 2000
+                        })
+
+                    }
+
                 })
             // }
             // })
         },
         handleUpdate(row) {
-            console.log(row.id)
+            // this.name = row.contact.name
             this.id = row.id
             // this.unit = row.unit
             // this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
             // this.qty = row.qty
 
             this.total_kasIn = row.total
-            this.cashin_id = row.cashin_id
+            this.cashout_id = row.cashin_id
             this.jatuh_tempo = row.payment_due
             this.total_kasIn = row.total
-            this.kurang_bayar = row.debt
-            this.discount = row.discount 
+            this.kurang_bayar = row.total - row.paid
             this.dialogStatus = 'update'
             this.Pembayaran_sebelum = row.paid
             this.dialogFormVisible = true
             this.$nextTick(() => {
                 this.$refs['dataForm'].clearValidate()
             })
-            this.ids = row.id
-            this.names = row.cashout.name
-            this.selling_price = row.selling_price
-            this.purchase_price = row.purchase_price
-            this.unit = row.unit
-            this.qty = row.qty
-            this.dialogStatus = 'update'
-            this.dialogFormVisible = true
-
         },
         updateData() {
+            if (this.kurang_bayar < this.jumlah_bayar) {
+                this.$notify({
+                    title: 'Gagal',
+                    message: 'Jumlah Pembayaran Melebihi Jumlah Hutang',
+                    type: 'warning',
+                    duration: 2000
+                })
+                return false
+            }
             this.listLoading = true
             this.loading = true
             const data = {
-                cashout_id: this.cashout_id,
-                total: this.jumlah_bayar,
                 payment_due: this.jatuh_tempo,
+                cashin_id: this.cashout_id,
+                total: this.jumlah_bayar,
             }
-
-            axios.put(`/stock/in/paid/${this.ids}`, data)
+            console.log(data)
+            axios.put(`/stock/out/paid/${this.id}`, data)
                 .then((response) => {
-                    this.loading = false
-
                     this.getList()
                     this.dialogFormVisible = false
                     this.$notify({
@@ -668,47 +684,8 @@ export default {
                     })
                     throw new Error('Something went badly wrong!')
                 })
-                .catch((err) => {
-                    this.loading = false
-                    if(err.response.status == 400){
-                        this.$notify({
-                            title: 'Gagal',
-                            message: err.response.data.error,
-                            type: 'warning',
-                            duration: 2000
-                        })
-                    } else {
-                        this.$notify({
-                            title: 'Gagal',
-                            message: 'Server Error',
-                            type: 'warning',
-                            duration: 2000
-                        })
-                    }
-
-                })
+                .catch((err) => err)
         },
-
-        filterProductPrice(){
-            axios.get(`/product/goods?contact_id=${this.contact_id}`).then(response => {
-                console.log(response.data);
-                this.kasIn.all = {}
-                this.kasIn.all = 
-                [{
-                    product_id: '',
-                    total: 0,
-                    qty: '',
-                    harga: 0
-                }];
-  
-                this.product = response.data.product.filter((val) => {
-                    if(val.category != 'service'){
-                        return val
-                    }
-                })
-            })
-        },
-
         handleDelete(row, index) {
             this.listLoading = true
 
@@ -717,7 +694,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 type: 'warning'
             }).then(() => {
-                axios.delete(`/stock/transaction/delete/${row.id}`)
+                axios.delete(`/stock/pending/delete/${row.id}`)
                     .then((response) => {
                         this.listLoading = false
 
@@ -745,7 +722,6 @@ export default {
                     message: 'Delete canceled'
                 });
             });
-
         },
         handleFetchPv(pv) {
             fetchPv(pv).then(response => {
@@ -756,13 +732,13 @@ export default {
         handleDownload() {
             this.downloadLoading = true
             import('@/vendor/Export2Excel').then(excel => {
-                const tHeader = ['id', 'supplier', 'pembayaran', 'staff', 'date']
-                const filterVal = ['id', 'name', 'total', 'staff', 'created_at']
+                const tHeader = ['id', 'Customer', 'Total Tagihan', 'Jumlah Bayar', 'Hutang', 'Jatuh Tempo', 'staff', 'tanggal']
+                const filterVal = ['id', 'name', 'total', 'paid', 'hutang', 'payment_due', 'staff', 'created_at']
                 const data = this.formatJson(filterVal)
                 excel.export_json_to_excel({
                     header: tHeader,
                     data,
-                    filename: 'pembelian'
+                    filename: 'penjualan'
                 })
                 this.downloadLoading = false
             })
@@ -770,6 +746,7 @@ export default {
         formatJson(filterVal) {
             return this.list.map(v => filterVal.map(j => {
                 v['name'] = v.contact.name
+                v['hutang'] = v.total - v.paid
                 return v[j]
             }))
         },
@@ -778,26 +755,27 @@ export default {
             return sort === `+${key}` ? 'ascending' : 'descending'
         },
         onChangeCash(event) {
-            console.log(event)
+
         },
         onChangeModal(event) {
-            console.log(event)
+
         },
         addFind() {
-            console.log(this.kasIn.all)
+
             this.kasIn.all.push({
                 product_id: '',
-                total: [],
+                total: '',
                 qty: '',
                 harga: []
             })
+
         },
         deleteFind() {
             this.kasIn.all.pop();
         },
         onChangeTotal() {
             const total = this.kasIn.all.reduce(function (accumulator, item) {
-                console.log(item.total)
+
                 return accumulator + parseInt(item.total)
             }, 0)
             this.total_kasIn = total
@@ -810,10 +788,10 @@ export default {
                     return val
                 }
             })
-            this.kasIn.all[index]['qty'] = '';
-            this.kasIn.all[index]['harga'] = produk[0]['purchase_price']
-            this.kasIn.all[index]['total'] = 0;
-            // parseInt(produk[0]['purchase_price']) > 0 && parseInt(produk[0]['qty']) > 0 ? parseInt(produk[0]['purchase_price']) *  parseInt(produk[0]['qty']) : 0
+            this.kasIn.all[index]['qty'] = ''
+            this.kasIn.all[index]['harga'] = produk[0]['selling_price']
+            this.kasIn.all[index]['total'] = 0
+            // parseInt(produk[0]['selling_price'])
         },
 
         handleFilterByDate() {
@@ -822,12 +800,9 @@ export default {
                 start_date: this.start,
                 end_date: this.end
             }
-            axios.post(`/stock/in`, data).then(response => {
-
-                this.list = response.data.stocktransaction.map(val => {
-                    val['debt'] = (val.total - val.paid - val.discount) < 0 ? 0 : val.total - val.paid - val.discount 
-                    return val
-                })
+            axios.post(`/stock/out`, data).then(response => {
+                console.log(response)
+                this.list = response.data.stocktransaction
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
@@ -837,31 +812,47 @@ export default {
             })
 
         },
+        filterProductPrice(){
+            axios.get(`/product/all?contact_id=${this.contact_id}`).then(response => {
+                console.log(response.data);
+                this.kasIn.all = {}
+                this.kasIn.all = 
+                [{
+                    product_id: '',
+                    total: 0,
+                    qty: 0,
+                    harga: 0
+                }];
+  
+                this.product = response.data.product
+            })
+        },
+
         onChangeQty(index) {
-
-            // let qty = parseFloat(
-            //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            // ).toFixed(2);
-            // this.kasIn.all[index]['qty'] = parseFloat(
-            //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
-            // ).toFixed(2)
-
-            let qty = 0;
-            if(this.kasIn.all[index]['qty'].length > 3){
-
-                qty = this.kasIn.all[index]['qty'].replace('.', "")
+            if (this.kasIn.all[index]['qty'] < -1000) {
+                this.kasIn.all[index]['qty'] = 0
             } else {
-                qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
+                let qty = 0;
+                if(this.kasIn.all[index]['qty'].length > 3){
 
+                    qty = this.kasIn.all[index]['qty'].replace('.', "")
+                } else {
+                    qty = this.kasIn.all[index]['qty'].replace(/,/g, ".")
+                    this.kasIn.all[index]['qty'] = qty
+                }
+                
+                
+                // this.kasIn.all[index]['qty'] = 
+                //     this.kasIn.all[index]['qty'].replace(/,/g, ".")
+                
+                const result = qty * parseInt(this.kasIn.all[index]['harga'])
+                this.kasIn.all[index]['total'] = result
+                const total = this.kasIn.all.reduce(function (accumulator, item) {
+                    console.log(item.total)
+                    return accumulator + parseInt(item.total)
+                }, 0)
+                this.total_kasIn = total
             }
-            this.kasIn.all[index]['qty'] = qty;
-            const result = qty * parseInt(this.kasIn.all[index]['harga'])
-            this.kasIn.all[index]['total'] = result
-            const total = this.kasIn.all.reduce(function (accumulator, item) {
-                console.log(item.total)
-                return accumulator + parseInt(item.total)
-            }, 0)
-            this.total_kasIn = total
         }
 
     }

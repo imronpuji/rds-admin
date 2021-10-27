@@ -28,7 +28,7 @@ style="width: 100%;"
 </el-table-column>
 <el-table-column label="Nama Barang" min-width="150px">
     <template slot-scope="{row}">
-      <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+      <span>{{ row.name }}</span>
   </template>
 </el-table-column>
 <el-table-column label="Date" width="150px" align="center" sortable prop="date">
@@ -163,7 +163,7 @@ data() {
     dialogStatus: '',
     textMap: {
         update: 'Edit',
-        create: 'Create'
+        create: 'Kategori'
     },
     dialogPvVisible: false,
     pvData: [],
@@ -356,24 +356,20 @@ handleFetchPv(pv) {
 handleDownload() {
   this.downloadLoading = true
   import('@/vendor/Export2Excel').then(excel => {
-    const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-    const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+    const tHeader = ['id','Nama', 'Tanggal']
+    const filterVal = ['id','name', 'created_at']
     const data = this.formatJson(filterVal)
     excel.export_json_to_excel({
       header: tHeader,
       data,
-      filename: 'table-list'
+      filename: 'Kategori'
   })
     this.downloadLoading = false
 })
 },
 formatJson(filterVal) {
   return this.list.map(v => filterVal.map(j => {
-    if (j === 'timestamp') {
-      return parseTime(v[j])
-  } else {
-      return v[j]
-  }
+     return v[j]
 }))
 },
 getSortClass: function(key) {
