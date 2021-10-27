@@ -891,8 +891,8 @@ export default {
         },
 
         onChangeQty(index) {
-            if (this.kasIn.all[index]['qty'] > this.qty_before) {
-                this.kasIn.all[index]['qty'] = this.qty_before
+            if (this.kasIn.all[index]['qty'] > this.qty_before || this.kasIn.all[index]['qty'] == this.qty_before  ) {
+                this.kasIn.all[index]['qty'] = parseInt(this.qty_before)
                 this.kasIn.all[index]['total'] = this.qty_before * this.kasIn.all[index]['harga']
 
             } else {
