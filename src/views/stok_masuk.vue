@@ -562,7 +562,7 @@ export default {
             }
             const data = {
                 contact_id: this.contact_id,
-                cashout_id: this.cashout_id,
+                cashout_id: this.cashout_id == "" ? '10' : this.cashout_id,
                 product_id,
                 qty,
                 total,
