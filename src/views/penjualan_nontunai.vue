@@ -422,12 +422,13 @@ export default {
             axios.get('/stock/pending/out').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    if(val.paid == 0){
-                    val['debt'] = 0
-
-                    } else {
+                    if(val.paid == 0 && val.discount == 0){
+                        val['debt'] = val.total
+                    }
+                    
+                    else {
                         val['debt'] = val.total - val.paid - val.discount
-                    } 
+                    }
                     return val;
                 })
                 this.total = response.data.stocktransaction.length

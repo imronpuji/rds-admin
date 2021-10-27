@@ -384,8 +384,8 @@ export default {
             axios.post('/stock/pending/in').then(response => {
                 console.log(response)
                 this.list = response.data.stocktransaction.map((val) => {
-                    if(val.paid == 0){
-                    val['debt'] = 0
+                    if(val.paid == 0 && val.discount == 0){
+                    val['debt'] = val.total
 
                     }
 
