@@ -560,9 +560,19 @@ export default {
              if(this.jumlah_bayar > this.total_kasIn && this.discount > this.total_kasIn){
                 paid = 0
             }
+            if(this.jumlah_bayar > 0 && this.cashout_id == ''){
+                 this.$notify({
+                    title: 'Gagal',
+                    message: 'Anda Harus Memilih Kas',
+                    type: 'warning',
+                    duration: 2000
+                })
+
+                return false
+            }
             const data = {
                 contact_id: this.contact_id,
-                cashout_id: this.cashout_id == "" ? '10' : this.cashout_id,
+                cashout_id: this.cashout_id == ''  ? '10' : this.cashout_id,
                 product_id,
                 qty,
                 total,
