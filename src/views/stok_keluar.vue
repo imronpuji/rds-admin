@@ -140,7 +140,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Jumlah Barang' : ''">
-                    <el-input v-model="all.qty" :value="all.qty" required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
+                    <el-input v-model="all.qty"  required type="text" placeholder="Jumlah Barang" @change="onChangeQty(index)" />
                 </el-form-item>
                 <el-form-item class="k" :label="index == 0 ? 'Harga Satuan' : ''" >
                     <v-money-spinner v-if="roles == 'admin'" v-bind="config" v-model="all.harga" required type="text"  placeholder="Rp 0" @change="onChangeQty(index)"></v-money-spinner>
@@ -810,9 +810,9 @@ export default {
 
             this.kasIn.all.push({
                 product_id: '',
-                total: '',
-                qty: [],
-                harga: 0
+                total: [],
+                qty: '',
+                harga: []
             })
 
         },
