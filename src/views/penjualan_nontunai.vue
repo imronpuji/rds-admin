@@ -425,7 +425,7 @@ export default {
                     if(val.paid == 0 && val.discount == 0){
                         val['debt'] = val.total
                     }
-                    
+
                     else {
                         val['debt'] = val.total - val.paid - val.discount
                     }
@@ -545,7 +545,7 @@ export default {
                 total.push(parseInt(val.total))
                 product_id.push(val.product_id)
             })
-            let paid = ''
+            let paid = 0
 
             if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
                 paid = 0
@@ -588,9 +588,10 @@ export default {
                 selling_price,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid,
+                paid : paid.length == 0 ? 0 : paid,
                 staff: this.name
             }
+            console.log(data)
             var encodedValues = qs.stringify(
                 data, {
                     allowDots: true

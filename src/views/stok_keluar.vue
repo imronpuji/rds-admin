@@ -633,7 +633,7 @@ export default {
                 total,
                 discount : this.discount,
                 payment_due: this.jatuh_tempo,
-                paid,
+                paid : paid.length == 0 ? 0 : paid,
                 staff: this.name
             }
             var encodedValues = qs.stringify(
