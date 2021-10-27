@@ -609,6 +609,21 @@ import nestedRouter from './modules/nested'
 ]
 },
 
+{
+    path: '/guides',
+    component: Layout,
+    children: [{
+      path: '/guides',
+      component: () => import('@/views/biaya'),
+      name: 'guides',
+      meta: {
+        title: 'Tutorial',
+        icon: 'money',
+        roles: ['admin', 'kasir']
+    }
+}]
+},
+
 
 {
     path: '/penjualan/surat/jalan/:id',  
