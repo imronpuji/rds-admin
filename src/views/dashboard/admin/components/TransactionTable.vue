@@ -1,7 +1,7 @@
 <template>
   <div>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="Kas" width="195" align="center">
+    <el-table-column label="Kas" width="195" align="left">
       <template slot-scope="scope">
         <span>{{ scope.row.name }}</span>
       </template>
