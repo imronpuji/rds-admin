@@ -53,7 +53,7 @@
             <template slot-scope="{row,$index}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
+                    <el-button v-if="row.debt > 0" type="primary" size="mini" @click="handleUpdate(row)">
                         Bayar
                     </el-button>
                     <div slot="reference" class="name-wrapper">
@@ -687,6 +687,7 @@ export default {
             // this.qty = row.qty
 
             this.total_kasIn = row.total
+            this.jumlah_bayar = []
             this.cashout_id = row.cashin_id
             this.jatuh_tempo = row.payment_due
             this.total_kasIn = row.total

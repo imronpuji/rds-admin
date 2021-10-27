@@ -92,7 +92,9 @@ export default {
           console.log(response)
         let data  = response.data.stocktransaction.map(val => {
           val['debt'] = val.total - val.paid - val.discount
-          return val
+          if(val.debt > 0){
+            return val
+          }
         })
 
         this.list_piutang = data.slice(0,4)
