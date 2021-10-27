@@ -407,7 +407,7 @@ export default {
 
                 }
             } else {
-                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
+                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum + this.discount)
             }
         },
         filterHandler(value, row, column) {
@@ -690,7 +690,8 @@ export default {
             this.cashout_id = row.cashin_id
             this.jatuh_tempo = row.payment_due
             this.total_kasIn = row.total
-            this.kurang_bayar = row.total - row.paid
+            this.kurang_bayar = row.debt
+            this.discount = row.discount 
             this.dialogStatus = 'update'
             this.Pembayaran_sebelum = row.paid
             this.dialogFormVisible = true
@@ -809,7 +810,7 @@ export default {
             this.kasIn.all.push({
                 product_id: '',
                 total: '',
-                qty: '',
+                qty: [],
                 harga: 0
             })
 

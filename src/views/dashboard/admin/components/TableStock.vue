@@ -19,7 +19,7 @@
 
   <br>
   <br>
-  <h4>Data Piutang</h4>
+  <h4>Data Piutang Penjualan</h4>
   <el-table :data="list_piutang" style="width: 100%;padding-top: 15px;">
      <el-table-column label="ID" min-width="36">
       <template slot-scope="scope">

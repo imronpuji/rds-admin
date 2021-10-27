@@ -488,7 +488,7 @@ export default {
             this.total_kasIn = ''
         },
         async createData() {
-            if(this.cashout_id == ''){
+            if(this.cashout_id == '' && this.jumlah_bayar > 0){
                 this.$notify({
                     title: 'Gagal',
                     message: 'Anda Harus Memilih Kas',

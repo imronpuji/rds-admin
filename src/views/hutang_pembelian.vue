@@ -58,7 +58,7 @@
             <template slot-scope="{row,$index}">
 
                 <el-popover trigger="hover" placement="top">
-                    <el-button v-if="row.total != row.paid" type="primary" size="mini" @click="handleUpdate(row)">
+                    <el-button v-if="row.debt >  0" type="primary" size="mini" @click="handleUpdate(row)">
                         Bayar
                     </el-button>
                     <div slot="reference" class="name-wrapper">
@@ -392,7 +392,7 @@ export default {
 
                 }
             } else {
-                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum)
+                this.kurang_bayar = this.total_kasIn - (this.jumlah_bayar + this.Pembayaran_sebelum + this.discount)
             }
         },
         filterHandler(value, row, column) {
@@ -413,8 +413,8 @@ export default {
                 console.log(response)
                 let total_hutang = 0
                 this.list = response.data.stocktransaction.filter((val, i) => {
-                    if(val.total > val.paid){
-                        total_hutang += (val.total - val.paid)
+                    if(val.total > val.paid + val.discount){
+                        total_hutang += (val.total - (val.paid + val.discount))
                         this.total_hutang = total_hutang
                         val['debt'] = val.total - (val.paid + val.discount)
                         return val;
@@ -596,7 +596,8 @@ export default {
             this.cashin_id = row.cashin_id
             this.jatuh_tempo = row.payment_due
             this.total_kasIn = row.total
-            this.kurang_bayar = row.total - row.paid
+            this.kurang_bayar = row.debt
+            this.discount = row.discount 
             this.dialogStatus = 'update'
             this.Pembayaran_sebelum = row.paid
             this.dialogFormVisible = true
