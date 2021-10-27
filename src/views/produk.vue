@@ -409,7 +409,7 @@ export default {
             this.selling_price = row.selling_price
             this.purchase_price = row.purchase_price
             this.unit = row.units
-            this.producttype = row.producttype.id == '' ? row.producttype : row.producttype.id
+            this.producttype = row.producttype != null ? row.producttype.id : ''
             this.qty = row.qty
             this.dialogStatus = 'update'
             this.dialogFormVisible = true
