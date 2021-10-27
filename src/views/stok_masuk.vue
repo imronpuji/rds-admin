@@ -131,7 +131,7 @@
                     <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" min="0.01" step="0.01" max="2500" placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
-                    <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
+                    <el-button v-if="index != 0" style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
                         X
                     </el-button>
                 </el-form-item>
@@ -504,6 +504,7 @@ export default {
 
                 return false
             } 
+
             this.loading = true
             const total = []
             const qty = []
@@ -515,6 +516,17 @@ export default {
                 purchase_price.push(parseInt(val.harga))
                 product_id.push(val.product_id)
             })
+                console.log(product_id)
+            if(product_id == []){
+                 this.$notify({
+                    title: 'Gagal',
+                    message: 'Anda Harus Menambahkan Barang',
+                    type: 'warning',
+                    duration: 2000
+                })
+
+                return false
+            } 
             let paid = ''
 
             if(this.jumlah_bayar < this.total_kasIn && this.discount > this.total_kasIn){
