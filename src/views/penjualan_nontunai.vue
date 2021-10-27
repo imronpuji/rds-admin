@@ -145,8 +145,8 @@
                     <v-money-spinner v-bind="config" disabled v-model="all.total" type="numeric" placeholder="Rp 0" @change="onChangeTotal()"></v-money-spinner>
                 </el-form-item>
                 <el-form-item class="k" :style="index == 0 ? 'margin-top:50px' : ''">
-                    <el-button style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
-                        X
+                    <el-button  v-if="index != 0" style="height:30px"  type="primary" @click="deleteFormProdukByIndex(index)">
+                        Hapus
                     </el-button>
                 </el-form-item>
             </div>
