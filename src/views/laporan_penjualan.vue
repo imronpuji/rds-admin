@@ -18,7 +18,6 @@
             Print
       </el-button>
 
-      
     <div id="printMe">
     <GChart
       type="PieChart"
@@ -26,6 +25,10 @@
       :options="options"
       :data="data"
     />  
+
+    <h3 style="margin-left:20px">Total Penjualan : {{handleCurrency(total_penjualan)}}</h3>
+    <h3 style="margin-left:20px">Produk Terjual : {{total_produk}}</h3>
+      
     <el-table
      
       :data="list"
@@ -71,9 +74,15 @@ export default {
     axios.get('/stock/out/report').then(response => {
       this.list = response.data.stocktransaction
       console.log(response)
+      let total = 0
+      let total_produk = 0
       response.data.stocktransaction.map((val) => {
         this.data.push([val.name, val.substocktransaction_sum_total])
+        total += val.substocktransaction_sum_total
+        total_produk += val.substocktransaction_sum_qty
       })
+      this.total_penjualan = total
+      this.total_produk = total_produk
       
     })
   },
@@ -135,6 +144,8 @@ export default {
     return {
       start : '',
       end : '',
+      total_penjualan : '',
+      total_produk : '',
       list : '',
       data: [['laporan', 'penjualan']],
       options: {
