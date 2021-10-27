@@ -92,10 +92,8 @@ export default {
           console.log(response)
         let data  = response.data.stocktransaction.map(val => {
           val['debt'] = val.total - val.paid - val.discount
-          if(val.debt > 0){
-            return val
-          }
-        })
+          return val
+        }).filter(val => val.debt != 0)
 
         this.list_piutang = data.slice(0,4)
         });
