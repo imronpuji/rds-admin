@@ -610,15 +610,15 @@ import nestedRouter from './modules/nested'
 },
 
 {
-    path: '/guides',
+    path: '/',
     component: Layout,
     children: [{
-      path: '/guides',
-      component: () => import('@/views/biaya'),
+      path: 'guides',
+      component: () => import('@/views/guides'),
       name: 'guides',
       meta: {
         title: 'Tutorial',
-        icon: 'money',
+        icon: 'user',
         roles: ['admin', 'kasir']
     }
 }]
