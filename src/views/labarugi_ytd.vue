@@ -49,7 +49,13 @@
     </div>
     <el-tree :data="listKewajiban" default-expand-all node-key="id" ref="tree" highlight-current :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{ node, data }">
-            <span>{{data.name}}</span>
+            <el-popover v-if="data.name.length > 22" trigger="hover" placement="top">
+                <div slot="reference" class="name-wrapper">
+                    <span>{{data.name.length > 22 ? `${data.name.substring(0,25)}...` : data.name}}</span>
+                </div>
+                <span>{{data.name}}</span>
+            </el-popover>
+            <span v-else>{{data.name}}</span>
             <span v-if='data.valueTotal != 0'>{{ handleCurrency(data.valueTotal)  }}</span>
             <span v-else>{{ handleCurrency(data.total)  }}</span>
         </span>
