@@ -425,8 +425,8 @@ export default {
                 console.log(response)
                 let total_hutang = 0
                 this.list = response.data.stocktransaction.filter((val, i) => {
-                    if(val.total > val.paid){
-                        total_hutang += (val.total - val.paid)
+                    if(val.total > val.paid + val.discount){
+                        total_hutang += (val.total - (val.paid + val.discount))
                         this.total_hutang = total_hutang
                         return val;
                     }
