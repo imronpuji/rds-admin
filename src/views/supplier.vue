@@ -383,8 +383,9 @@ export default {
                 address: this.address,
                 desc: this.desc,
                 contact: this.contact,
-                type: this.tipe,
+                type: this.tipe.id,
             }
+            console.log(data)
             this.loading = true
 
             axios.put(`/contact/edit/${this.id}`, data)
