@@ -52,7 +52,7 @@ style="width: 100%;"
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
         <el-form-item label="Jenis Produk">
-            <el-input v-model="name" placeholder="Nama Barang" />
+            <el-input v-model="name" placeholder="" />
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
