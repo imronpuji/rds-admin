@@ -30,7 +30,7 @@
         <el-table-column label="Kategori" width="150px" align="center" sortable prop="category">
             <template slot-scope="{row}">
                 <span v-if="row.category == 'service'">Jasa</span>
-                <span v-if="row.category == 'barang'">Barang</span>
+                <span v-if="row.category == 'product'">Barang</span>
             </template>
         </el-table-column>
         <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date" v-if="checkPermission(['admin'])">
@@ -82,7 +82,7 @@
              <el-form-item class="k" label="Kategori">
                 <el-select v-model="category">
                     <el-option label="Jasa" value="service" />
-                    <el-option label="Produk" value="product" />
+                    <el-option label="Barang" value="product" />
                 </el-select>
             </el-form-item>
             <el-form-item v-if="category == 'product' || category != 'service'" class="k" label="Harga Beli">
