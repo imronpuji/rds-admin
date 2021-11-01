@@ -17,7 +17,7 @@
                 <span>{{ row.id }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Nama Barang" min-width="150px" sortable prop="name">
+        <el-table-column label="Nama Produk" min-width="150px" sortable prop="name">
             <template slot-scope="{row}">
                 <span>{{ row.name }}</span>
             </template>
@@ -30,7 +30,7 @@
         <el-table-column label="Kategori" width="150px" align="center" sortable prop="category">
             <template slot-scope="{row}">
                 <span v-if="row.category == 'service'">Jasa</span>
-                <span v-if="row.category == 'product'">Produk</span>
+                <span v-if="row.category == 'barang'">Barang</span>
             </template>
         </el-table-column>
         <el-table-column label="Harga Beli" width="150px" align="center" sortable prop="date" v-if="checkPermission(['admin'])">
@@ -48,7 +48,7 @@
                 <span>{{ row.unit == null ? 'unit tidak ada' : row.unit.name }}</span>
             </template>
         </el-table-column>
-        <el-table-column label="Jenis Barang" width="150px" align="center" sortable prop="date">
+        <el-table-column label="Jenis Produk" width="150px" align="center" sortable prop="date">
             <template slot-scope="{row}">
                 <span v-if="row.producttype != null">{{ row.producttype.name }}</span>
             </template>
@@ -76,8 +76,8 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
         <el-form label-position="top" :inline="true" ref="dataForm" :rules="rules" :model="temp" label-width="180px" style="width: 100%; margin-left:50px;">
-            <el-form-item class="k" label="Nama Barang">
-                <el-input v-model="name" placeholder="Nama Barang" />
+            <el-form-item class="k" label="Nama Produk">
+                <el-input v-model="name" placeholder="Nama Produk" />
             </el-form-item>
              <el-form-item class="k" label="Kategori">
                 <el-select v-model="category">
@@ -96,7 +96,7 @@
                     <el-option v-for="item in units" :label="item.name" :value="item.id" />
                 </el-select>
             </el-form-item>
-            <el-form-item  v-if="category == 'product' || category != 'service'" class="k" label="Jenis Barang">
+            <el-form-item  v-if="category == 'product' || category != 'service'" class="k" label="Jenis Produk">
                 <el-select v-model="producttype" required class="filter-item" placeholder="Please select" @change="onChangeModal($event)">
                     <el-option v-for="item in jenis_barang" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
