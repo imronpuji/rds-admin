@@ -800,9 +800,19 @@ export default {
                 start_date: this.start,
                 end_date: this.end
             }
-            axios.post(`/stock/out`, data).then(response => {
+            axios.post(`/stock/pending/out`, data).then(response => {
                 console.log(response)
-                this.list = response.data.stocktransaction
+                this.list = response.data.stocktransaction.map((val) => {
+                    if(val.paid == 0 && val.discount == 0){
+                    val['debt'] = val.total
+
+                    }
+
+                     else {
+                        val['debt'] = val.total - val.paid - val.discount
+                    }
+                    return val;
+                })
                 this.total = response.data.stocktransaction.length
 
                 // Just to simulate the time of the request
