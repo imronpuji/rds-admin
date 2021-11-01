@@ -26,7 +26,7 @@ style="width: 100%;"
       <span>{{ row.id }}</span>
   </template>
 </el-table-column>
-<el-table-column label="Nama Barang" min-width="150px">
+<el-table-column label="Jenis Produk" min-width="150px">
     <template slot-scope="{row}">
       <span>{{ row.name }}</span>
   </template>
@@ -51,7 +51,7 @@ style="width: 100%;"
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="180px" style="width: 520px; margin-left:50px;">
-        <el-form-item label="Nama Barang">
+        <el-form-item label="Jenis Produk">
             <el-input v-model="name" placeholder="Nama Barang" />
         </el-form-item>
     </el-form>
@@ -163,7 +163,7 @@ data() {
     dialogStatus: '',
     textMap: {
         update: 'Edit',
-        create: 'Kategori'
+        create: 'Jenis Produk'
     },
     dialogPvVisible: false,
     pvData: [],

@@ -365,7 +365,7 @@ export default {
         },
         handleUpdate(row) {
             this.name = row.name
-            this.tipe = row.type
+            this.tipe = row.type.id
             this.id = row.id
             this.address = row.address
             this.desc = row.desc
@@ -383,7 +383,7 @@ export default {
                 address: this.address,
                 desc: this.desc,
                 contact: this.contact,
-                type: this.tipe.id,
+                type: this.tipe,
             }
             console.log(data)
             this.loading = true
