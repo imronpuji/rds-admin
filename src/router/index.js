@@ -70,13 +70,14 @@ import nestedRouter from './modules/nested'
 {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/profile',
+    hidden: true,
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      name: 'Dashboard',
+      component: () => import('@/views/profile/index'),
+      name: 'Profile',
       meta: {
-        title: 'Dashboard',
+        title: 'Profile',
         icon: 'dashboard',
         affix: true
     }
@@ -90,7 +91,7 @@ import nestedRouter from './modules/nested'
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin', 'user'] // you can set roles in root nav
+      roles: ['admin'] // you can set roles in root nav
   },
   children: [{
     path: 'role',
@@ -99,7 +100,7 @@ import nestedRouter from './modules/nested'
     hidden : false,
     meta: {
       title: 'Role Permission',
-      roles: ['admin', 'user']
+      roles: ['admin']
   }
 },
   {
@@ -109,7 +110,7 @@ import nestedRouter from './modules/nested'
     hidden : false,
     meta: {
       title: 'users',
-      roles: ['admin', 'user']
+      roles: ['admin']
   }
 }
 ]
@@ -141,7 +142,7 @@ import nestedRouter from './modules/nested'
       name: 'Produk',
       meta: {
         title: 'Produk',
-        icon: 'user',
+        icon: 'drag',
         noCache: true
     }
 }]
@@ -156,7 +157,7 @@ import nestedRouter from './modules/nested'
       name: 'Lisensi',
       meta: {
         title: 'Lisensi',
-        icon: 'user',
+        icon: 'edit',
         noCache: true
     }
 }]
