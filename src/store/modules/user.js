@@ -78,8 +78,12 @@ const actions = {
         const role = roles == undefined ? [] : roles.map((val) => val.name)
 
 
-        if (!roles || roles.length <= 0) {
-            commit('SET_ROLES', ['user'])
+        if (!roles || roles.length <= 0 ) {
+            if(name == 'admin'){
+              commit('SET_ROLES', ['admin'])
+            } else {
+              commit('SET_ROLES', ['user'])
+            }
         } else {
           commit('SET_ROLES', role)
         }
