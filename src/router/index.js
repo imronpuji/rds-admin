@@ -90,7 +90,7 @@ import nestedRouter from './modules/nested'
     meta: {
       title: 'Permission',
       icon: 'lock',
-      roles: ['admin'] // you can set roles in root nav
+      roles: ['admin', 'user'] // you can set roles in root nav
   },
   children: [{
     path: 'role',
@@ -99,7 +99,7 @@ import nestedRouter from './modules/nested'
     hidden : false,
     meta: {
       title: 'Role Permission',
-      roles: ['admin']
+      roles: ['admin', 'user']
   }
 },
   {
@@ -109,7 +109,7 @@ import nestedRouter from './modules/nested'
     hidden : false,
     meta: {
       title: 'users',
-      roles: ['admin']
+      roles: ['admin', 'user']
   }
 }
 ]
