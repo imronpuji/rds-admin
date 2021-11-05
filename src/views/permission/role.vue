@@ -317,7 +317,7 @@ export default {
           <el-button type="primary" size="mini" @click="handleDelete(row, $index)">
             Delete
           </el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(row, $index)">
+          <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
         </template>
@@ -361,7 +361,9 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
-
+import {
+    mapGetters
+} from 'vuex'
 const calendarTypeOptions = [
   { key: 'cash', display_name: 'cash' },
   { key: 'modal', display_name: 'modal' }
@@ -449,10 +451,19 @@ export default {
   created() {
     this.getList()
   },
+  computed: {
+    ...mapGetters([
+      'token'
+    ])
+  },  
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/role').then(response => {
+      axios.get('/role', {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     }).then(response => {
         console.log(response)
         this.list = response.data.role
         this.total = response.data.role.length
@@ -525,7 +536,11 @@ export default {
        name : this.roles
       }
 
-      axios.post('/role/create', data)
+      axios.post('/role', data, {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -564,7 +579,11 @@ export default {
         name : this.roles,
       }
 
-      axios.put(`/role/edit/${this.id}`, data)
+      axios.put(`/role/${this.id}`, data, {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -580,7 +599,11 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/role/delete/${row.id}`)
+      axios.delete(`/role/${row.id}`,  {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
         .then((response) => {
           this.listLoading = false
           console.log(response)

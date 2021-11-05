@@ -49,6 +49,7 @@ export default {
       'roles',
       'email', 
       'id',
+      'phone'
     ])
   },
   created() {
@@ -62,7 +63,8 @@ export default {
         role: this.roles.join(' | '),
         avatar: this.avatar,
         email:this.email, 
-        id : this.id
+        id : this.id,
+        phone: this.phone
       }
     }
   }

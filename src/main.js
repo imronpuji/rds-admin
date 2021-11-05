@@ -21,9 +21,9 @@ import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 
 import MoneySpinner from 'v-money-spinner' //MONEY SPINNER
-import Print from 'vue-print-nb'
-// Global instruction 
-Vue.use(Print);
+// import Print from 'vue-print-nb'
+// // Global instruction 
+// Vue.use(Print);
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

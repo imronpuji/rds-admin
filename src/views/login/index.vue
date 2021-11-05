@@ -80,6 +80,21 @@
 
         <el-form-item>
           <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="phone"
+            v-model="registerForm.phone"
+            placeholder="Phone"
+            name="phone"
+            type="text"
+            tabindex="1"
+            autocomplete="on"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <span class="svg-container">
             <svg-icon icon-class="email" />
           </span>
           <el-input

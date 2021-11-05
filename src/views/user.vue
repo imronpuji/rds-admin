@@ -23,6 +23,11 @@
           <span>{{ row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Nomor" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.phone }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Email" width="150px" align="center" sortable prop="cashin">
         <template slot-scope="{row}">
           <span>{{ row.email}}</span>
@@ -90,7 +95,9 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
-
+import {
+    mapGetters
+} from 'vuex'
 const calendarTypeOptions = [
   { key: 'cash', display_name: 'cash' },
   { key: 'modal', display_name: 'modal' }
@@ -119,8 +126,15 @@ export default {
       return calendarTypeKeyValue[type]
     }
   },
+
+   computed: {
+    ...mapGetters([
+      'token'
+    ])
+  },  
   data() {
     return {
+      phone:  '',
       roles : '',
       role_akun : [],
       name : '',
@@ -184,14 +198,22 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/user').then(response => {
+      axios.get('/user',  {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     }).then(response => {
         console.log(response)
-        this.list = response.data.user.filter(val => val.email != 'admin@admin.com')
-        this.total = response.data.user.length
+        this.list = response.data.user.data.filter(val => val.email != 'admin@admin.com')
+        this.total = response.data.user.data.length
           this.listLoading = false
       })
 
-      axios.get('/role').then(response => {
+      axios.get('/role',  {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     }).then(response => {
         this.role_akun = response.data.role
       })
     },
@@ -256,7 +278,11 @@ export default {
        name : this.roles
       }
 
-      axios.post('/role/create', data)
+      axios.post('/user', data,  {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -284,6 +310,7 @@ export default {
       this.id = row.id
       this.name = row.name
       this.email = row.email
+      this.phone = row.phone
       this.roles = row.roles
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -294,10 +321,17 @@ export default {
     updateData() {
       this.listLoading = true
       const data = {
+        name : this.name,
+        email : this.email,
+        phone : this.phone,
         role : this.roles,
       }
       console.log(data)
-      axios.post(`/user/role/create/${this.id}`, data)
+      axios.put(`/user/${this.id}`, data,  {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -318,7 +352,11 @@ export default {
               cancelButtonText: 'Cancel',
               type: 'warning'
           }).then(() => {
-            axios.delete(`/user/delete/${row.id}`)
+            axios.delete(`/user/${row.id}`, {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
               .then((response) => {
                 this.listLoading = false
                 console.log(response)

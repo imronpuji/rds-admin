@@ -6,6 +6,9 @@
     <el-form-item label="Email">
       <el-input v-model.trim="user.email" />
     </el-form-item>
+    <el-form-item label="Phone">
+      <el-input v-model.trim="user.phone" />
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">Update</el-button>
     </el-form-item>
@@ -24,7 +27,8 @@ export default {
           name: '',
           email: '',
           password : '',
-          id : ''
+          id : '',
+          phone:''
         }
       }
     }
@@ -38,9 +42,9 @@ export default {
     submit() {
       console.log(this.token)
 
-     axios.put(`/user/edit/${this.user.id}`, {name : this.user.name, email : this.user.email}, {
+     axios.put(`/profile/${this.user.id}`, {name : this.user.name, email : this.user.email, phone :this.user.phone }, {
        headers: {
-        'Authorization': `Bearier ${this.token}` 
+        Authorization: `Bearer ${this.token}` 
       }
      })
      .then((response) => {

@@ -3,7 +3,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-        <el-input v-model="search" placeholder="Cari" style="width: 200px; margin-right:10px" class="filter-item" />
+        <el-input placeholder="Cari" style="width: 200px; margin-right:10px" class="filter-item" />
 
         <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">
             Tambah
@@ -30,14 +30,30 @@
       </el-table-column>
       <el-table-column label="Nama" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.name }}</span>
+          <span>{{ row.user.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Deskripsi" min-width="150px">
+      <el-table-column label="Produk" min-width="150px">
         <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.desc }}</span>
+          <span>{{ row.product == null ? 'produk sudah dihapu' : row.product.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Domain" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.dns }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Lisensi" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.licence }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Date" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.due }}</span>
+        </template>
+      </el-table-column>
+      
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
            <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -54,12 +70,23 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="top" label-width="150px" >
-        <el-form-item label="Nama">
-          <el-input v-model="unit" placeholder="satuan" />
-        </el-form-item>
-         <el-form-item label="Deskripsi">
-          <el-input v-model="desc" placeholder="Deskripsi" />
-        </el-form-item>
+        <el-form-item label="Produk">
+        <el-select v-model="product_id" >
+          <el-option v-for="product in products" :value="product.id" :label="product.name">{{product.name}}</el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="Pembeli">
+        <el-select v-model="user_id" >
+          <el-option v-for="user in users" :value="user.id" :label="user.name">{{user.name}}</el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="domain">
+        <el-input v-model="dns" placeholder="Domain" />
+      </el-form-item>
+      <el-form-item label="Due">
+        <el-date-picker  v-model="due" class="filter-item" type="date" placeholder="Due">
+        </el-date-picker>
+      </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -90,7 +117,9 @@ import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import axios from '@/api/axios'
 import qs from 'qs'
-
+import {
+    mapGetters
+} from 'vuex'
 const calendarTypeOptions = [
   { key: 'cash', display_name: 'cash' },
   { key: 'modal', display_name: 'modal' }
@@ -121,8 +150,15 @@ export default {
   },
   data() {
     return {
+      due : '',
+      dns : '',
+      code : '',
+      products : [],
+      user_id : '',
+      product_id : '',
       roles : '',
       role_akun : [],
+      users : [],
       name : '',
       desc : '',
       loading : false,
@@ -185,15 +221,41 @@ export default {
   created() {
     this.getList()
   },
+
+   computed: {
+    ...mapGetters([
+      'token'
+    ])
+  },  
   methods: {
     getList() {
       this.listLoading = true
-      axios.get('/unit').then(response => {
+      axios.get('/licence').then(response => {
         console.log(response)
-        this.list = response.data.unit
-        this.total = response.data.unit.length
+        this.list = response.data.licence.data
+        this.total = response.data.licence.data.length
           this.listLoading = false
       })
+      axios.get('/product', {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     }).then(response => {
+
+        this.products = response.data.product.data
+      })
+
+      axios.get('/user', {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     }).then(response => {
+
+        this.users = response.data.user.data
+      })
+
+
+
     },
 
     handleCurrency(number){
@@ -253,11 +315,14 @@ export default {
       //
 
       const data = {
-       name : this.unit,
-       desc : this.desc
+       user_id : this.user_id,
+       due : this.due,
+       product_id : this.product_id,
+       dns : this.dns
+
       }
 
-      axios.post('/unit/create', data)
+      axios.post('/licence', data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -271,20 +336,21 @@ export default {
         .catch((err) => {
           this.listLoading = false
            this.$notify({
-                            title: 'Gagal',
-                            message: 'Anda Belum Melengkapi Data',
-                            type: 'warning',
-                            duration: 2000
-                        })
+              title: 'Gagal',
+              message: 'Anda Belum Melengkapi Data',
+              type: 'warning',
+              duration: 2000
+            })
         })
       // }
       // })
     },
     handleUpdate(row) {
       this.id = row.id
-      this.unit = row.name
-      this.desc = row.desc
-      this.roles = row.roles
+      this.user_id = row.user_id
+      this.product_id = row.product_id
+      this.due = row.due
+      this.dns = row.dns
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -294,11 +360,13 @@ export default {
     updateData() {
       this.listLoading = true
       const data = {
-        name : this.unit,
-        desc : this.desc,
+       user_id : this.user_id,
+       due : this.due,
+       product_id : this.product_id,
+       dns : this.dns,
       }
       console.log(data)
-      axios.put(`/unit/edit/${this.id}`, data)
+      axios.put(`/licence/${this.id}`, data)
         .then((response) => {
           this.getList()
           this.dialogFormVisible = false
@@ -314,7 +382,7 @@ export default {
     handleDelete(row, index) {
       
       this.listLoading = true
-      axios.delete(`/role/delete/${row.id}`)
+      axios.delete(`/licence/${row.id}`)
         .then((response) => {
           this.listLoading = false
           console.log(response)

@@ -9,6 +9,7 @@ const state = {
   name: '',
   email : '',
   avatar: '',
+  phone : '',
   introduction: '',
   roles: []
 }
@@ -22,6 +23,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_PHONE: (state, phone) => {
+    state.phone = phone
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -43,7 +47,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      axios.post('/login', { email: username, password: password }).then(response => {
+      axios.post('/login', { name: username, password: password }).then(response => {
         console.log(response)
         const { data } = response
         commit('SET_TOKEN', data.token)
@@ -68,10 +72,10 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction, email, id } = data.user[0]
+        const { roles, name, avatar, introduction, email, id, phone } = data.profile
 
         // roles must be a non-empty array
-        const role = roles.map((val) => val.name)
+        const role = roles == undefined ? [] : roles.map((val) => val.name)
 
 
         if (!roles || roles.length <= 0) {
@@ -81,11 +85,12 @@ const actions = {
         }
 
       commit('SET_NAME', name)
+      commit('SET_PHONE', phone)
       commit('SET_ID', id)
       commit('SET_AVATAR', 'https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png')
       commit('SET_EMAIL', email)
       commit('SET_INTRODUCTION', 'introduction')
-      resolve({ roles: role, name, avatar: 'https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png', introduction: 'lol' })
+      resolve({ roles: role, name, phone, avatar: 'https://www.kindpng.com/picc/m/78-786207_user-avatar-png-user-avatar-icon-png-transparent.png', introduction: 'lol' })
       // }).catch(error => {
       //   reject(error)
       // })

@@ -43,7 +43,7 @@ export default {
     submit() {
 
       const data = {
-        password : this.user.password,
+        oldPassword : this.user.password,
         newPassword : this.user.newPassword,
         rePassword : this.user.rePassword
       }
@@ -51,7 +51,11 @@ export default {
         this.user.password = ''
         this.user.newPassword = '' 
         this.user.rePassword = ''
-     axios.put(`/edit/password/${this.id}`, data)
+     axios.put(`/profile/password`, data, {
+       headers: {
+        Authorization: `Bearer ${this.token}` 
+      }
+     })
      .then((response) => {
 
       
