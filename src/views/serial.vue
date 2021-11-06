@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column label="Nama" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.user.name }}</span>
+          <span>{{ row.user == null ? 'user sudah dihapus' : row.user.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Produk" min-width="150px">
