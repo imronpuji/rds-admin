@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'akuntansi',
+  title: 'Ruas Digital Solusindo',
 
   /**
    * @type {boolean} true | false
