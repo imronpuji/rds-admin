@@ -35,7 +35,7 @@
       </el-table-column>
       <el-table-column label="Produk" min-width="150px">
         <template slot-scope="{row}">
-          <span>{{ row.product == null ? 'produk sudah dihapu' : row.product.name }}</span>
+          <span>{{ row.product == null ? 'produk sudah dihapus' : row.product.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Domain" min-width="150px">
@@ -46,6 +46,11 @@
       <el-table-column label="Lisensi" min-width="150px">
         <template slot-scope="{row}">
           <span>{{ row.licence }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Kode Produk" min-width="150px">
+        <template slot-scope="{row}">
+          <span>{{ row.product == null ? 'produk sudah dihapus' : row.product.code }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Date" min-width="150px">
