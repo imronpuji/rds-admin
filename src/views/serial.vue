@@ -56,6 +56,9 @@
       
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
+          <el-button type="primary" size="mini" @click="handleReload(row)">
+            Reload
+          </el-button>
            <el-button type="primary" size="mini" @click="handleUpdate(row)">
             Edit
           </el-button>
@@ -356,6 +359,18 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    async handleReload(row){
+      this.listLoading = true
+        await axios.put('/licence/reload/'+row.id)
+            this.$notify({
+            title: 'Success',
+            message: 'Reload Successfully',
+            type: 'success',
+            duration: 2000
+          })
+        this.getList()
+      this.listLoading = false
     },
     updateData() {
       this.listLoading = true
